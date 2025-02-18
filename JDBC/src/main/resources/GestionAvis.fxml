@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.GestionAvis">
+   <children>
+      <TextArea fx:id="Commentaire" layoutX="84.0" layoutY="69.0" prefHeight="88.0" prefWidth="200.0" promptText="Commentaire" />
+      <TextField fx:id="Note" layoutX="83.0" layoutY="187.0" promptText="Note from 1 to 5" />
+      <Button layoutX="108.0" layoutY="250.0" mnemonicParsing="false" onAction="#Save" prefHeight="35.0" prefWidth="102.0" text="Save" />
+      <ListView fx:id="avisListView" layoutX="319.0" layoutY="48.0" prefHeight="329.0" prefWidth="261.0" />
+      <Button layoutX="108.0" layoutY="308.0" mnemonicParsing="false" onAction="#Show" prefHeight="35.0" prefWidth="102.0" text="Show" />
+   </children>
+</AnchorPane>
