@@ -12,6 +12,7 @@
         <TextField fx:id="date" layoutX="118.0" layoutY="105.0" promptText="Date (YYYY-MM-DD)" />
         <TextField fx:id="id_patient" layoutX="118.0" layoutY="204.0" promptText="ID Patient (Number Only)" />
         <ComboBox fx:id="medecinComboBox" layoutX="118.0" layoutY="304.0" promptText="Sélectionner un médecin" prefWidth="200.0" />        <TextField fx:id="type_consultation" layoutX="118.0" layoutY="402.0" promptText="Type Consultation ID (Number Only)" />
+        <Button layoutX="500.0" layoutY="350.0" mnemonicParsing="false" onAction="#handleAfficherRendezVous" text="Afficher Rendez-vous" />
         <Button layoutX="597.0" layoutY="473.0" mnemonicParsing="false" onAction="#reserve" prefHeight="53.0" prefWidth="124.0" text="Réserver" />
     </children>
 </AnchorPane>

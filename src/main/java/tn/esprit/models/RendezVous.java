@@ -3,12 +3,13 @@ package tn.esprit.models;
 import java.util.Date;
 
 public class RendezVous {
-    private int id;                   // Identifiant du rendez-vous
-    private Date date;                // Date et heure du rendez-vous
-    private int patientId;            // ID du patient
-    private int medecinId;            // ID du médecin
-    private int typeConsultationId;   // Identifiant pour le type de consultation
-
+    private int id;
+    private Date date;
+    private int patientId;
+    private int medecinId;
+    private int typeConsultationId;
+    private String medecinNom;
+    private String medecinPrenom;
     // Constructeur par défaut
     public RendezVous() {
     }
@@ -71,14 +72,26 @@ public class RendezVous {
         this.typeConsultationId = typeConsultationId;
     }
 
+    public String getMedecinNom() {
+        return medecinNom;
+    }
+
+    public void setMedecinNom(String medecinNom) {
+        this.medecinNom = medecinNom;
+    }
+
+    public String getMedecinPrenom() {
+        return medecinPrenom;
+    }
+
+    public void setMedecinPrenom(String medecinPrenom) {
+        this.medecinPrenom = medecinPrenom;
+    }
+
     @Override
     public String toString() {
-        return "RendezVous{" +
-                "id=" + id +
-                ", date=" + date +
-                ", patientId=" + patientId +
-                ", medecinId=" + medecinId +
-                ", typeConsultationId=" + typeConsultationId +
-                "}\n";
+        return String.format("ID: %d, Date: %s, Patient ID: %d, Médecin: %s %s, Type Consultation: %d",
+                id, date, patientId, medecinNom, medecinPrenom, typeConsultationId);
     }
-}
+    }
+

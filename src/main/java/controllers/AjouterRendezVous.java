@@ -10,6 +10,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import tn.esprit.models.RendezVous;
 import tn.esprit.services.ServiceRendezVous;
+import tn.esprit.test.MainFX;
 
 import java.net.URL;
 import java.sql.Connection;
@@ -120,6 +121,10 @@ public class AjouterRendezVous implements Initializable {
         } catch (Exception e) {
             showAlert("Erreur", "Une erreur s'est produite lors de l'ajout du rendez-vous: " + e.getMessage());
         }
+    }
+    @FXML
+    private void handleAfficherRendezVous() {
+        MainFX.showAfficherRendezVous();
     }
 
     // Helper method to show alerts

@@ -35,7 +35,11 @@ public class ServiceRendezVous implements IService<RendezVous> {
     @Override
     public List<RendezVous> getAll() {
         List<RendezVous> rendezVousList = new ArrayList<>();
-        String qry = "SELECT * FROM `rendezvous`";
+        String qry = "SELECT rv.id, rv.date, rv.patientId, rv.medecinId, rv.type_consultation_id, " +
+                "u.nom AS medecinNom, u.prenom AS medecinPrenom " +
+                "FROM rendezvous rv " +
+                "JOIN medecin m ON rv.medecinId = m.id " +
+                "JOIN utilisateur u ON m.id = u.id";
 
         try {
             Statement stm = cnx.createStatement();
@@ -44,11 +48,12 @@ public class ServiceRendezVous implements IService<RendezVous> {
             while (rs.next()) {
                 RendezVous rv = new RendezVous();
                 rv.setId(rs.getInt("id"));
-                rv.setDate(rs.getTimestamp("date")); // Retrieve the date as a Timestamp
-                // Make sure the column name matches your database column for type_consultation_id.
+                rv.setDate(rs.getTimestamp("date"));
                 rv.setPatientId(rs.getInt("patientId"));
                 rv.setMedecinId(rs.getInt("medecinId"));
                 rv.setTypeConsultationId(rs.getInt("type_consultation_id"));
+                rv.setMedecinNom(rs.getString("medecinNom"));
+                rv.setMedecinPrenom(rs.getString("medecinPrenom"));
                 rendezVousList.add(rv);
             }
         } catch (SQLException e) {
@@ -101,6 +106,9 @@ public class ServiceRendezVous implements IService<RendezVous> {
             System.out.println("Erreur lors de la vérification de l'ID patient : " + e.getMessage());
         }
         return false; // Default to false if an error occurs
+    }
+    public Connection getCnx() {
+        return this.cnx;
     }
 
 }
