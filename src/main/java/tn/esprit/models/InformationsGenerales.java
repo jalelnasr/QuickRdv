@@ -13,6 +13,9 @@ public class InformationsGenerales {
     public InformationsGenerales (int idPatient, String historiqueOrdonnance, String historiqueTeleconsultation, String historiqueConsultationPresentiel, double v, int poids, boolean maladies) {
     }
 
+    public InformationsGenerales() {
+    } //added l supp
+
     public InformationsGenerales(int id, int idPatient, String historiqueOrdonnance, String historiqueTeleconsultation, String historiqueConsultationPresentiel, float taille, float poids, boolean maladies) {
         this.id = id;
         this.idPatient = idPatient;

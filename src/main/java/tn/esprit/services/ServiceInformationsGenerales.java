@@ -62,25 +62,39 @@ public class ServiceInformationsGenerales implements IService<InformationsGenera
 
     // Update dossiermedicale record
     @Override
-    public void update(InformationsGenerales informationsGenerales) {
-        String qry = "UPDATE dossiermedicale SET taille=?, poids=?, maladies=? WHERE id_patient=?";
-        try (PreparedStatement pstm = cnx.prepareStatement(qry)) {
-            pstm.setFloat(1, informationsGenerales.getTaille());
-            pstm.setFloat(2, informationsGenerales.getPoids());
-            pstm.setString(3, informationsGenerales.hasMaladies() ? "Oui" : "Non");
-            pstm.setInt(4, informationsGenerales.getId());
+    public void update(InformationsGenerales info) {
+        String qry = "UPDATE dossiermedicale SET id_patient=? ,historique_ordonnance=?, historique_teleconsultation=?, historique_consultation_presentiel=?, taille=?, poids=?, maladies=? WHERE id=?";
 
-            pstm.executeUpdate();
-            System.out.println("Dossier médical mis à jour !");
+        try (PreparedStatement pstm = cnx.prepareStatement(qry)) {
+            pstm.setInt(1, info.getIdPatient());  // Ensure this ID exists in DB
+            pstm.setString(2, info.getHistoriqueOrdonnance());
+            pstm.setString(3, info.getHistoriqueTeleconsultation());
+            pstm.setString(4, info.getHistoriqueConsultationPresentiel());
+            pstm.setFloat(5, info.getTaille());
+            pstm.setFloat(6, info.getPoids());
+            pstm.setString(7, info.hasMaladies() ? "Oui" : "Non");
+            pstm.setInt(8, info.getId());
+
+
+            int rowsUpdated = pstm.executeUpdate();
+
+            if (rowsUpdated > 0) {
+                System.out.println("Dossier médical mis à jour avec succès !");
+            } else {
+                System.out.println("Aucune mise à jour effectuée. Vérifiez si l'ID du patient existe.");
+            }
         } catch (SQLException e) {
             System.out.println("Erreur lors de la mise à jour du dossier médical : " + e.getMessage());
         }
     }
 
+
+
+
     // Delete dossiermedicale record by patient ID
     @Override
     public void delete(InformationsGenerales informationsGenerales) {
-        String qry = "DELETE FROM dossiermedicale WHERE id_patient=?";
+        String qry = "DELETE FROM dossiermedicale WHERE id=?";
         try (PreparedStatement pstm = cnx.prepareStatement(qry)) {
             pstm.setInt(1, informationsGenerales.getId());
 
