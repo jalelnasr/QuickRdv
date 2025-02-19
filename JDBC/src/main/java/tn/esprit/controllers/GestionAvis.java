@@ -5,10 +5,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import tn.esprit.services.ServiceAvis;
 import tn.esprit.models.Avis;
@@ -29,7 +27,14 @@ public class GestionAvis {
     @FXML
     private ListView<Avis> avisListView;
 
+    @FXML
+    private Button saveButton;
+
     private ServiceAvis sa = new ServiceAvis();
+    private final int currentUserId = 1;
+    Avis selectedAvis = null;  // Holds the Avis being edited
+// Replace this with the actual logged-in user ID
+
 
     @FXML
     void LoadReclamationPage(ActionEvent event) {
@@ -61,7 +66,24 @@ public class GestionAvis {
 
     @FXML
     void Save(ActionEvent event) {
-        sa.add(new Avis(1, 2, Commentaire.getText(), Integer.parseInt(Note.getText()), new Date()));
+        if (selectedAvis != null && saveButton.getText().equals("Update") ) {
+            // If an Avis is selected for update
+            selectedAvis.setCommentaire(Commentaire.getText());  // Get the updated commentaire from the TextField
+            selectedAvis.setNote(Integer.parseInt(Note.getText()));
+            sa.update(selectedAvis);
+            avisListView.refresh();  // Refresh the ListView to show updated items
+            selectedAvis = null;  // Reset the selectedAvis
+            Commentaire.clear();  // Clear the commentaire TextField
+            Note.clear();  // Clear the note TextField
+            saveButton.setText("Save");
+            return;
+        }
+            if (saveButton.getText().equals("Save")) {  // If button says "Save", add new Avis
+                sa.add(new Avis(1, 2, Commentaire.getText(), Integer.parseInt(Note.getText()), new Date()));
+            }
+
+
+
 
     }
     @FXML
@@ -73,6 +95,49 @@ public class GestionAvis {
             // Clear the ListView and add the fetched avis
             avisListView.getItems().clear();
             avisListView.getItems().addAll(avisList);
+        avisListView.setCellFactory(param -> new ListCell<Avis>() {
+            @Override
+            protected void updateItem(Avis avis, boolean empty) {
+                super.updateItem(avis, empty);
+
+                if (empty || avis == null) {
+                    setGraphic(null);
+                } else {
+                    HBox hbox = new HBox(10);
+                    Label idLabel = new Label("ID: " + avis.getId());
+                    Label patientIdLabel = new Label("Patient ID: " + avis.getPatient_id());
+                    Label medecinIdLabel = new Label("Medecin ID: " + avis.getMedecin_id());
+                    Label commentaireLabel = new Label("Commentaire: " + avis.getCommentaire());
+                    Label noteLabel = new Label("Note: " + avis.getNote());
+                    Label dateAvisLabel = new Label("Date: " + avis.getDate_avis().toString());
+                    int currentUserId = 1; // Replace with actual logged-in user ID
+
+                    if (avis.getPatient_id() == currentUserId) {
+                        Button deleteButton = new Button("Delete");
+                        Button updateButton = new Button("Update");
+
+
+                        deleteButton.setOnAction(event -> {
+                            sa.delete(avis); // Delete from database
+                            avisListView.getItems().remove(avis); // Remove from UI
+                        });
+
+                        updateButton.setOnAction(event -> {
+                            selectedAvis = avis;  // Set the selected Avis to the one the user clicked
+                            Commentaire.setText(avis.getCommentaire());  // Set the commentaire TextField
+                            Note.setText(String.valueOf(avis.getNote()));  // Set the note TextField
+                            saveButton.setText("Update");  // Change Save button text to "Update"
+                        });
+
+                        hbox.getChildren().addAll(idLabel, patientIdLabel, medecinIdLabel, commentaireLabel, noteLabel, dateAvisLabel, deleteButton , updateButton);
+                    } else {
+                        hbox.getChildren().addAll(idLabel, patientIdLabel, medecinIdLabel, commentaireLabel, noteLabel, dateAvisLabel);
+                    }
+
+                    setGraphic(hbox);
+                }
+            }
+        });
 
     }
 
