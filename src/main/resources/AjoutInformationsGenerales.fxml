@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="627.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjoutInformationsGenerales">
+   <children>
+      <Text layoutX="18.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Informations générales" wrappingWidth="270.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+
+      <Label layoutX="19.0" layoutY="70.0" text="Taille:" />
+      <TextField fx:id="tailleField" layoutX="235.0" layoutY="70.0" prefHeight="26.0" prefWidth="150.0" />
+
+      <Label layoutX="19.0" layoutY="110.0" text="Poids:" />
+      <TextField fx:id="poidsField" layoutX="236.0" layoutY="110.0" prefHeight="26.0" prefWidth="150.0" />
+
+      <Label layoutX="19.0" layoutY="150.0" text="Maladies:" />
+      <ComboBox fx:id="maladiesCombo" layoutX="239.0" layoutY="150.0" prefHeight="26.0" prefWidth="150.0">
+         <items>
+            <FXCollections fx:factory="observableArrayList">
+               <String fx:value="Oui" />
+               <String fx:value="Non" />
+            </FXCollections>
+         </items>
+      </ComboBox>
+
+      <Label layoutX="19.0" layoutY="190.0" text="Antécédents Cardiovasculaires:" />
+      <ComboBox fx:id="cardioCombo" layoutX="238.0" layoutY="190.0" prefHeight="26.0" prefWidth="150.0">
+         <items>
+            <FXCollections fx:factory="observableArrayList">
+               <String fx:value="Oui" />
+               <String fx:value="Non" />
+               <String fx:value="Je ne sais pas" />
+            </FXCollections>
+         </items>
+      </ComboBox>
+
+      <Label layoutX="19.0" layoutY="230.0" prefHeight="18.0" prefWidth="138.0" text="Êtes-vous asthmatique ?" />
+      <ComboBox fx:id="asthmeCombo" layoutX="238.0" layoutY="230.0" prefHeight="26.0" prefWidth="150.0">
+         <items>
+            <FXCollections fx:factory="observableArrayList">
+               <String fx:value="Oui" />
+               <String fx:value="Non" />
+            </FXCollections>
+         </items>
+      </ComboBox>
+
+      <Label layoutX="19.0" layoutY="270.0" text="Avez-vous un suivi dentaire régulier ?" />
+      <ComboBox fx:id="dentaireCombo" layoutX="239.0" layoutY="270.0" prefHeight="26.0" prefWidth="150.0">
+         <items>
+            <FXCollections fx:factory="observableArrayList">
+               <String fx:value="Oui" />
+               <String fx:value="Non" />
+               <String fx:value="Je ne sais pas" />
+            </FXCollections>
+         </items>
+      </ComboBox>
+
+      <Label layoutX="19.0" layoutY="310.0" text="Avez-vous un historique chirurgicale ?" />
+      <ComboBox fx:id="chirurgieCombo" layoutX="239.0" layoutY="310.0" prefHeight="26.0" prefWidth="150.0">
+         <items>
+            <FXCollections fx:factory="observableArrayList">
+               <String fx:value="Oui" />
+               <String fx:value="Non" />
+               <String fx:value="Je ne sais pas" />
+            </FXCollections>
+         </items>
+      </ComboBox>
+
+      <Label layoutX="19.0" layoutY="350.0" text="Avez-vous une ou plusieurs Allergies ?" />
+      <ComboBox fx:id="allergiesCombo" layoutX="238.0" layoutY="350.0" prefHeight="26.0" prefWidth="150.0">
+         <items>
+            <FXCollections fx:factory="observableArrayList">
+               <String fx:value="Oui" />
+               <String fx:value="Non" />
+            </FXCollections>
+         </items>
+      </ComboBox>
+
+      <Label layoutX="19.0" layoutY="390.0" text="Profession:" />
+      <TextField fx:id="professionField" layoutX="238.0" layoutY="390.0" />
+
+      <Label layoutX="19.0" layoutY="430.0" text="Niveau de Stress:" />
+      <ComboBox fx:id="stressCombo" layoutX="239.0" layoutY="430.0" prefHeight="26.0" prefWidth="150.0">
+         <items>
+            <FXCollections fx:factory="observableArrayList">
+               <String fx:value="Faible" />
+               <String fx:value="Moyen" />
+               <String fx:value="Élevé" />
+            </FXCollections>
+         </items>
+      </ComboBox>
+
+      <Label layoutX="19.0" layoutY="470.0" text="Qualité de Sommeil:" />
+      <ComboBox fx:id="sommeilCombo" layoutX="239.0" layoutY="470.0" prefHeight="26.0" prefWidth="150.0">
+         <items>
+            <FXCollections fx:factory="observableArrayList">
+               <String fx:value="Mauvaise" />
+               <String fx:value="Moyenne" />
+               <String fx:value="Bonne" />
+            </FXCollections>
+         </items>
+      </ComboBox>
+
+      <Label layoutX="19.0" layoutY="510.0" text="Activité Physique:" />
+      <ComboBox fx:id="activiteCombo" layoutX="239.0" layoutY="510.0" prefHeight="26.0" prefWidth="150.0">
+         <items>
+            <FXCollections fx:factory="observableArrayList">
+               <String fx:value="Marche" />
+               <String fx:value="Sport" />
+               <String fx:value="Autre" />
+               <String fx:value="Aucune" />
+            </FXCollections>
+         </items>
+      </ComboBox>
+
+      <Label layoutX="19.0" layoutY="550.0" text="Situation Familiale:" />
+      <ComboBox fx:id="situationCombo" layoutX="239.0" layoutY="550.0" prefHeight="26.0" prefWidth="150.0">
+         <items>
+            <FXCollections fx:factory="observableArrayList">
+               <String fx:value="Célibataire" />
+               <String fx:value="Marié" />
+               <String fx:value="Divorcé" />
+               <String fx:value="Veuf" />
+            </FXCollections>
+         </items>
+      </ComboBox>
+   </children>
+</AnchorPane>
