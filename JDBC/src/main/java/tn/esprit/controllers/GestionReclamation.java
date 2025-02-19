@@ -10,37 +10,39 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import tn.esprit.services.ServiceAvis;
 import tn.esprit.models.Avis;
+import tn.esprit.services.ServiceReclamation;
+import tn.esprit.models.Reclamation;
 
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
+public class GestionReclamation {
 
-public class GestionAvis {
-
-    @FXML
-    private TextArea Commentaire;
 
     @FXML
-    private TextField Note;
+    private TextArea Description;
 
     @FXML
-    private ListView<Avis> avisListView;
-
-    private ServiceAvis sa = new ServiceAvis();
+    private ListView<Reclamation> ReclamationListView ;
 
     @FXML
-    void LoadReclamationPage(ActionEvent event) {
+    private TextField Sujet;
+    private ServiceReclamation sr = new ServiceReclamation();
+
+
+
+    @FXML
+    void LoadAvisPage(ActionEvent event) {
         try {
-            System.out.println("Loading Reclamation Page...");
+            System.out.println("Loading Avis Page...");
             // Load the GestionReclamation.fxml file
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GestionReclamation.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GestionAvis.fxml"));
             Parent root = loader.load();
 
             // Get the current stage (window)
-            Stage stage = (Stage) Commentaire.getScene().getWindow();
+            Stage stage = (Stage) Description.getScene().getWindow();
 
             // Create a new scene with the loaded FXML file
             Scene scene = new Scene(root);
@@ -60,22 +62,19 @@ public class GestionAvis {
     }
 
     @FXML
-    void Save(ActionEvent event) {
-        sa.add(new Avis(1, 2, Commentaire.getText(), Integer.parseInt(Note.getText()), new Date()));
+    void Send(ActionEvent event) {
+        sr.add(new Reclamation(1, 1, Sujet.getText(), Description.getText(), new Date()));
 
     }
+
     @FXML
     void Show(ActionEvent event) {
+        List<Reclamation> ReclamationList = sr.getAll();
 
-            // Fetch all avis from the database
-            List<Avis> avisList = sa.getAll();
-
-            // Clear the ListView and add the fetched avis
-            avisListView.getItems().clear();
-            avisListView.getItems().addAll(avisList);
+        // Clear the ListView and add the fetched avis
+        ReclamationListView.getItems().clear();
+        ReclamationListView.getItems().addAll(ReclamationList);
 
     }
 
-    }
-
-
+}

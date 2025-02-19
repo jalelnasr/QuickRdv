@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.GestionReclamation">
+   <children>
+      <SplitPane dividerPositions="0.5" layoutX="-14.0" layoutY="-42.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <Label layoutX="60.0" layoutY="72.0" text="Sujet" />
+                  <Label layoutX="60.0" layoutY="145.0" text="Description" />
+                  <TextField fx:id="Sujet" layoutX="60.0" layoutY="98.0" />
+                  <TextArea fx:id="Description" layoutX="60.0" layoutY="173.0" prefHeight="76.0" prefWidth="200.0" />
+                  <Button layoutX="109.0" layoutY="281.0" mnemonicParsing="false" onAction="#Send" prefHeight="34.0" prefWidth="78.0" text="Send" />
+                  <Button layoutX="109.0" layoutY="331.0" mnemonicParsing="false" onAction="#Show" prefHeight="34.0" prefWidth="78.0" text="Show" />
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <ListView fx:id="ReclamationListView" layoutX="22.0" layoutY="37.0" prefHeight="338.0" prefWidth="254.0" />
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+      <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="Avis">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#LoadAvisPage" text="View" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Reclamation">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </children>
+</AnchorPane>
