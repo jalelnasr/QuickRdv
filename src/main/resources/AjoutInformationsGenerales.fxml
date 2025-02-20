@@ -2,6 +2,7 @@
 
 <?import java.lang.String?>
 <?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
@@ -18,13 +19,13 @@
       </Text>
 
       <Label layoutX="19.0" layoutY="70.0" text="Taille:" />
-      <TextField fx:id="tailleField" layoutX="235.0" layoutY="70.0" prefHeight="26.0" prefWidth="150.0" />
+      <TextField fx:id="tailleField" layoutX="235.0" layoutY="70.0" prefHeight="26.0" prefWidth="150.0" promptText="Taille" />
 
       <Label layoutX="19.0" layoutY="110.0" text="Poids:" />
-      <TextField fx:id="poidsField" layoutX="236.0" layoutY="110.0" prefHeight="26.0" prefWidth="150.0" />
+      <TextField fx:id="poidsField" layoutX="236.0" layoutY="110.0" prefHeight="26.0" prefWidth="150.0" promptText="Poids" />
 
       <Label layoutX="19.0" layoutY="150.0" text="Maladies:" />
-      <ComboBox fx:id="maladiesCombo" layoutX="239.0" layoutY="150.0" prefHeight="26.0" prefWidth="150.0">
+      <ComboBox fx:id="maladiesCombo" layoutX="239.0" layoutY="150.0" prefHeight="26.0" prefWidth="150.0" promptText="Maladies">
          <items>
             <FXCollections fx:factory="observableArrayList">
                <String fx:value="Oui" />
@@ -34,7 +35,7 @@
       </ComboBox>
 
       <Label layoutX="19.0" layoutY="190.0" text="Antécédents Cardiovasculaires:" />
-      <ComboBox fx:id="cardioCombo" layoutX="238.0" layoutY="190.0" prefHeight="26.0" prefWidth="150.0">
+      <ComboBox fx:id="cardioCombo" layoutX="238.0" layoutY="190.0" prefHeight="26.0" prefWidth="150.0" promptText="Antécédents Cardiovasculaires">
          <items>
             <FXCollections fx:factory="observableArrayList">
                <String fx:value="Oui" />
@@ -45,7 +46,7 @@
       </ComboBox>
 
       <Label layoutX="19.0" layoutY="230.0" prefHeight="18.0" prefWidth="138.0" text="Êtes-vous asthmatique ?" />
-      <ComboBox fx:id="asthmeCombo" layoutX="238.0" layoutY="230.0" prefHeight="26.0" prefWidth="150.0">
+      <ComboBox fx:id="asthmeCombo" layoutX="238.0" layoutY="230.0" prefHeight="26.0" prefWidth="150.0" promptText="Asmathique">
          <items>
             <FXCollections fx:factory="observableArrayList">
                <String fx:value="Oui" />
@@ -55,7 +56,7 @@
       </ComboBox>
 
       <Label layoutX="19.0" layoutY="270.0" text="Avez-vous un suivi dentaire régulier ?" />
-      <ComboBox fx:id="dentaireCombo" layoutX="239.0" layoutY="270.0" prefHeight="26.0" prefWidth="150.0">
+      <ComboBox fx:id="dentaireCombo" layoutX="239.0" layoutY="270.0" prefHeight="26.0" prefWidth="150.0" promptText="Suivi Dentaire">
          <items>
             <FXCollections fx:factory="observableArrayList">
                <String fx:value="Oui" />
@@ -66,7 +67,7 @@
       </ComboBox>
 
       <Label layoutX="19.0" layoutY="310.0" text="Avez-vous un historique chirurgicale ?" />
-      <ComboBox fx:id="chirurgieCombo" layoutX="239.0" layoutY="310.0" prefHeight="26.0" prefWidth="150.0">
+      <ComboBox fx:id="chirurgieCombo" layoutX="239.0" layoutY="310.0" prefHeight="26.0" prefWidth="150.0" promptText="Historique Chirurgicale">
          <items>
             <FXCollections fx:factory="observableArrayList">
                <String fx:value="Oui" />
@@ -77,7 +78,7 @@
       </ComboBox>
 
       <Label layoutX="19.0" layoutY="350.0" text="Avez-vous une ou plusieurs Allergies ?" />
-      <ComboBox fx:id="allergiesCombo" layoutX="238.0" layoutY="350.0" prefHeight="26.0" prefWidth="150.0">
+      <ComboBox fx:id="allergiesCombo" layoutX="238.0" layoutY="350.0" prefHeight="26.0" prefWidth="150.0" promptText="Allergies">
          <items>
             <FXCollections fx:factory="observableArrayList">
                <String fx:value="Oui" />
@@ -87,10 +88,10 @@
       </ComboBox>
 
       <Label layoutX="19.0" layoutY="390.0" text="Profession:" />
-      <TextField fx:id="professionField" layoutX="238.0" layoutY="390.0" />
+      <TextField fx:id="professionField" layoutX="238.0" layoutY="390.0" promptText="Profession" />
 
       <Label layoutX="19.0" layoutY="430.0" text="Niveau de Stress:" />
-      <ComboBox fx:id="stressCombo" layoutX="239.0" layoutY="430.0" prefHeight="26.0" prefWidth="150.0">
+      <ComboBox fx:id="stressCombo" layoutX="239.0" layoutY="430.0" prefHeight="26.0" prefWidth="150.0" promptText="Niveau de stress">
          <items>
             <FXCollections fx:factory="observableArrayList">
                <String fx:value="Faible" />
@@ -101,7 +102,7 @@
       </ComboBox>
 
       <Label layoutX="19.0" layoutY="470.0" text="Qualité de Sommeil:" />
-      <ComboBox fx:id="sommeilCombo" layoutX="239.0" layoutY="470.0" prefHeight="26.0" prefWidth="150.0">
+      <ComboBox fx:id="sommeilCombo" layoutX="239.0" layoutY="470.0" prefHeight="26.0" prefWidth="150.0" promptText="Qualité de Sommeil">
          <items>
             <FXCollections fx:factory="observableArrayList">
                <String fx:value="Mauvaise" />
@@ -112,7 +113,7 @@
       </ComboBox>
 
       <Label layoutX="19.0" layoutY="510.0" text="Activité Physique:" />
-      <ComboBox fx:id="activiteCombo" layoutX="239.0" layoutY="510.0" prefHeight="26.0" prefWidth="150.0">
+      <ComboBox fx:id="activiteCombo" layoutX="239.0" layoutY="510.0" prefHeight="26.0" prefWidth="150.0" promptText="Activité physique">
          <items>
             <FXCollections fx:factory="observableArrayList">
                <String fx:value="Marche" />
@@ -124,7 +125,7 @@
       </ComboBox>
 
       <Label layoutX="19.0" layoutY="550.0" text="Situation Familiale:" />
-      <ComboBox fx:id="situationCombo" layoutX="239.0" layoutY="550.0" prefHeight="26.0" prefWidth="150.0">
+      <ComboBox fx:id="situationCombo" layoutX="239.0" layoutY="550.0" prefHeight="26.0" prefWidth="150.0" promptText="Situation Familiale">
          <items>
             <FXCollections fx:factory="observableArrayList">
                <String fx:value="Célibataire" />
@@ -134,5 +135,6 @@
             </FXCollections>
          </items>
       </ComboBox>
+      <Button layoutX="498.0" layoutY="551.0" mnemonicParsing="false" onAction="#Save" text="Enregistrer" />
    </children>
 </AnchorPane>
