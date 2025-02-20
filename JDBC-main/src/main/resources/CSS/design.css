@@ -1,0 +1,50 @@
+/* Appliquer une image de fond à l'AnchorPane */
+/*AnchorPane {
+    -fx-background-image: url("https://static.vecteezy.com/system/resources/thumbnails/023/417/428/small/healthcare-and-medical-innovation-background-with-dots-and-lines-molecular-structure-and-hospital-cross-illustration-vector.jpg"); /* Remplacez par le chemin de votre image */
+    /*-fx-background-size: cover;
+    -fx-background-position: center;
+}
+
+/* Styles pour les boutons */
+Button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 8px 15px;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+    -fx-border-width: 2px;
+    -fx-border-color: #388E3C;
+    -fx-cursor: hand;
+}
+
+Button:hover {
+    -fx-background-color: #45A049;
+}
+
+/* Styles pour les labels */
+Label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #333;
+}
+
+/* Styles pour les TextField et ComboBox */
+TextField, ComboBox, DatePicker {
+    -fx-background-color: white;
+    -fx-border-color: #ccc;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
+}
+
+/* Styles pour la liste des médicaments */
+ListView {
+    -fx-border-color: #ccc;
+    -fx-border-radius: 5px;
+}
+
+/* Styles pour le TitledPane */
+TitledPane {
+    -fx-background-color: #f8f9fa;
+    -fx-border-color: #ccc;
+    -fx-border-radius: 5px;
+}

@@ -39,7 +39,7 @@ public interface IMService<T> {
     void validerOrdonnance(T t); // Valider une ordonnance et mettre à jour le stock
 
     void insertOrdonnanceMedicaments(int ordonnanceId, Map<String, Integer> medicaments);
-    void  updateStockMedicament(int medicamentId, int quantite) ;
+    void  updateStockMedicament(String medicamentNom, int quantite) ;
 
 
 }

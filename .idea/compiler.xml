@@ -10,6 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="quick_rdv (1)" target="17" />
       <module name="WorkshopJDBC3A15" target="17" />
     </bytecodeTargetLevel>
   </component>

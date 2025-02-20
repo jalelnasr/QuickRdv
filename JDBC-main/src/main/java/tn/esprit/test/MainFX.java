@@ -30,4 +30,18 @@ public class MainFX extends Application {
             System.out.println(e.getMessage());
         }
     }
+
+    /*@Override
+    public void start(Stage primaryStage) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterMedicament.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            primaryStage.setScene(scene);
+            primaryStage.setTitle("Ajouter Medicament");
+            primaryStage.show();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }*/
 }

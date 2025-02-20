@@ -47,4 +47,23 @@ public class Ordonnance {
     public Map<String, Integer> getMedicaments() { return medicaments; }
     public void setMedicaments(Map<String, Integer> medicaments) { this.medicaments = medicaments; }
 
+    public void setMedecinId(int medecinId) {
+        this.medecinId = medecinId;
+    }
+
+    public void setPatientId(int patientId) {
+        this.patientId = patientId;
+    }
+
+    public void setInstructions(String instructions) {
+        this.instructions = instructions;
+    }
+
+    public void setDatePrescription(Date datePrescription) {
+        this.datePrescription = datePrescription;
+    }
+
+    public void setStatut(String statut) {
+        this.statut = statut;
+    }
 }

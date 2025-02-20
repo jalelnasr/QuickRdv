@@ -28,17 +28,23 @@ public class ServiceOrdonnance implements IMService<Ordonnance> {
             ps.setString(5, ordonnance.getStatut());
             ps.setString(6, mapToString(ordonnance.getMedicaments())); // ✅ Conversion avant stockage
 
-            ps.executeUpdate();
-            ResultSet rs = ps.getGeneratedKeys();
-            if (rs.next()) {
-                ordonnance.setId(rs.getInt(1));
-            }
+            int rowsInserted = ps.executeUpdate();
 
-            System.out.println("Ordonnance ajoutée avec succès !"+ ordonnance.getId());
+            if (rowsInserted > 0) {
+                ResultSet rs = ps.getGeneratedKeys();
+                if (rs.next()) {
+                    int ordonnanceId = rs.getInt(1);
+                    ordonnance.setId(ordonnanceId); // Mettre à jour l'ID de l'objet
+                    System.out.println("Ordonnance ajoutée avec succès ! ID : " + ordonnanceId);
+                }
+            } else {
+                System.out.println("❌ Erreur lors de l'ajout de l'ordonnance.");
+            }
         } catch (SQLException e) {
-            System.out.println("Erreur lors de l'ajout de l'ordonnance : " + e.getMessage());
+            System.out.println("Erreur SQL : " + e.getMessage());
         }
     }
+
 
     @Override
     public List<Ordonnance> getAll() {
@@ -52,7 +58,12 @@ public class ServiceOrdonnance implements IMService<Ordonnance> {
             while (rs.next()) {
                 Ordonnance o = new Ordonnance();
                 o.setId(rs.getInt("id"));
+                o.setMedecinId(rs.getInt("medecin_id")); // Vérifier ces noms de colonnes
+                o.setPatientId(rs.getInt("patient_id"));
                 o.setMedicaments(stringToMap(rs.getString("medicaments"))); // ✅ Conversion après lecture
+                o.setDatePrescription(rs.getDate("date_prescription"));
+                o.setInstructions(rs.getString("instructions"));
+                o.setStatut(rs.getString("statut"));
 
                 ordonnances.add(o);
             }
@@ -107,42 +118,60 @@ public class ServiceOrdonnance implements IMService<Ordonnance> {
 
     @Override
     public void validerOrdonnance(Ordonnance ordonnance) {
-        String qry = "SELECT medicament_id, quantite FROM ordonnance_medicament WHERE ordonnance_id = ?";
-        try {
-            PreparedStatement pstm = cnx.prepareStatement(qry);
+        String qry = "SELECT medicament_nom, quantite FROM ordonnance_medicament WHERE ordonnance_id = ?";
+
+        try (PreparedStatement pstm = cnx.prepareStatement(qry)) {
             pstm.setInt(1, ordonnance.getId());
-            ResultSet rs = pstm.executeQuery();
+            try (ResultSet rs = pstm.executeQuery()) {
 
-            while (rs.next()) {
-                int medicamentId = rs.getInt("medicament_id");
-                int quantite = rs.getInt("quantite");
+                boolean foundMedicaments = false;
 
-                // Mettre à jour le stock
-                updateStockMedicament(medicamentId, quantite);
+                while (rs.next()) {
+                    foundMedicaments = true;
+                    String medicamentNom = rs.getString("medicament_nom");
+                    int quantite = rs.getInt("quantite");
+
+                    // 🔹 Vérifier si le médicament existe avant de mettre à jour le stock
+                    //if (verifierExistenceMedicament(medicamentNom)) {
+                       // updateStockMedicament(medicamentNom, quantite);
+                    //} else {
+                        //System.out.println("⚠️ Médicament introuvable en base : " + medicamentNom);
+                   // }
+                }
+
+                // 🔹 Si aucun médicament trouvé, on annule la validation
+                if (!foundMedicaments) {
+                    System.out.println("⚠️ Aucune donnée trouvée pour l'ordonnance ID: " + ordonnance.getId());
+                    return;
+                }
+
+                // 🔹 Changer le statut de l'ordonnance à "Validée"
+                String updateOrdonnance = "UPDATE ordonnance SET statut = 'Validée' WHERE id = ?";
+                try (PreparedStatement pstmOrdonnance = cnx.prepareStatement(updateOrdonnance)) {
+                    pstmOrdonnance.setInt(1, ordonnance.getId());
+                    int rowsUpdated = pstmOrdonnance.executeUpdate();
+
+                    if (rowsUpdated > 0) {
+                        System.out.println("✅ Ordonnance validée avec succès !");
+                    } else {
+                        System.out.println("⚠️ La mise à jour du statut de l'ordonnance a échoué.");
+                    }
+                }
             }
-
-            // Changer le statut de l'ordonnance à "Validée"
-            String updateOrdonnance = "UPDATE ordonnance SET statut = 'Validée' WHERE id = ?";
-            PreparedStatement pstmOrdonnance = cnx.prepareStatement(updateOrdonnance);
-            pstmOrdonnance.setInt(1, ordonnance.getId());
-            pstmOrdonnance.executeUpdate();
-
-            System.out.println("Ordonnance validée et stock mis à jour.");
         } catch (SQLException e) {
-            System.out.println("Erreur lors de la validation de l'ordonnance : " + e.getMessage());
+            System.out.println("❌ Erreur lors de la validation de l'ordonnance : " + e.getMessage());
         }
-
-
     }
+
     @Override
 
     public void insertOrdonnanceMedicaments(int ordonnanceId, Map<String, Integer> medicaments) {
-        String sql = "INSERT INTO ordonnance_medicament (ordonnance_id, medicament_id, quantite) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO ordonnance_medicament (ordonnance_id, medicament_nom, quantite) VALUES (?, ?, ?)";
         try {
             PreparedStatement ps = cnx.prepareStatement(sql);
             for (Map.Entry<String, Integer> entry : medicaments.entrySet()) {
                 ps.setInt(1, ordonnanceId);
-                ps.setInt(2, Integer.parseInt(entry.getKey()));  // nom du médicament
+                ps.setString(2, entry.getKey());  // nom du médicament
                 ps.setInt(3, entry.getValue()); // Quantité prescrite
                 ps.executeUpdate();
             }
@@ -154,14 +183,14 @@ public class ServiceOrdonnance implements IMService<Ordonnance> {
     }
 
     @Override
-    public void updateStockMedicament(int medicamentId, int quantite) {
+    public void updateStockMedicament(String medicamentNom, int quantite) {
         String sql = "UPDATE medicament SET stock = stock - ? WHERE id = ?";
         try {
             PreparedStatement ps = cnx.prepareStatement(sql);
             ps.setInt(1, quantite);
-            ps.setInt(2, medicamentId);
+            ps.setString(2, medicamentNom);
             ps.executeUpdate();
-            System.out.println("Stock mis à jour pour le médicament ID : " + medicamentId);
+            System.out.println("Stock mis à jour pour le médicament : " + medicamentNom);
         } catch (SQLException e) {
             System.out.println("Erreur lors de la mise à jour du stock : " + e.getMessage());
         }

@@ -1,2 +1,0 @@
-# QuickRdv
-new repo
