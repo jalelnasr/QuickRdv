@@ -6,23 +6,21 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import javax.xml.namespace.QName;
-
 public class MainFX  extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterRendezVous.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/LoginUser.fxml"));
 
-       Parent root = loader.load();
+        Parent root = loader.load();
 
         Scene scene = new Scene(root);
-        stage.setTitle("ajouter rendez vous");
+        stage.setTitle("LoginUser");
         stage.setScene(scene);
         stage.show();
 
     }
 
-   public static void main(String[] args) {
-      launch(args);
-   }
+    public static void main(String[] args) {
+        launch(args);
+    }
 }
