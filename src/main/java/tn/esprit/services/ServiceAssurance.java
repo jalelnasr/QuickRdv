@@ -15,7 +15,7 @@ public class ServiceAssurance implements IService<Assurance> {
         cnx = MyDatabase.getInstance().getCnx();
     }
 
-    // Add a new record to assurance
+    // Add a new assurance record
     @Override
     public void add(Assurance assurance) {
         String qry = "INSERT INTO assurance (nom, type, date_debut, date_fin, montant_couvert) VALUES (?, ?, ?, ?, ?)";
@@ -26,20 +26,22 @@ public class ServiceAssurance implements IService<Assurance> {
             pstm.setDate(4, Date.valueOf(assurance.getDateFin()));
             pstm.setFloat(5, assurance.getMontantCouvert());
 
-            pstm.executeUpdate();
-            System.out.println("Assurance ajoutée avec succès !");
+            int rowsInserted = pstm.executeUpdate();
+            if (rowsInserted > 0) {
+                System.out.println("Assurance ajoutée avec succès !");
+            } else {
+                System.out.println("Erreur lors de l'ajout.");
+            }
         } catch (SQLException e) {
-            System.out.println("Erreur lors de l'ajout de l'assurance : " + e.getMessage());
+            System.out.println("Erreur SQL (ajout) : " + e.getMessage());
         }
     }
 
-    // Retrieve all records from assurance
-    @Override
+    // Retrieve all assurances
     public List<Assurance> getAll() {
         List<Assurance> assurances = new ArrayList<>();
         String qry = "SELECT * FROM assurance";
-
-        try (Statement stm = cnx.createStatement(); ResultSet rs = stm.executeQuery(qry)) {
+        try (Statement stmt = cnx.createStatement(); ResultSet rs = stmt.executeQuery(qry)) {
             while (rs.next()) {
                 Assurance assurance = new Assurance(
                         rs.getInt("id_assurance"),
@@ -49,17 +51,38 @@ public class ServiceAssurance implements IService<Assurance> {
                         rs.getDate("date_fin").toLocalDate(),
                         rs.getFloat("montant_couvert")
                 );
-
                 assurances.add(assurance);
             }
         } catch (SQLException e) {
-            System.out.println("Erreur lors de la récupération des assurances : " + e.getMessage());
+            System.out.println("Erreur SQL (getAll) : " + e.getMessage());
         }
-
         return assurances;
     }
 
-    // Update assurance record
+    // Retrieve assurance by ID
+    public Assurance getById(int id) {
+        String qry = "SELECT * FROM assurance WHERE id_assurance = ?";
+        try (PreparedStatement pstm = cnx.prepareStatement(qry)) {
+            pstm.setInt(1, id);
+            try (ResultSet rs = pstm.executeQuery()) {
+                if (rs.next()) {
+                    return new Assurance(
+                            rs.getInt("id_assurance"),
+                            rs.getString("nom"),
+                            rs.getString("type"),
+                            rs.getDate("date_debut").toLocalDate(),
+                            rs.getDate("date_fin").toLocalDate(),
+                            rs.getFloat("montant_couvert")
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur SQL (getById) : " + e.getMessage());
+        }
+        return null;
+    }
+
+    // Update an assurance record
     @Override
     public void update(Assurance assurance) {
         String qry = "UPDATE assurance SET nom=?, type=?, date_debut=?, date_fin=?, montant_couvert=? WHERE id_assurance=?";
@@ -80,21 +103,25 @@ public class ServiceAssurance implements IService<Assurance> {
                 System.out.println("Aucune mise à jour effectuée. Vérifiez si l'ID de l'assurance existe.");
             }
         } catch (SQLException e) {
-            System.out.println("Erreur lors de la mise à jour de l'assurance : " + e.getMessage());
+            System.out.println("Erreur SQL (update) : " + e.getMessage());
         }
     }
 
-    // Delete assurance record by ID
+    // Delete an assurance record by ID
     @Override
     public void delete(Assurance assurance) {
         String qry = "DELETE FROM assurance WHERE id_assurance=?";
         try (PreparedStatement pstm = cnx.prepareStatement(qry)) {
             pstm.setInt(1, assurance.getIdAssurance());
 
-            pstm.executeUpdate();
-            System.out.println("Assurance supprimée !");
+            int rowsDeleted = pstm.executeUpdate();
+            if (rowsDeleted > 0) {
+                System.out.println("Assurance supprimée avec succès !");
+            } else {
+                System.out.println("Aucune assurance trouvée avec cet ID.");
+            }
         } catch (SQLException e) {
-            System.out.println("Erreur lors de la suppression de l'assurance : " + e.getMessage());
+            System.out.println("Erreur SQL (delete) : " + e.getMessage());
         }
     }
 }

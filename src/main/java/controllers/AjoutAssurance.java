@@ -1,57 +1,37 @@
 package controllers;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.stage.Stage;
+import javafx.scene.Parent;
+import javafx.fxml.FXMLLoader;
 import tn.esprit.models.Assurance;
 import tn.esprit.services.ServiceAssurance;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
 
-import java.net.URL;
+import java.io.IOException;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.ResourceBundle;
 
 public class AjoutAssurance {
 
     @FXML
-    private DatePicker dateDebutPicker;
-
-    @FXML
-    private DatePicker dateFinPicker;
-
-    @FXML
-    private TextField montantField;
-
-    @FXML
-    private TextField nomField;
-
+    private TextField nomField, montantField;
     @FXML
     private ComboBox<String> typeComboBox;
-
     @FXML
-    private ListView<Assurance> assuranceListView;
+    private DatePicker dateDebutPicker, dateFinPicker;
 
     private ServiceAssurance serviceAssurance = new ServiceAssurance();
 
     @FXML
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        refreshAssurancesList();
-
-        assuranceListView.setCellFactory(param -> new ListCell<Assurance>() {
-            @Override
-            protected void updateItem(Assurance assurance, boolean empty) {
-                super.updateItem(assurance, empty);
-                if (empty || assurance == null) {
-                    setText(null);
-                } else {
-                    setText("{ ID = " + assurance.getIdAssurance() + " | Nom = " + assurance.getNom() +
-                            " | Type = " + assurance.getType() + " | Date Début = " + assurance.getDateDebut() +
-                            " | Date Fin = " + assurance.getDateFin() + " | Montant Couvert = " + assurance.getMontantCouvert() + " } ");
-                }
-            }
-        });
+    void initialize() {
+        // Initialize ComboBox with types or any data you have for "type"
+        typeComboBox.getItems().addAll("Étatique", "Privée"); // Add "Étatique" and "Privée" as options for type
     }
 
     @FXML
@@ -75,7 +55,7 @@ public class AjoutAssurance {
             serviceAssurance.add(newAssurance);
 
             showAlert(Alert.AlertType.CONFIRMATION, "Succès", "Assurance ajoutée avec succès !");
-            refreshAssurancesList();
+            clearForm();
         } catch (NumberFormatException e) {
             showAlert(Alert.AlertType.WARNING, "Format invalide", "Veuillez entrer un montant valide.");
         } catch (IllegalArgumentException e) {
@@ -86,70 +66,28 @@ public class AjoutAssurance {
     }
 
     @FXML
-    void UpdateAssurance(ActionEvent event) {
-        Assurance selectedAssurance = assuranceListView.getSelectionModel().getSelectedItem();
-        if (selectedAssurance == null) {
-            showAlert(Alert.AlertType.WARNING, "Aucune sélection", "Veuillez sélectionner une assurance à modifier.");
-            return;
-        }
-
+    void goToAssurancesList(ActionEvent event) {
         try {
-            String nom = nomField.getText().trim();
-            String type = typeComboBox.getValue();
-            float montantCouvert = Float.parseFloat(montantField.getText().trim());
-            LocalDate dateDebut = dateDebutPicker.getValue();
-            LocalDate dateFin = dateFinPicker.getValue();
+            // Load the AffichageAssurances.fxml for viewing the list of assurances
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AffichageAssurances.fxml"));
+            Parent root = loader.load();
 
-            if (nom.isEmpty() || type == null || dateDebut == null || dateFin == null) {
-                throw new IllegalArgumentException("Veuillez remplir tous les champs obligatoires.");
-            }
-
-            selectedAssurance.setNom(nom);
-            selectedAssurance.setType(type);
-            selectedAssurance.setDateDebut(dateDebut);
-            selectedAssurance.setDateFin(dateFin);
-            selectedAssurance.setMontantCouvert(montantCouvert);
-
-            serviceAssurance.update(selectedAssurance);
-            showAlert(Alert.AlertType.CONFIRMATION, "Succès", "Assurance mise à jour avec succès !");
-            refreshAssurancesList();
-        } catch (NumberFormatException e) {
-            showAlert(Alert.AlertType.WARNING, "Format invalide", "Veuillez entrer un montant valide.");
-        } catch (IllegalArgumentException e) {
-            showAlert(Alert.AlertType.WARNING, "Champs obligatoires", e.getMessage());
-        } catch (Exception e) {
-            showAlert(Alert.AlertType.ERROR, "Erreur", "Une erreur s'est produite lors de la mise à jour de l'assurance.");
+            // Get current stage and set the new scene
+            Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur lors de la navigation vers la liste des assurances.");
         }
     }
 
-    @FXML
-    void DeleteAssurance(ActionEvent event) {
-        Assurance selectedAssurance = assuranceListView.getSelectionModel().getSelectedItem();
-
-        if (selectedAssurance == null) {
-            showAlert(Alert.AlertType.WARNING, "Aucune sélection", "Veuillez sélectionner une assurance à supprimer.");
-            return;
-        }
-
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmation de suppression");
-        alert.setHeaderText(null);
-        alert.setContentText("Êtes-vous sûr de vouloir supprimer cette assurance ?");
-
-        alert.showAndWait().ifPresent(response -> {
-            if (response == ButtonType.OK) {
-                serviceAssurance.delete(selectedAssurance); // Pass the object instead of ID
-                showAlert(Alert.AlertType.INFORMATION, "Suppression réussie", "L'assurance a été supprimée avec succès.");
-                refreshAssurancesList();
-            }
-        });
-    }
-
-
-    private void refreshAssurancesList() {
-        List<Assurance> updatedAssurances = serviceAssurance.getAll();
-        ObservableList<Assurance> observableList = FXCollections.observableArrayList(updatedAssurances);
-        assuranceListView.setItems(observableList);
+    private void clearForm() {
+        nomField.clear();
+        typeComboBox.getSelectionModel().clearSelection();
+        montantField.clear();
+        dateDebutPicker.setValue(null);
+        dateFinPicker.setValue(null);
     }
 
     private void showAlert(Alert.AlertType type, String title, String message) {

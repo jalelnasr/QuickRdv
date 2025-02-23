@@ -1,65 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
-<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.FontWeight?>
 
-<AnchorPane prefHeight="627.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjoutAssurance">
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjoutAssurance" spacing="10" alignment="CENTER" style="-fx-background-color: #f4f4f4;">
     <children>
-        <Text layoutX="18.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ajouter une Assurance" wrappingWidth="270.0">
+        <!-- Title -->
+        <Label text="Ajouter une Assurance" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #333333;">
             <font>
-                <Font size="18.0" />
+                <Font name="Arial" size="20" />
             </font>
-        </Text>
+        </Label>
 
-        <Label layoutX="19.0" layoutY="70.0" text="Nom:" />
-        <TextField fx:id="nomField" layoutX="235.0" layoutY="70.0" prefHeight="26.0" prefWidth="150.0" promptText="Nom de l'assurance" />
+        <!-- Form Container -->
+        <GridPane hgap="10" vgap="10" style="-fx-background-color: white; -fx-padding: 20; -fx-border-color: #cccccc; -fx-border-radius: 5; -fx-background-radius: 5;">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="40" />
+                <ColumnConstraints percentWidth="60" />
+            </columnConstraints>
 
-        <Label layoutX="19.0" layoutY="110.0" text="Type:" />
-        <ComboBox fx:id="typeComboBox" layoutX="235.0" layoutY="110.0" prefHeight="26.0" prefWidth="150.0" promptText="Type d'assurance">
-            <items>
-                <FXCollections fx:factory="observableArrayList">
-                    <String fx:value="Privée" />
-                    <String fx:value="Etatique" />
-                </FXCollections>
-            </items>
-        </ComboBox>
+            <!-- Nom de l'Assurance -->
+            <Label text="Nom de l'Assurance:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+            <TextField fx:id="nomField" promptText="Entrez le nom" GridPane.rowIndex="0" GridPane.columnIndex="1" />
 
-        <Label layoutX="19.0" layoutY="150.0" text="Date Début:" />
-        <DatePicker fx:id="dateDebutPicker" layoutX="235.0" layoutY="150.0" prefHeight="26.0" prefWidth="150.0" />
+            <!-- Type d'Assurance -->
+            <Label text="Type d'Assurance:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+            <ComboBox fx:id="typeComboBox" promptText="Sélectionnez le type" GridPane.rowIndex="1" GridPane.columnIndex="1" />
 
-        <Label layoutX="19.0" layoutY="190.0" text="Date Fin:" />
-        <DatePicker fx:id="dateFinPicker" layoutX="235.0" layoutY="190.0" prefHeight="26.0" prefWidth="150.0" />
+            <!-- Date de Début -->
+            <Label text="Date de Début:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+            <DatePicker fx:id="dateDebutPicker" promptText="Sélectionnez la date de début" GridPane.rowIndex="2" GridPane.columnIndex="1" />
 
-        <Label layoutX="19.0" layoutY="230.0" text="Montant Couvert:" />
-        <TextField fx:id="montantField" layoutX="235.0" layoutY="230.0" prefHeight="26.0" prefWidth="150.0" promptText="Montant couvert" />
+            <!-- Date de Fin -->
+            <Label text="Date de Fin:" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+            <DatePicker fx:id="dateFinPicker" promptText="Sélectionnez la date de fin" GridPane.rowIndex="3" GridPane.columnIndex="1" />
 
-        <Button layoutX="498.0" layoutY="270.0" mnemonicParsing="false" onAction="#SaveAssurance" text="Enregistrer" />
+            <!-- Montant Couvert -->
+            <Label text="Montant Couvert:" GridPane.rowIndex="4" GridPane.columnIndex="0" />
+            <TextField fx:id="montantField" promptText="Entrez le montant" GridPane.rowIndex="4" GridPane.columnIndex="1" />
+        </GridPane>
 
-        <!-- Update Button -->
-        <Button layoutX="235.0" layoutY="270.0" mnemonicParsing="false" onAction="#UpdateAssurance" text="Mettre à jour" />
-
-        <!-- Delete Button -->
-        <Button layoutX="360.0" layoutY="270.0" mnemonicParsing="false" onAction="#DeleteAssurance" text="Supprimer" />
-
-        <!-- TableView to display assurances -->
-        <TableView fx:id="assuranceTable" layoutX="19.0" layoutY="310.0" prefHeight="200.0" prefWidth="760.0">
-            <columns>
-                <TableColumn fx:id="colNom" prefWidth="150.0" text="Nom" />
-                <TableColumn fx:id="colType" prefWidth="150.0" text="Type" />
-                <TableColumn fx:id="colDateDebut" prefWidth="150.0" text="Date Début" />
-                <TableColumn fx:id="colDateFin" prefWidth="150.0" text="Date Fin" />
-                <TableColumn fx:id="colMontant" prefWidth="150.0" text="Montant Couvert" />
-            </columns>
-        </TableView>
+        <!-- Buttons Container -->
+        <HBox spacing="10" alignment="CENTER">
+            <Button text="Enregistrer" onAction="#SaveAssurance" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 20;" />
+            <Button text="Voir Assurances" onAction="#goToAssurancesList" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 20;" />
+        </HBox>
     </children>
-</AnchorPane>
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20" />
+    </padding>
+</VBox>
