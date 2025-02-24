@@ -17,14 +17,14 @@ public class InformationsGenerales {
     private String activitePhysique;
     private String situationFamiliale;
 
-    public InformationsGenerales() {
-    }
+    // Constructors
+    public InformationsGenerales() {}
 
     public InformationsGenerales(int id, int idPatient, float taille, float poids, boolean maladies,
                                  String antecedentsCardiovasculairesFamiliaux, String asthmatique,
-                                 String suiviDentaireRegulier, String antecedentsChirurgicaux, String allergies,
-                                 String profession, String niveauDeStress, String qualiteDeSommeil,
-                                 String activitePhysique, String situationFamiliale) {
+                                 String suiviDentaireRegulier, String antecedentsChirurgicaux,
+                                 String allergies, String profession, String niveauDeStress,
+                                 String qualiteDeSommeil, String activitePhysique, String situationFamiliale) {
         this.id = id;
         this.idPatient = idPatient;
         this.taille = taille;
@@ -42,6 +42,67 @@ public class InformationsGenerales {
         this.situationFamiliale = situationFamiliale;
     }
 
+    // Getters and Setters
+    public int getId() {
+        return id; }
+    public void setId(int id) {
+        this.id = id; }
+    public int getIdPatient() {
+        return idPatient; }
+    public void setIdPatient(int idPatient) {
+        this.idPatient = idPatient; }
+    public float getTaille() {
+        return taille; }
+    public void setTaille(float taille) {
+        this.taille = taille; }
+    public float getPoids() {
+        return poids; }
+    public void setPoids(float poids) {
+        this.poids = poids; }
+    public boolean hasMaladies() {
+        return maladies; }
+    public void setMaladies(boolean maladies) {
+        this.maladies = maladies; }
+    public String getAntecedentsCardiovasculairesFamiliaux() {
+        return antecedentsCardiovasculairesFamiliaux; }
+    public void setAntecedentsCardiovasculairesFamiliaux(String antecedentsCardiovasculairesFamiliaux) { this.antecedentsCardiovasculairesFamiliaux = antecedentsCardiovasculairesFamiliaux; }
+    public String getAsthmatique() {
+        return asthmatique; }
+    public void setAsthmatique(String asthmatique) {
+        this.asthmatique = asthmatique; }
+    public String getSuiviDentaireRegulier() {
+        return suiviDentaireRegulier; }
+    public void setSuiviDentaireRegulier(String suiviDentaireRegulier) {
+        this.suiviDentaireRegulier = suiviDentaireRegulier; }
+    public String getAntecedentsChirurgicaux() {
+        return antecedentsChirurgicaux; }
+    public void setAntecedentsChirurgicaux(String antecedentsChirurgicaux) {
+        this.antecedentsChirurgicaux = antecedentsChirurgicaux; }
+    public String getAllergies() {
+        return allergies; }
+    public void setAllergies(String allergies) {
+        this.allergies = allergies; }
+    public String getProfession() {
+        return profession; }
+    public void setProfession(String profession) {
+        this.profession = profession; }
+    public String getNiveauDeStress() {
+        return niveauDeStress; }
+    public void setNiveauDeStress(String niveauDeStress) {
+        this.niveauDeStress = niveauDeStress; }
+    public String getQualiteDeSommeil() {
+        return qualiteDeSommeil; }
+    public void setQualiteDeSommeil(String qualiteDeSommeil) {
+        this.qualiteDeSommeil = qualiteDeSommeil; }
+    public String getActivitePhysique() {
+        return activitePhysique; }
+    public void setActivitePhysique(String activitePhysique) {
+        this.activitePhysique = activitePhysique; }
+    public String getSituationFamiliale() {
+        return situationFamiliale; }
+    public void setSituationFamiliale(String situationFamiliale) {
+        this.situationFamiliale = situationFamiliale; }
+
     @Override
     public String toString() {
         return "InformationsGenerales{" +
@@ -49,7 +110,7 @@ public class InformationsGenerales {
                 ", idPatient=" + idPatient +
                 ", taille=" + taille +
                 ", poids=" + poids +
-                ", maladies=" + (maladies ? "Oui" : "Non") +
+                ", maladies=" + maladies +
                 ", antecedentsCardiovasculairesFamiliaux='" + antecedentsCardiovasculairesFamiliaux + '\'' +
                 ", asthmatique='" + asthmatique + '\'' +
                 ", suiviDentaireRegulier='" + suiviDentaireRegulier + '\'' +
@@ -61,126 +122,5 @@ public class InformationsGenerales {
                 ", activitePhysique='" + activitePhysique + '\'' +
                 ", situationFamiliale='" + situationFamiliale + '\'' +
                 '}';
-    }
-
-    // Getters and setters for all fields
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getIdPatient() {
-        return idPatient;
-    }
-
-    public void setIdPatient(int idPatient) {
-        this.idPatient = idPatient;
-    }
-
-    public float getTaille() {
-        return taille;
-    }
-
-    public void setTaille(float taille) {
-        this.taille = taille;
-    }
-
-    public float getPoids() {
-        return poids;
-    }
-
-    public void setPoids(float poids) {
-        this.poids = poids;
-    }
-
-    public boolean hasMaladies() {
-        return maladies;
-    }
-
-    public void setMaladies(boolean maladies) {
-        this.maladies = maladies;
-    }
-
-    public String getAntecedentsCardiovasculairesFamiliaux() {
-        return antecedentsCardiovasculairesFamiliaux;
-    }
-
-    public void setAntecedentsCardiovasculairesFamiliaux(String antecedentsCardiovasculairesFamiliaux) {
-        this.antecedentsCardiovasculairesFamiliaux = antecedentsCardiovasculairesFamiliaux;
-    }
-
-    public String getAsthmatique() {
-        return asthmatique;
-    }
-
-    public void setAsthmatique(String asthmatique) {
-        this.asthmatique = asthmatique;
-    }
-
-    public String getSuiviDentaireRegulier() {
-        return suiviDentaireRegulier;
-    }
-
-    public void setSuiviDentaireRegulier(String suiviDentaireRegulier) {
-        this.suiviDentaireRegulier = suiviDentaireRegulier;
-    }
-
-    public String getAntecedentsChirurgicaux() {
-        return antecedentsChirurgicaux;
-    }
-
-    public void setAntecedentsChirurgicaux(String antecedentsChirurgicaux) {
-        this.antecedentsChirurgicaux = antecedentsChirurgicaux;
-    }
-
-    public String getAllergies() {
-        return allergies;
-    }
-
-    public void setAllergies(String allergies) {
-        this.allergies = allergies;
-    }
-
-    public String getProfession() {
-        return profession;
-    }
-
-    public void setProfession(String profession) {
-        this.profession = profession;
-    }
-
-    public String getNiveauDeStress() {
-        return niveauDeStress;
-    }
-
-    public void setNiveauDeStress(String niveauDeStress) {
-        this.niveauDeStress = niveauDeStress;
-    }
-
-    public String getQualiteDeSommeil() {
-        return qualiteDeSommeil;
-    }
-
-    public void setQualiteDeSommeil(String qualiteDeSommeil) {
-        this.qualiteDeSommeil = qualiteDeSommeil;
-    }
-
-    public String getActivitePhysique() {
-        return activitePhysique;
-    }
-
-    public void setActivitePhysique(String activitePhysique) {
-        this.activitePhysique = activitePhysique;
-    }
-
-    public String getSituationFamiliale() {
-        return situationFamiliale;
-    }
-
-    public void setSituationFamiliale(String situationFamiliale) {
-        this.situationFamiliale = situationFamiliale;
     }
 }

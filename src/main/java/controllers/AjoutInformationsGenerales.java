@@ -2,11 +2,18 @@ package controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import tn.esprit.models.InformationsGenerales;
 import tn.esprit.services.ServiceInformationsGenerales;
+
+
+import java.io.IOException;
 
 public class AjoutInformationsGenerales {
 
@@ -114,5 +121,22 @@ public class AjoutInformationsGenerales {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    @FXML
+    void goToInformationsList(ActionEvent event) {
+        try {
+            // Load the AffichageInformations.fxml for viewing the list of informations
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AffichageInformations.fxml"));
+            Parent root = loader.load();
+
+            // Get current stage and set the new scene
+            Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur lors de la navigation vers la liste des informations.");
+        }
     }
 }

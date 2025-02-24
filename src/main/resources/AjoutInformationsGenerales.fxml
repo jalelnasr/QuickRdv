@@ -2,139 +2,174 @@
 
 <?import java.lang.String?>
 <?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.FontWeight?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="627.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjoutInformationsGenerales">
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjoutInformationsGenerales" spacing="10" alignment="CENTER" style="-fx-background-color: #f4f4f4;">
    <children>
-      <Text layoutX="18.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Informations générales" wrappingWidth="270.0">
+      <!-- Title -->
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Informations Générales" wrappingWidth="270.0">
          <font>
             <Font size="18.0" />
          </font>
       </Text>
 
-      <Label layoutX="19.0" layoutY="70.0" text="Taille:" />
-      <TextField fx:id="tailleField" layoutX="235.0" layoutY="70.0" prefHeight="26.0" prefWidth="150.0" promptText="Taille" />
+      <!-- Form Container -->
+      <GridPane hgap="10" vgap="10" style="-fx-background-color: white; -fx-padding: 20; -fx-border-color: #cccccc; -fx-border-radius: 5; -fx-background-radius: 5;">
+         <columnConstraints>
+            <ColumnConstraints percentWidth="40" />
+            <ColumnConstraints percentWidth="60" />
+         </columnConstraints>
 
-      <Label layoutX="19.0" layoutY="110.0" text="Poids:" />
-      <TextField fx:id="poidsField" layoutX="236.0" layoutY="110.0" prefHeight="26.0" prefWidth="150.0" promptText="Poids" />
+         <!-- Taille -->
+         <Label text="Taille:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+         <TextField fx:id="tailleField" promptText="Entrez la taille" GridPane.rowIndex="0" GridPane.columnIndex="1" prefWidth="200" />
 
-      <Label layoutX="19.0" layoutY="150.0" text="Maladies:" />
-      <ComboBox fx:id="maladiesCombo" layoutX="239.0" layoutY="150.0" prefHeight="26.0" prefWidth="150.0" promptText="Maladies">
-         <items>
-            <FXCollections fx:factory="observableArrayList">
-               <String fx:value="Oui" />
-               <String fx:value="Non" />
-            </FXCollections>
-         </items>
-      </ComboBox>
+         <!-- Poids -->
+         <Label text="Poids:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+         <TextField fx:id="poidsField" promptText="Entrez le poids" GridPane.rowIndex="1" GridPane.columnIndex="1" prefWidth="200" />
 
-      <Label layoutX="19.0" layoutY="190.0" text="Antécédents Cardiovasculaires:" />
-      <ComboBox fx:id="cardioCombo" layoutX="238.0" layoutY="190.0" prefHeight="26.0" prefWidth="150.0" promptText="Antécédents Cardiovasculaires">
-         <items>
-            <FXCollections fx:factory="observableArrayList">
-               <String fx:value="Oui" />
-               <String fx:value="Non" />
-               <String fx:value="Je ne sais pas" />
-            </FXCollections>
-         </items>
-      </ComboBox>
+         <!-- Maladies -->
+         <Label text="Maladies:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+         <ComboBox fx:id="maladiesCombo" promptText="Sélectionnez" GridPane.rowIndex="2" GridPane.columnIndex="1" prefWidth="200">
+            <items>
+               <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="Oui" />
+                  <String fx:value="Non" />
+               </FXCollections>
+            </items>
+         </ComboBox>
 
-      <Label layoutX="19.0" layoutY="230.0" prefHeight="18.0" prefWidth="138.0" text="Êtes-vous asthmatique ?" />
-      <ComboBox fx:id="asthmeCombo" layoutX="238.0" layoutY="230.0" prefHeight="26.0" prefWidth="150.0" promptText="Asmathique">
-         <items>
-            <FXCollections fx:factory="observableArrayList">
-               <String fx:value="Oui" />
-               <String fx:value="Non" />
-            </FXCollections>
-         </items>
-      </ComboBox>
+         <!-- Antécédents Cardiovasculaires -->
+         <Label text="Antécédents Cardiovasculaires:" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+         <ComboBox fx:id="cardioCombo" promptText="Sélectionnez" GridPane.rowIndex="3" GridPane.columnIndex="1" prefWidth="200">
+            <items>
+               <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="Oui" />
+                  <String fx:value="Non" />
+                  <String fx:value="Je ne sais pas" />
+               </FXCollections>
+            </items>
+         </ComboBox>
 
-      <Label layoutX="19.0" layoutY="270.0" text="Avez-vous un suivi dentaire régulier ?" />
-      <ComboBox fx:id="dentaireCombo" layoutX="239.0" layoutY="270.0" prefHeight="26.0" prefWidth="150.0" promptText="Suivi Dentaire">
-         <items>
-            <FXCollections fx:factory="observableArrayList">
-               <String fx:value="Oui" />
-               <String fx:value="Non" />
-               <String fx:value="Je ne sais pas" />
-            </FXCollections>
-         </items>
-      </ComboBox>
+         <!-- Asthmatique -->
+         <Label text="Êtes-vous asthmatique ?" GridPane.rowIndex="4" GridPane.columnIndex="0" />
+         <ComboBox fx:id="asthmeCombo" promptText="Sélectionnez" GridPane.rowIndex="4" GridPane.columnIndex="1" prefWidth="200">
+            <items>
+               <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="Oui" />
+                  <String fx:value="Non" />
+               </FXCollections>
+            </items>
+         </ComboBox>
 
-      <Label layoutX="19.0" layoutY="310.0" text="Avez-vous un historique chirurgicale ?" />
-      <ComboBox fx:id="chirurgieCombo" layoutX="239.0" layoutY="310.0" prefHeight="26.0" prefWidth="150.0" promptText="Historique Chirurgicale">
-         <items>
-            <FXCollections fx:factory="observableArrayList">
-               <String fx:value="Oui" />
-               <String fx:value="Non" />
-               <String fx:value="Je ne sais pas" />
-            </FXCollections>
-         </items>
-      </ComboBox>
+         <!-- Suivi Dentaire Régulier -->
+         <Label text="Avez-vous un suivi dentaire régulier ?" GridPane.rowIndex="5" GridPane.columnIndex="0" />
+         <ComboBox fx:id="dentaireCombo" promptText="Sélectionnez" GridPane.rowIndex="5" GridPane.columnIndex="1" prefWidth="200">
+            <items>
+               <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="Oui" />
+                  <String fx:value="Non" />
+                  <String fx:value="Je ne sais pas" />
+               </FXCollections>
+            </items>
+         </ComboBox>
 
-      <Label layoutX="19.0" layoutY="350.0" text="Avez-vous une ou plusieurs Allergies ?" />
-      <ComboBox fx:id="allergiesCombo" layoutX="238.0" layoutY="350.0" prefHeight="26.0" prefWidth="150.0" promptText="Allergies">
-         <items>
-            <FXCollections fx:factory="observableArrayList">
-               <String fx:value="Oui" />
-               <String fx:value="Non" />
-            </FXCollections>
-         </items>
-      </ComboBox>
+         <!-- Antécédents Chirurgicaux -->
+         <Label text="Avez-vous un historique chirurgicale ?" GridPane.rowIndex="6" GridPane.columnIndex="0" />
+         <ComboBox fx:id="chirurgieCombo" promptText="Sélectionnez" GridPane.rowIndex="6" GridPane.columnIndex="1" prefWidth="200">
+            <items>
+               <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="Oui" />
+                  <String fx:value="Non" />
+                  <String fx:value="Je ne sais pas" />
+               </FXCollections>
+            </items>
+         </ComboBox>
 
-      <Label layoutX="19.0" layoutY="390.0" text="Profession:" />
-      <TextField fx:id="professionField" layoutX="238.0" layoutY="390.0" promptText="Profession" />
+         <!-- Allergies -->
+         <Label text="Avez-vous une ou plusieurs Allergies ?" GridPane.rowIndex="7" GridPane.columnIndex="0" />
+         <ComboBox fx:id="allergiesCombo" promptText="Sélectionnez" GridPane.rowIndex="7" GridPane.columnIndex="1" prefWidth="200">
+            <items>
+               <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="Oui" />
+                  <String fx:value="Non" />
+               </FXCollections>
+            </items>
+         </ComboBox>
 
-      <Label layoutX="19.0" layoutY="430.0" text="Niveau de Stress:" />
-      <ComboBox fx:id="stressCombo" layoutX="239.0" layoutY="430.0" prefHeight="26.0" prefWidth="150.0" promptText="Niveau de stress">
-         <items>
-            <FXCollections fx:factory="observableArrayList">
-               <String fx:value="Faible" />
-               <String fx:value="Moyen" />
-               <String fx:value="Élevé" />
-            </FXCollections>
-         </items>
-      </ComboBox>
+         <!-- Profession -->
+         <Label text="Profession:" GridPane.rowIndex="8" GridPane.columnIndex="0" />
+         <TextField fx:id="professionField" promptText="Entrez la profession" GridPane.rowIndex="8" GridPane.columnIndex="1" prefWidth="200" />
 
-      <Label layoutX="19.0" layoutY="470.0" text="Qualité de Sommeil:" />
-      <ComboBox fx:id="sommeilCombo" layoutX="239.0" layoutY="470.0" prefHeight="26.0" prefWidth="150.0" promptText="Qualité de Sommeil">
-         <items>
-            <FXCollections fx:factory="observableArrayList">
-               <String fx:value="Mauvaise" />
-               <String fx:value="Moyenne" />
-               <String fx:value="Bonne" />
-            </FXCollections>
-         </items>
-      </ComboBox>
+         <!-- Niveau de Stress -->
+         <Label text="Niveau de Stress:" GridPane.rowIndex="9" GridPane.columnIndex="0" />
+         <ComboBox fx:id="stressCombo" promptText="Sélectionnez" GridPane.rowIndex="9" GridPane.columnIndex="1" prefWidth="200">
+            <items>
+               <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="Faible" />
+                  <String fx:value="Moyen" />
+                  <String fx:value="Élevé" />
+               </FXCollections>
+            </items>
+         </ComboBox>
 
-      <Label layoutX="19.0" layoutY="510.0" text="Activité Physique:" />
-      <ComboBox fx:id="activiteCombo" layoutX="239.0" layoutY="510.0" prefHeight="26.0" prefWidth="150.0" promptText="Activité physique">
-         <items>
-            <FXCollections fx:factory="observableArrayList">
-               <String fx:value="Marche" />
-               <String fx:value="Sport" />
-               <String fx:value="Autre" />
-               <String fx:value="Aucune" />
-            </FXCollections>
-         </items>
-      </ComboBox>
+         <!-- Qualité de Sommeil -->
+         <Label text="Qualité de Sommeil:" GridPane.rowIndex="10" GridPane.columnIndex="0" />
+         <ComboBox fx:id="sommeilCombo" promptText="Sélectionnez" GridPane.rowIndex="10" GridPane.columnIndex="1" prefWidth="200">
+            <items>
+               <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="Mauvaise" />
+                  <String fx:value="Moyenne" />
+                  <String fx:value="Bonne" />
+               </FXCollections>
+            </items>
+         </ComboBox>
 
-      <Label layoutX="19.0" layoutY="550.0" text="Situation Familiale:" />
-      <ComboBox fx:id="situationCombo" layoutX="239.0" layoutY="550.0" prefHeight="26.0" prefWidth="150.0" promptText="Situation Familiale">
-         <items>
-            <FXCollections fx:factory="observableArrayList">
-               <String fx:value="Célibataire" />
-               <String fx:value="Marié" />
-               <String fx:value="Divorcé" />
-               <String fx:value="Veuf" />
-            </FXCollections>
-         </items>
-      </ComboBox>
-      <Button layoutX="498.0" layoutY="551.0" mnemonicParsing="false" onAction="#Save" text="Enregistrer" />
+         <!-- Activité Physique -->
+         <Label text="Activité Physique:" GridPane.rowIndex="11" GridPane.columnIndex="0" />
+         <ComboBox fx:id="activiteCombo" promptText="Sélectionnez" GridPane.rowIndex="11" GridPane.columnIndex="1" prefWidth="200">
+            <items>
+               <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="Marche" />
+                  <String fx:value="Sport" />
+                  <String fx:value="Autre" />
+                  <String fx:value="Aucune" />
+               </FXCollections>
+            </items>
+         </ComboBox>
+
+         <!-- Situation Familiale -->
+         <Label text="Situation Familiale:" GridPane.rowIndex="12" GridPane.columnIndex="0" />
+         <ComboBox fx:id="situationCombo" promptText="Sélectionnez" GridPane.rowIndex="12" GridPane.columnIndex="1" prefWidth="200">
+            <items>
+               <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="Célibataire" />
+                  <String fx:value="Marié" />
+                  <String fx:value="Divorcé" />
+                  <String fx:value="Veuf" />
+               </FXCollections>
+            </items>
+         </ComboBox>
+      </GridPane>
+
+      <!-- Buttons Container -->
+      <HBox spacing="10" alignment="CENTER">
+         <Button text="Enregistrer" onAction="#Save" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 20;" />
+         <Button text="Voir Informations Générales" onAction="#goToInformationsList" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 20;" />
+      </HBox>
    </children>
-</AnchorPane>
+   <padding>
+      <Insets top="20" right="20" bottom="20" left="20" />
+   </padding>
+</VBox>
