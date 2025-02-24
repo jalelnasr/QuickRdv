@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import tn.esprit.models.Avis;
@@ -18,6 +19,9 @@ import java.util.List;
 
 public class GestionReclamation {
 
+
+    @FXML
+    private AnchorPane root;
 
     @FXML
     private TextArea Description;
@@ -33,6 +37,16 @@ public class GestionReclamation {
 
     @FXML
     private Button sendButton;
+
+    @FXML
+    public void initialize() {
+        // Ensure the root is not null before applying the stylesheet
+        if (root != null) {
+            root.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
+        } else {
+            System.out.println("Root is null. CSS not applied.");
+        }
+    }
 
 
 
@@ -65,6 +79,34 @@ public class GestionReclamation {
     }
 
     @FXML
+    void LoadStatistiquesPage(ActionEvent event) {
+        try {
+            System.out.println("Loading Statistiques Page...");
+            // Load the GestionReclamation.fxml file
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GestionStatistiques.fxml"));
+            Parent root = loader.load();
+
+            // Get the current stage (window)
+            Stage stage = (Stage) Description.getScene().getWindow();
+
+            // Create a new scene with the loaded FXML file
+            Scene scene = new Scene(root);
+
+            // Set the new scene to the stage
+            stage.setScene(scene);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Show an error message if something goes wrong
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Failed to load the Statistiques page.");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+        }
+    }
+
+    @FXML
     void Send(ActionEvent event) {
         if (selectedReclamation != null && sendButton.getText().equals("Update") ) {
             // If an Avis is selected for update
@@ -79,7 +121,7 @@ public class GestionReclamation {
             return;
         }
         if (sendButton.getText().equals("Send")) {  // If button says "Save", add new Avis
-            sr.add(new Reclamation(1, 1, Sujet.getText(), Description.getText(), new Date()));
+            sr.add(new Reclamation(3, 1, Sujet.getText(), Description.getText(), new Date()));
         }
 
 

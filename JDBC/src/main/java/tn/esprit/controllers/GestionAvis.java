@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import tn.esprit.services.ServiceAvis;
@@ -17,6 +18,9 @@ import java.util.List;
 
 
 public class GestionAvis {
+
+    @FXML
+    private AnchorPane root;
 
     @FXML
     private TextArea Commentaire;
@@ -35,6 +39,69 @@ public class GestionAvis {
     Avis selectedAvis = null;  // Holds the Avis being edited
 // Replace this with the actual logged-in user ID
 
+    @FXML
+    public void initialize() {
+        // Ensure the root is not null before applying the stylesheet
+        if (root != null) {
+            root.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
+        } else {
+            System.out.println("Root is null. CSS not applied.");
+        }
+    }
+
+
+
+    private void showAlert(String title, String message) {
+    Alert alert = new Alert(Alert.AlertType.ERROR);
+    alert.setTitle(title);
+    alert.setHeaderText(null);
+    alert.setContentText(message);
+    alert.showAndWait();
+}
+    private int getValidatedNote() {
+        String noteText = Note.getText().trim();
+
+        if (Note.getText().trim().isEmpty() || !Note.getText().trim().matches("\\d+")) {
+            showAlert("Error", "Please enter a valid number between 1 and 5.");
+            return -1;  // Return an invalid value to indicate failure
+        }
+
+        int noteValue = Integer.parseInt(noteText);
+
+        if (noteValue < 1 || noteValue > 5) {
+            showAlert("Error", "The note must be between 1 and 5.");
+            return -1;
+        }
+
+        return noteValue;  // Return valid note value
+    }
+
+
+
+
+    @FXML
+    void LoadStatistiquesPage(ActionEvent event) {
+        try {
+            System.out.println("Loading Statistiques Page...");
+            // Load the GestionReclamation.fxml file
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GestionStatistiques.fxml"));
+            Parent root = loader.load();
+
+            // Get the current stage (window)
+            Stage stage = (Stage) Commentaire.getScene().getWindow();
+
+            // Create a new scene with the loaded FXML file
+            Scene scene = new Scene(root);
+
+            // Set the new scene to the stage
+            stage.setScene(scene);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Show an error message if something goes wrong
+            showAlert("Error", "Failed to load the Statistiques page.");
+        }
+    }
 
     @FXML
     void LoadReclamationPage(ActionEvent event) {
@@ -56,13 +123,10 @@ public class GestionAvis {
         } catch (Exception e) {
             e.printStackTrace();
             // Show an error message if something goes wrong
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Failed to load the Reclamation page.");
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
+            showAlert("Error", "Failed to load the Reclamation page.");
         }
     }
+
 
     @FXML
     void Save(ActionEvent event) {
@@ -70,6 +134,7 @@ public class GestionAvis {
             // If an Avis is selected for update
             selectedAvis.setCommentaire(Commentaire.getText());  // Get the updated commentaire from the TextField
             selectedAvis.setNote(Integer.parseInt(Note.getText()));
+            if (getValidatedNote()==-1) return;
             sa.update(selectedAvis);
             avisListView.refresh();  // Refresh the ListView to show updated items
             selectedAvis = null;  // Reset the selectedAvis
@@ -79,7 +144,8 @@ public class GestionAvis {
             return;
         }
             if (saveButton.getText().equals("Save")) {  // If button says "Save", add new Avis
-                sa.add(new Avis(1, 2, Commentaire.getText(), Integer.parseInt(Note.getText()), new Date()));
+                if (getValidatedNote()==-1) return;
+                sa.add(new Avis(3, 2, Commentaire.getText(), Integer.parseInt(Note.getText()), new Date()));
             }
 
 
