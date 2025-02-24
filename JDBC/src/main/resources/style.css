@@ -88,3 +88,40 @@
     -fx-text-fill: #0D47A1;
     -fx-font-weight: bold;
 }
+
+/* TableView (GestionStatistiques Specific) */
+.table-view {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #1565C0;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #1565C0;
+}
+
+.table-view .column-header {
+    -fx-background-color: #1565C0;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.table-row-cell {
+    -fx-background-color: #E3F2FD;
+    -fx-border-color: transparent;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #BBDEFB;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #42A5F5;
+    -fx-text-fill: white;
+}
+
+/* TableColumn */
+.table-column {
+    -fx-alignment: CENTER;
+}

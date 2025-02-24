@@ -20,15 +20,16 @@ public class ServiceReclamation implements IService<Reclamation> {
 
     @Override
     public void add(Reclamation reclamation) {
-        String qry = "INSERT INTO `reclamation`(`utilisateur_id`, `rendez_vous_id`, `sujet`, `description`, `date_reclamation`) VALUES (?,?,?,?,?)";
+        String qry = "INSERT INTO `reclamation`(`utilisateur_id`, `medecin_id` , `rendez_vous_id`, `sujet`, `description`, `date_reclamation`) VALUES (?,?,?,?,?,?)";
 
         try {
             PreparedStatement pstm = this.cnx.prepareStatement(qry);
             pstm.setInt(1, reclamation.getUtilisateur_id());
-            pstm.setInt(2, reclamation.getRendez_vous_id());
-            pstm.setString(3, reclamation.getSujet());
-            pstm.setString(4, reclamation.getDescription());
-            pstm.setDate(5, new Date(reclamation.getDate_reclamation().getTime()));
+            pstm.setInt(2, reclamation.getMedecin_id());
+            pstm.setInt(3, reclamation.getRendez_vous_id());
+            pstm.setString(4, reclamation.getSujet());
+            pstm.setString(5, reclamation.getDescription());
+            pstm.setDate(6, new Date(reclamation.getDate_reclamation().getTime()));
             pstm.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -48,6 +49,7 @@ public class ServiceReclamation implements IService<Reclamation> {
                 Reclamation reclamation = new Reclamation();
                 reclamation.setId(rs.getInt("id"));
                 reclamation.setUtilisateur_id(rs.getInt("utilisateur_id"));
+                reclamation.setMedecin_id(rs.getInt("medecin_id"));  // Set the medecin_id
                 reclamation.setRendez_vous_id(rs.getInt("rendez_vous_id"));
                 reclamation.setSujet(rs.getString("sujet"));
                 reclamation.setDescription(rs.getString("description"));
@@ -63,16 +65,17 @@ public class ServiceReclamation implements IService<Reclamation> {
 
     @Override
     public void update(Reclamation reclamation) {
-        String qry = "UPDATE `reclamation` SET `utilisateur_id`=?, `rendez_vous_id`=?, `sujet`=?, `description`=?, `date_reclamation`=? WHERE `id`=?";
+        String qry = "UPDATE `reclamation` SET `utilisateur_id`=?, `medecin_id`=? , `rendez_vous_id`=?, `sujet`=?, `description`=?, `date_reclamation`=? WHERE `id`=?";
 
         try {
             PreparedStatement pstm = this.cnx.prepareStatement(qry);
             pstm.setInt(1, reclamation.getUtilisateur_id());
-            pstm.setInt(2, reclamation.getRendez_vous_id());
-            pstm.setString(3, reclamation.getSujet());
-            pstm.setString(4, reclamation.getDescription());
-            pstm.setDate(5, new Date(reclamation.getDate_reclamation().getTime()));
-            pstm.setInt(6, reclamation.getId());
+            pstm.setInt(2, reclamation.getMedecin_id());  // Set the medecin_id
+            pstm.setInt(3, reclamation.getRendez_vous_id());
+            pstm.setString(4, reclamation.getSujet());
+            pstm.setString(5, reclamation.getDescription());
+            pstm.setDate(6, new Date(reclamation.getDate_reclamation().getTime()));
+            pstm.setInt(7, reclamation.getId());
             pstm.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());

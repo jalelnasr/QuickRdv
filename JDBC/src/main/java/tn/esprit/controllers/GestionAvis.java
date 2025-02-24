@@ -145,7 +145,7 @@ public class GestionAvis {
         }
             if (saveButton.getText().equals("Save")) {  // If button says "Save", add new Avis
                 if (getValidatedNote()==-1) return;
-                sa.add(new Avis(3, 2, Commentaire.getText(), Integer.parseInt(Note.getText()), new Date()));
+                sa.add(new Avis(3, 4, Commentaire.getText(), Integer.parseInt(Note.getText()), new Date()));
             }
 
 

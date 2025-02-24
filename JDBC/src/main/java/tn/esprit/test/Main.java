@@ -17,7 +17,7 @@ public class Main {
         Avis Av = new Avis(1, 2, "Great service!", 5, new Date());
         Avis updatedAvis = new Avis(3, 4, "Service pas bon!!", 1, new Date());
         ServiceReclamation sr = new ServiceReclamation();
-        Reclamation Rc = new Reclamation(1,1,"aa","bb",new Date());
+        Reclamation Rc = new Reclamation(1,4 ,1,"aa","bb",new Date());
        // sr.add(Rc);
         // updatedAvis.setId(14);
         List<Reclamation> ReclamationList = sr.getAll();

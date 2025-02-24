@@ -121,7 +121,7 @@ public class GestionReclamation {
             return;
         }
         if (sendButton.getText().equals("Send")) {  // If button says "Save", add new Avis
-            sr.add(new Reclamation(3, 1, Sujet.getText(), Description.getText(), new Date()));
+            sr.add(new Reclamation(3 , 4 , 1, Sujet.getText(), Description.getText(), new Date()));
         }
 
 
@@ -145,6 +145,7 @@ public class GestionReclamation {
                     HBox hbox = new HBox(10);
                     Label idLabel = new Label("ID: " + reclamation.getId());
                     Label utilisateurIdLabel = new Label("Utilisateur ID: " + reclamation.getUtilisateur_id());
+                    Label MedecinIdLabel = new Label("Medecin ID: " + reclamation.getMedecin_id());
                     Label rendezVousIdLabel = new Label("Rendez-vous ID: " + reclamation.getRendez_vous_id());
                     Label sujetLabel = new Label("Sujet: " + reclamation.getSujet());
                     Label descriptionLabel = new Label("Description: " + reclamation.getDescription());
@@ -169,9 +170,9 @@ public class GestionReclamation {
                             sendButton.setText("Update");  // Change Save button text to "Update"
                         });
 
-                        hbox.getChildren().addAll(idLabel, utilisateurIdLabel, rendezVousIdLabel, sujetLabel, descriptionLabel, dateReclamationLabel, deleteButton , updateButton);
+                        hbox.getChildren().addAll(idLabel, utilisateurIdLabel, MedecinIdLabel , rendezVousIdLabel, sujetLabel, descriptionLabel, dateReclamationLabel, deleteButton , updateButton);
                     } else {
-                        hbox.getChildren().addAll(idLabel, utilisateurIdLabel, rendezVousIdLabel, sujetLabel, descriptionLabel, dateReclamationLabel);
+                        hbox.getChildren().addAll(idLabel, utilisateurIdLabel , MedecinIdLabel , rendezVousIdLabel, sujetLabel, descriptionLabel, dateReclamationLabel);
                     }
 
                     setGraphic(hbox);

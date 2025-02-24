@@ -5,6 +5,7 @@ import java.util.Date;
 public class Reclamation {
     private int id;
     private int utilisateur_id;
+    private int medecin_id;
     private int rendez_vous_id;
     private String sujet;
     private String description;
@@ -13,17 +14,19 @@ public class Reclamation {
     public Reclamation() {
     }
 
-    public Reclamation(int id, int utilisateur_id, int rendez_vous_id, String sujet, String description, Date date_reclamation) {
+    public Reclamation(int id, int utilisateur_id, int medecin_id , int rendez_vous_id, String sujet, String description, Date date_reclamation) {
         this.id = id;
         this.utilisateur_id = utilisateur_id;
+        this.medecin_id = medecin_id;
         this.rendez_vous_id = rendez_vous_id;
         this.sujet = sujet;
         this.description = description;
         this.date_reclamation = date_reclamation;
     }
 
-    public Reclamation(int utilisateur_id, int rendez_vous_id, String sujet, String description, Date date_reclamation) {
+    public Reclamation(int utilisateur_id, int medecin_id, int rendez_vous_id, String sujet, String description, Date date_reclamation) {
         this.utilisateur_id = utilisateur_id;
+        this.medecin_id = medecin_id ;
         this.rendez_vous_id = rendez_vous_id;
         this.sujet = sujet;
         this.description = description;
@@ -44,6 +47,14 @@ public class Reclamation {
 
     public void setUtilisateur_id(int utilisateur_id) {
         this.utilisateur_id = utilisateur_id;
+    }
+
+    public int getMedecin_id() {
+        return medecin_id;
+    }
+
+    public void setMedecin_id(int medecin_id) {
+        this.medecin_id = medecin_id;
     }
 
     public int getRendez_vous_id() {
@@ -82,6 +93,7 @@ public class Reclamation {
     public String toString() {
         return "Reclamation{id=" + this.id +
                 ", utilisateur_id=" + this.utilisateur_id +
+                ", medecin_id" + this.medecin_id +
                 ", rendez_vous_id=" + this.rendez_vous_id +
                 ", sujet='" + this.sujet + '\'' +
                 ", description='" + this.description + '\'' +
