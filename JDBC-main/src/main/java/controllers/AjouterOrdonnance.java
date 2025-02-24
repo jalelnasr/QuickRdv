@@ -62,6 +62,15 @@ public class AjouterOrdonnance implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         loadMedecins();
+        // Ajouter un gestionnaire d'événement pour la sélection dans la liste des médicaments
+        medicamentListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                // Lorsque l'utilisateur sélectionne un médicament dans la liste de recherche,
+                // le médicament est ajouté au champ medicamentField
+                medicamentField.setText(newValue);
+                medicamentListView.setVisible(false); // Masquer la liste après sélection
+            }
+        });
     }
 
 
@@ -197,18 +206,6 @@ public class AjouterOrdonnance implements Initializable {
             stage.show();
 
     }
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("/AfficherOrdonnance.fxml"));
-    Parent root = loader.load();
-    AfficherOrdonnance afficherOrdonnanceController = loader.getController(); // Assurez-vous que le nom est cohérent ici
-
-    @FXML
-    public void modifierOrdonnance() throws IOException {
-        if (afficherOrdonnanceController != null) {
-            afficherOrdonnanceController.modifierOrdonnance(); // Appel de la méthode dans le bon contrôleur
-        } else {
-            System.out.println("Erreur: AfficherOrdonnanceController non initialisé");
-        }
-    }
 
 
 
@@ -242,6 +239,43 @@ public class AjouterOrdonnance implements Initializable {
 
 
     }
+
+    @FXML
+    private TextField searchTextField;
+    @FXML
+    private ListView<String> medicamentListView;
+
+
+
+    @FXML
+    private void searchMedicaments() {
+        String searchText = searchTextField.getText().trim();
+
+        if (!searchText.isEmpty()) {
+            List<String> medicaments = serviceOrdonnance.searchMedicaments(searchText);
+
+            // Filtrer pour ne garder que les médicaments qui commencent par le texte fourni
+            List<String> filteredMedicaments = medicaments.stream()
+                    .filter(med -> med.toLowerCase().startsWith(searchText.toLowerCase()))
+                    .toList();
+
+            if (!filteredMedicaments.isEmpty()) {
+                medicamentListView.getItems().setAll(filteredMedicaments);
+                medicamentListView.setVisible(true);
+            } else {
+                medicamentListView.setVisible(false);
+            }
+        } else {
+            medicamentListView.setVisible(false);
+        }
+    }
+
+
+
+
+
+
+
 
 
 }

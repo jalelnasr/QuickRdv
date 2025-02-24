@@ -19,6 +19,7 @@
 
 
    <children>
+
       <VBox alignment="CENTER" prefHeight="500" prefWidth="600" spacing="10" stylesheets="@CSS/design.css">
          <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Ajouter une ordonnance" />
          <GridPane hgap="10" vgap="10">
@@ -50,6 +51,10 @@
             </rowConstraints>
          </GridPane>
 
+         <TextField fx:id="searchTextField" promptText="Rechercher un médicament..." onKeyReleased="#searchMedicaments"/>
+         <ListView fx:id="medicamentListView" visible="false" />
+
+
          <!-- Médicaments -->
          <TitledPane collapsible="false" text="Ajouter un Médicament">
             <VBox spacing="5">
@@ -68,7 +73,6 @@
          <!-- Boutons -->
          <HBox spacing="10">
             <Button onAction="#ajouterOrdonnance" text="Ajouter Ordonnance" />
-            <Button fx:id="btnModifier" onAction="#modifierOrdonnance" text="Modifier" />
             <Button onAction="#clearFields" text="Annuler" />
             <Button text="Liste des Ordonnances" onAction="#ouvrirAfficherOrdonnance"/>
 

@@ -197,5 +197,28 @@ public class ServiceOrdonnance implements IMService<Ordonnance> {
 
     }
 
+    public List<String> searchMedicaments(String searchText) {
+        List<String> medicaments = new ArrayList<>();
+
+        // Requête SQL pour rechercher les médicaments contenant le texte saisi
+        String query = "SELECT nom FROM medicament WHERE nom LIKE ?";
+
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/quick_rdv", "root", "");
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, "%" + searchText + "%"); // Recherche floue
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                medicaments.add(rs.getString("nom"));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return medicaments;
+    }
+
+
 
 }

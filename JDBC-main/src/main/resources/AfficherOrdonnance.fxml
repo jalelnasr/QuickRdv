@@ -1,36 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
 
-<?import javafx.collections.FXCollections?>
-<AnchorPane xmlns="http://javafx.com/javafx/8"
-            xmlns:fx="http://javafx.com/fxml/1"
+<AnchorPane xmlns:fx="http://javafx.com/javafx"
+            xmlns="http://javafx.com/fxml/1"
             fx:controller="controllers.AfficherOrdonnance">
-
-
     <children>
-        <VBox spacing="10" alignment="CENTER" prefWidth="600" prefHeight="500">
-            <Label text="Liste des Ordonnances" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+        <!-- Titre principal -->
+        <Label text="Liste des Ordonnances"
+               layoutX="50"
+               layoutY="20"
+               style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
 
-            <ListView fx:id="tableOrdonnances" prefHeight="400.0" prefWidth="300.0">
-                <items>
-                    <FXCollections fx:factory="observableArrayList"/>
-                </items>
-            </ListView>
-            <Button text="Modifier" onAction="#modifierOrdonnance"/>
-
-
-
-            <HBox spacing="10">
-                <Button text="Supprimer" onAction="#supprimerOrdonnance"/>
-                <Button text="Quitter" onAction="#fermerFenetre"/>
-
-            </HBox>
-
-        </VBox>
+        <!-- ScrollPane pour contenir les cartes -->
+        <ScrollPane layoutX="50" layoutY="60" prefWidth="600" prefHeight="500">
+            <content>
+                <!-- VBox contenant les cartes des ordonnances -->
+                <VBox fx:id="cardContainer" spacing="15" style="-fx-padding: 20;"/>
+            </content>
+        </ScrollPane>
     </children>
 </AnchorPane>
