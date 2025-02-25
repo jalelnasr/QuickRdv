@@ -18,13 +18,17 @@ public class MainFX extends Application {
     public void start(Stage primaryStage) {
         try {
            // FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjoutInformationsGenerales.fxml"));
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjoutAssurance.fxml"));
+            //FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjoutAssurance.fxml"));
+            //FXMLLoader loader = new FXMLLoader(getClass().getResource("/AffichageConsultations.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AffichageOrdonnances.fxml"));
 
             Parent root = loader.load();
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
             //primaryStage.setTitle("Ajouter Informations Generales");
-            primaryStage.setTitle("Ajouter Assurance");
+            //primaryStage.setTitle("Ajouter Assurance");
+            primaryStage.setTitle("Historique Consultations");
+
 
             primaryStage.show();
         } catch (IOException e) {
