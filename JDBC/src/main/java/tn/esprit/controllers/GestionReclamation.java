@@ -10,6 +10,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import tn.esprit.models.Avis;
+import tn.esprit.services.EmailService;
 import tn.esprit.services.ServiceReclamation;
 import tn.esprit.models.Reclamation;
 
@@ -123,6 +124,12 @@ public class GestionReclamation {
         if (sendButton.getText().equals("Send")) {  // If button says "Save", add new Avis
             sr.add(new Reclamation(3 , 4 , 1, Sujet.getText(), Description.getText(), new Date()));
         }
+        String userEmail = "sghaier.mohamedali@esprit.tn";  // Replace with the actual user email
+        String subject = "Your Reclamation Submitted";
+        String message = "Thank you for submitting your reclamation. It will be dealt with shortly.";
+
+        // Call the method to send the email
+        EmailService.sendEmail(userEmail, subject, message);
 
 
     }

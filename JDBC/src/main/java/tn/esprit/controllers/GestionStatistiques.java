@@ -8,11 +8,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import tn.esprit.services.ServiceStatistics;
@@ -60,6 +57,26 @@ public class GestionStatistiques {
         doctorNameCol.setCellValueFactory(new PropertyValueFactory<>("doctorName"));
         averageRatingCol.setCellValueFactory(new PropertyValueFactory<>("averageRating"));
         reclamationsCol.setCellValueFactory(new PropertyValueFactory<>("complaintCount"));
+
+        // ⭐ Custom Cell Factory for Star Ratings ⭐
+        averageRatingCol.setCellFactory(column -> new TableCell<ServiceStatistics, Double>() {
+            @Override
+            protected void updateItem(Double rating, boolean empty) {
+                super.updateItem(rating, empty);
+                if (empty || rating == null) {
+                    setText(null);
+                } else {
+                    int fullStars = rating.intValue();
+                    boolean halfStar = (rating - fullStars) >= 0.5;
+
+                    String stars = "★".repeat(fullStars) + (halfStar ? "☆" : "");
+                    Label starLabel = new Label(stars);
+                    starLabel.setStyle("-fx-text-fill: gold; -fx-font-size: 14px;"); // Make stars yellow
+
+                    setGraphic(starLabel);
+                }
+            }
+        });
 
         loadStatistics(); // Load the data
     }
