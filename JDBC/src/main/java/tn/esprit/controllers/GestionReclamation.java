@@ -129,7 +129,7 @@ public class GestionReclamation {
         String message = "Thank you for submitting your reclamation. It will be dealt with shortly.";
 
         // Call the method to send the email
-        EmailService.sendEmail(userEmail, subject, message);
+        EmailService.sendEmail(userEmail, subject);
 
 
     }
