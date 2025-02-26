@@ -5,21 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b80fde67-95eb-4140-99e9-25a14d519510" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tn/esprit/controllers/AfficherUtilisateur.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tn/esprit/controllers/AfficherUtilisateur.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tn/esprit/controllers/AjouterUtilisateur.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tn/esprit/controllers/AjouterUtilisateur.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tn/esprit/controllers/LoginUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tn/esprit/controllers/LoginUser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tn/esprit/controllers/Medecin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tn/esprit/controllers/Medecin.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/tn/esprit/controllers/Registre.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tn/esprit/controllers/Registre.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tn/esprit/controllers/ResetPassword.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tn/esprit/controllers/ResetPassword.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/AfficherUtilisateur.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/AfficherUtilisateur.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/AjouterUtilisateur.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/AjouterUtilisateur.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/LoginUser.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/LoginUser.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Medecin.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Medecin.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/Registre.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Registre.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/ResetPassword.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ResetPassword.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -115,7 +103,9 @@
       <workItem from="1740172897945" duration="715000" />
       <workItem from="1740417490983" duration="34577000" />
       <workItem from="1740533608279" duration="85000" />
-      <workItem from="1740568067206" duration="8675000" />
+      <workItem from="1740568067206" duration="9314000" />
+      <workItem from="1740577804626" duration="979000" />
+      <workItem from="1740585755489" duration="1384000" />
     </task>
     <servers />
   </component>

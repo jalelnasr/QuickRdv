@@ -27,9 +27,6 @@ public class Registre {
     private TextField prenom;
 
     @FXML
-    private TextField numDossier;
-
-    @FXML
     private TextField DateNaissance;
 
     @FXML
@@ -41,13 +38,12 @@ public class Registre {
         String userPassword = mot_de_passe.getText().trim();
         String userNom = nom.getText().trim();
         String userPrenom = prenom.getText().trim();
-        String dossier = numDossier.getText().trim();
         String naissance = DateNaissance.getText().trim();
         String userAdresse = adresse.getText().trim();
 
         // Vérification des champs obligatoires
         if (userEmail.isEmpty() || userPassword.isEmpty() || userNom.isEmpty() ||
-                userPrenom.isEmpty() || dossier.isEmpty() || naissance.isEmpty() || userAdresse.isEmpty()) {
+                userPrenom.isEmpty() || naissance.isEmpty() || userAdresse.isEmpty()) {
             showAlert("Erreur", "Tous les champs doivent être remplis !", Alert.AlertType.ERROR);
             return;
         }
@@ -64,20 +60,12 @@ public class Registre {
             return;
         }
 
-        // Vérification que numDossier est un nombre
-        try {
-            Integer.parseInt(dossier);
-        } catch (NumberFormatException e) {
-            showAlert("Erreur", "Le numéro de dossier doit être un nombre !", Alert.AlertType.ERROR);
-            return;
-        }
-
         // Insertion de l'utilisateur et récupération de l'ID généré
         int userId = insertUser(userNom, userPrenom, userEmail, userPassword, "Patient");
 
         if (userId != -1) {
             // Insertion des données dans la table patient
-            if (insertPatient(userId, dossier, naissance, userAdresse)) {
+            if (insertPatient(userId, naissance, userAdresse)) {
                 showAlert("Succès", "Inscription réussie ! Vous pouvez vous connecter.", Alert.AlertType.INFORMATION);
                 clearFields();
             } else {
@@ -116,16 +104,15 @@ public class Registre {
         return userId;
     }
 
-    private boolean insertPatient(int userId, String numDossier, String dateNaissance, String adresse) {
-        String query = "INSERT INTO patient (id, numDossier, DateNaissance, adresse) VALUES (?, ?, ?, ?)";
+    private boolean insertPatient(int userId, String dateNaissance, String adresse) {
+        String query = "INSERT INTO patient (id, dateNaissance, adresse) VALUES (?, ?, ?)";
 
         try (Connection conn = MyDatabase.getInstance().getCnx();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setInt(1, userId);
-            stmt.setString(2, numDossier);
-            stmt.setString(3, dateNaissance);
-            stmt.setString(4, adresse);
+            stmt.setString(2, dateNaissance);
+            stmt.setString(3, adresse);
 
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -178,7 +165,6 @@ public class Registre {
         mot_de_passe.clear();
         nom.clear();
         prenom.clear();
-        numDossier.clear();
         DateNaissance.clear();
         adresse.clear();
     }
