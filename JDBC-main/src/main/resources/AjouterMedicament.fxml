@@ -3,13 +3,13 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
+<AnchorPane  xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="controllers.AjouterMedicament"
             prefHeight="400.0" prefWidth="600.0">
 
         <children>
-                <VBox alignment="CENTER" spacing="10" layoutX="50" layoutY="50">
+                <VBox alignment="CENTER" spacing="10" layoutX="50" layoutY="50" stylesheets="@CSS/design.css">
                         <Label text="Gestion des Médicaments" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
 
                         <TextField fx:id="nomMedicamentField" promptText="Nom du Médicament"/>
@@ -21,8 +21,7 @@
                                 <Button text="Modifier" onAction="#modifierMedicament"/>
                                 <Button text="Supprimer" onAction="#supprimerMedicament"/>
                                 <Button text="Réinitialiser" onAction="#resetFields"/>
-                                <Button text="Importer depuis FHIR" onAction="#importerDepuisFHIR"/>
-                                <Button text="Exporter vers FHIR" onAction="#exporterVersFHIR"/>
+
 
 
                         </HBox>

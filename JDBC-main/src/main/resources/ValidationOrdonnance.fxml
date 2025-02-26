@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.geometry.Insets?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="controllers.ValidationOrdonnance">
+<AnchorPane stylesheets="@CSS/design.css" xmlns:fx="http://javafx.com/fxml" fx:controller="controllers.ValidationOrdonnance">
     <children>
         <!-- Titre -->
         <Label text="Liste des Ordonnances" layoutX="30" layoutY="20" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>

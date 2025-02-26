@@ -3,7 +3,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
 
-<AnchorPane xmlns:fx="http://javafx.com/javafx"
+<AnchorPane stylesheets="@CSS/design.css" xmlns:fx="http://javafx.com/javafx"
             xmlns="http://javafx.com/fxml/1"
             fx:controller="controllers.AfficherOrdonnance">
     <children>

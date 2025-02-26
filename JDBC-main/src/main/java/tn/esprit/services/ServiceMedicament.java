@@ -1,6 +1,5 @@
 package tn.esprit.services;
 
-import ca.uhn.fhir.rest.api.MethodOutcome;
 import tn.esprit.interfaces.IService;
 import tn.esprit.models.Medicament;
 import tn.esprit.utils.MyDatabase;
@@ -10,14 +9,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import ca.uhn.fhir.context.FhirContext;
-import ca.uhn.fhir.rest.client.api.IGenericClient;
-import org.hl7.fhir.r4.model.Medication;
-import org.hl7.fhir.r4.model.Bundle;
-import org.hl7.fhir.r4.model.Coding;
-import org.hl7.fhir.r4.model.CodeableConcept;
-import org.hl7.fhir.r4.model.Coding;
-import org.hl7.fhir.r4.model.Medication;
 
 
 
@@ -109,128 +100,6 @@ public class ServiceMedicament implements IService<Medicament> {
 
 
 
-    public void importFromFHIR() {
-        FhirContext ctx = FhirContext.forR4();
-        IGenericClient client = ctx.newRestfulGenericClient("http://hapi.fhir.org/baseR4");
-
-        // Récupération de tous les médicaments du serveur FHIR
-        Bundle results = client.search()
-                .forResource(Medication.class)
-                .returnBundle(Bundle.class)
-                .execute();
-
-        for (Bundle.BundleEntryComponent entry : results.getEntry()) {
-            Medication medFHIR = (Medication) entry.getResource();
-            String idFHIR = medFHIR.getIdElement().getIdPart();
-            String nom = medFHIR.hasCode() && medFHIR.getCode().hasText() ? medFHIR.getCode().getText() : "Nom inconnu";
-
-            // Vérifier s'il y a une extension pour le stock
-            int stock = 0;
-            if (!medFHIR.getExtension().isEmpty()) {
-                if (medFHIR.getExtensionByUrl("http://example.com/fhir/StructureDefinition/stock").getValue() instanceof org.hl7.fhir.r4.model.IntegerType) {
-                    stock = ((org.hl7.fhir.r4.model.IntegerType) medFHIR.getExtensionByUrl("http://example.com/fhir/StructureDefinition/stock").getValue()).getValue();
-                }
-            }
-
-
-            // Vérifier si le médicament existe déjà dans la base locale
-            if (!medicamentExisteDeja(nom)) {
-                ajouterMedicament(nom, stock, idFHIR);
-                System.out.println("🟢 Médicament importé depuis FHIR : " + nom + " (Stock: " + stock + ")");
-            }
-        }
-    }
-
-    // Vérifie si le médicament existe déjà dans la base locale
-    private boolean medicamentExisteDeja(String nom) {
-        String qry = "SELECT COUNT(*) FROM medicament WHERE nom = ?";
-        try (PreparedStatement stmt = cnx.prepareStatement(qry)) {
-            stmt.setString(1, nom);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) return rs.getInt(1) > 0;
-        } catch (SQLException e) {
-            System.err.println("Erreur lors de la vérification du médicament : " + e.getMessage());
-        }
-        return false;
-    }
-
-    // Ajoute un médicament récupéré depuis FHIR dans la base locale
-    private void ajouterMedicament(String nom, int stock, String idFHIR) {
-        String qry = "INSERT INTO medicament (nom, stock, idFHIR) VALUES (?, ?, ?)";
-        try (PreparedStatement stmt = cnx.prepareStatement(qry)) {
-            stmt.setString(1, nom);
-            stmt.setInt(2, stock);
-            stmt.setString(3, idFHIR);
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            System.err.println("Erreur lors de l'ajout du médicament : " + e.getMessage());
-        }
-    }
-
-
-    public void exportToFHIR() {
-        FhirContext ctx = FhirContext.forR4();
-        IGenericClient client = ctx.newRestfulGenericClient("http://hapi.fhir.org/baseR4");
-
-        List<Medicament> medicamentsLocaux = getMedicamentsNonSynchronises();
-
-        for (Medicament med : medicamentsLocaux) {
-            Medication medicationFHIR = new Medication();
-            medicationFHIR.setCode(new CodeableConcept().addCoding(new Coding()
-                    .setSystem("http://www.whocc.no/atc")
-                    .setDisplay(med.getNom())));
-
-            // Ajouter le stock en tant qu'extension personnalisée
-            medicationFHIR.addExtension()
-                    .setUrl("http://example.com/fhir/StructureDefinition/stock")
-                    .setValue(new org.hl7.fhir.r4.model.IntegerType(med.getStock()));
-
-            // Envoi au serveur FHIR
-            MethodOutcome outcome = client.create()
-                    .resource(medicationFHIR)  // ✅ Correction ici
-                    .execute();
-
-            // Récupérer l'ID du médicament créé
-            String idFHIR = outcome.getId().getIdPart();
-            System.out.println("✅ Médicament ajouté avec ID FHIR : " + idFHIR);
-
-            // Enregistrer l'ID FHIR en base de données
-            enregistrerIdFHIR(med.getId(), idFHIR);
-        }
-    }
-
-    // Récupère les médicaments non encore synchronisés avec FHIR
-    private List<Medicament> getMedicamentsNonSynchronises() {
-        List<Medicament> medicaments = new ArrayList<>();
-        String qry = "SELECT * FROM medicament WHERE idFHIR IS NULL";
-
-        try (PreparedStatement stmt = cnx.prepareStatement(qry);
-             ResultSet rs = stmt.executeQuery()) {
-            while (rs.next()) {
-                Medicament m = new Medicament();
-                m.setId(rs.getInt("id"));
-                m.setNom(rs.getString("nom"));
-                m.setStock(rs.getInt("stock"));
-                m.setPharmacienId(rs.getInt("pharmacien_id"));
-                medicaments.add(m);
-            }
-        } catch (SQLException e) {
-            System.out.println("Erreur lors de la récupération des médicaments non synchronisés : " + e.getMessage());
-        }
-        return medicaments;
-    }
-
-    // Enregistre l'ID FHIR en base de données pour éviter les doublons
-    private void enregistrerIdFHIR(int idLocal, String idFHIR) {
-        String qry = "UPDATE medicament SET idFHIR = ? WHERE id = ?";
-        try (PreparedStatement stmt = cnx.prepareStatement(qry)) {
-            stmt.setString(1, idFHIR);
-            stmt.setInt(2, idLocal);
-            stmt.executeUpdate();
-        } catch (Exception e) {
-            System.err.println("❌ Erreur lors de l'enregistrement de l'ID FHIR : " + e.getMessage());
-        }
-    }
 
     private int[] getIdAndStock(String nomMedicament) {
         String query = "SELECT id, stock FROM medicament WHERE nom = ?";
