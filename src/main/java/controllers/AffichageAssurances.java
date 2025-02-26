@@ -7,11 +7,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import tn.esprit.models.Assurance;
 import tn.esprit.services.ServiceAssurance;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Button;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.text.Text;
-
 
 import java.time.LocalDate;
 import java.util.List;
@@ -35,9 +30,6 @@ public class AffichageAssurances {
         }
     }
 
-    /**
-     * Creates a card (AnchorPane) to display the details of an Assurance.
-     */
     private AnchorPane createCard(Assurance assurance) {
         // Create a card container (AnchorPane)
         AnchorPane card = new AnchorPane();
@@ -55,19 +47,14 @@ public class AffichageAssurances {
         typeText.setLayoutY(40);
         typeText.setStyle("-fx-font-size: 14px;");
 
-        Text montantText = new Text("Montant: " + assurance.getMontantCouvert());
-        montantText.setLayoutX(10);
-        montantText.setLayoutY(60);
-        montantText.setStyle("-fx-font-size: 14px;");
-
         Text dateDebutText = new Text("Date Début: " + assurance.getDateDebut());
         dateDebutText.setLayoutX(10);
-        dateDebutText.setLayoutY(80);
+        dateDebutText.setLayoutY(60);
         dateDebutText.setStyle("-fx-font-size: 14px;");
 
         Text dateFinText = new Text("Date Fin: " + assurance.getDateFin());
         dateFinText.setLayoutX(10);
-        dateFinText.setLayoutY(100);
+        dateFinText.setLayoutY(80);
         dateFinText.setStyle("-fx-font-size: 14px;");
 
         // Add editable fields to the card (initially hidden)
@@ -85,22 +72,15 @@ public class AffichageAssurances {
         typeComboBox.setPrefWidth(200);
         typeComboBox.setVisible(false); // Initially hidden
 
-        TextField montantField = new TextField(String.valueOf(assurance.getMontantCouvert()));
-        montantField.setLayoutX(10);
-        montantField.setLayoutY(60);
-        montantField.setPrefWidth(200);
-        montantField.setVisible(false); // Initially hidden
-
-        // Use DatePicker for date fields
         DatePicker dateDebutPicker = new DatePicker(assurance.getDateDebut());
         dateDebutPicker.setLayoutX(10);
-        dateDebutPicker.setLayoutY(80);
+        dateDebutPicker.setLayoutY(60);
         dateDebutPicker.setPrefWidth(200);
         dateDebutPicker.setVisible(false); // Initially hidden
 
         DatePicker dateFinPicker = new DatePicker(assurance.getDateFin());
         dateFinPicker.setLayoutX(10);
-        dateFinPicker.setLayoutY(100);
+        dateFinPicker.setLayoutY(80);
         dateFinPicker.setPrefWidth(200);
         dateFinPicker.setVisible(false); // Initially hidden
 
@@ -135,14 +115,12 @@ public class AffichageAssurances {
                 // Hide non-editable fields
                 nomText.setVisible(false);
                 typeText.setVisible(false);
-                montantText.setVisible(false);
                 dateDebutText.setVisible(false);
                 dateFinText.setVisible(false);
 
                 // Show editable fields
                 nomField.setVisible(true);
                 typeComboBox.setVisible(true);
-                montantField.setVisible(true);
                 dateDebutPicker.setVisible(true);
                 dateFinPicker.setVisible(true);
             } else {
@@ -153,27 +131,23 @@ public class AffichageAssurances {
                 // Hide editable fields
                 nomField.setVisible(false);
                 typeComboBox.setVisible(false);
-                montantField.setVisible(false);
                 dateDebutPicker.setVisible(false);
                 dateFinPicker.setVisible(false);
 
                 // Show non-editable fields with updated values
                 nomText.setText("Nom: " + nomField.getText());
                 typeText.setText("Type: " + typeComboBox.getValue());
-                montantText.setText("Montant: " + montantField.getText());
                 dateDebutText.setText("Date Début: " + dateDebutPicker.getValue());
                 dateFinText.setText("Date Fin: " + dateFinPicker.getValue());
 
                 nomText.setVisible(true);
                 typeText.setVisible(true);
-                montantText.setVisible(true);
                 dateDebutText.setVisible(true);
                 dateFinText.setVisible(true);
 
                 // Save the edited assurance details
                 assurance.setNom(nomField.getText());
                 assurance.setType(typeComboBox.getValue());
-                assurance.setMontantCouvert(Float.parseFloat(montantField.getText()));
                 assurance.setDateDebut(dateDebutPicker.getValue());
                 assurance.setDateFin(dateFinPicker.getValue());
 
@@ -193,14 +167,12 @@ public class AffichageAssurances {
             // Hide editable fields
             nomField.setVisible(false);
             typeComboBox.setVisible(false);
-            montantField.setVisible(false);
             dateDebutPicker.setVisible(false);
             dateFinPicker.setVisible(false);
 
             // Show non-editable fields with original values
             nomText.setVisible(true);
             typeText.setVisible(true);
-            montantText.setVisible(true);
             dateDebutText.setVisible(true);
             dateFinText.setVisible(true);
 
@@ -229,13 +201,14 @@ public class AffichageAssurances {
 
         // Add all elements to the card
         card.getChildren().addAll(
-                nomText, typeText, montantText, dateDebutText, dateFinText,
-                nomField, typeComboBox, montantField, dateDebutPicker, dateFinPicker,
+                nomText, typeText, dateDebutText, dateFinText,
+                nomField, typeComboBox, dateDebutPicker, dateFinPicker,
                 modifierButton, annulerButton, supprimerButton
         );
 
         return card;
     }
+
     private void showAlert(Alert.AlertType type, String title, String message) {
         Alert alert = new Alert(type);
         alert.setTitle(title);

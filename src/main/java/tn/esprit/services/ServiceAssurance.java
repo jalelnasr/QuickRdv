@@ -15,16 +15,14 @@ public class ServiceAssurance implements IService<Assurance> {
         cnx = MyDatabase.getInstance().getCnx();
     }
 
-    // Add a new assurance record
     @Override
     public void add(Assurance assurance) {
-        String qry = "INSERT INTO assurance (nom, type, date_debut, date_fin, montant_couvert) VALUES (?, ?, ?, ?, ?)";
+        String qry = "INSERT INTO assurance (nom, type, date_debut, date_fin) VALUES (?, ?, ?, ?)";
         try (PreparedStatement pstm = cnx.prepareStatement(qry, Statement.RETURN_GENERATED_KEYS)) {
             pstm.setString(1, assurance.getNom());
             pstm.setString(2, assurance.getType());
             pstm.setDate(3, Date.valueOf(assurance.getDateDebut()));
             pstm.setDate(4, Date.valueOf(assurance.getDateFin()));
-            pstm.setFloat(5, assurance.getMontantCouvert());
 
             int rowsInserted = pstm.executeUpdate();
             if (rowsInserted > 0) {
@@ -37,7 +35,6 @@ public class ServiceAssurance implements IService<Assurance> {
         }
     }
 
-    // Retrieve all assurances
     public List<Assurance> getAll() {
         List<Assurance> assurances = new ArrayList<>();
         String qry = "SELECT * FROM assurance";
@@ -48,8 +45,7 @@ public class ServiceAssurance implements IService<Assurance> {
                         rs.getString("nom"),
                         rs.getString("type"),
                         rs.getDate("date_debut").toLocalDate(),
-                        rs.getDate("date_fin").toLocalDate(),
-                        rs.getFloat("montant_couvert")
+                        rs.getDate("date_fin").toLocalDate()
                 );
                 assurances.add(assurance);
             }
@@ -59,7 +55,6 @@ public class ServiceAssurance implements IService<Assurance> {
         return assurances;
     }
 
-    // Retrieve assurance by ID
     public Assurance getById(int id) {
         String qry = "SELECT * FROM assurance WHERE id_assurance = ?";
         try (PreparedStatement pstm = cnx.prepareStatement(qry)) {
@@ -71,8 +66,7 @@ public class ServiceAssurance implements IService<Assurance> {
                             rs.getString("nom"),
                             rs.getString("type"),
                             rs.getDate("date_debut").toLocalDate(),
-                            rs.getDate("date_fin").toLocalDate(),
-                            rs.getFloat("montant_couvert")
+                            rs.getDate("date_fin").toLocalDate()
                     );
                 }
             }
@@ -82,18 +76,16 @@ public class ServiceAssurance implements IService<Assurance> {
         return null;
     }
 
-    // Update an assurance record
     @Override
     public void update(Assurance assurance) {
-        String qry = "UPDATE assurance SET nom=?, type=?, date_debut=?, date_fin=?, montant_couvert=? WHERE id_assurance=?";
+        String qry = "UPDATE assurance SET nom=?, type=?, date_debut=?, date_fin=? WHERE id_assurance=?";
 
         try (PreparedStatement pstm = cnx.prepareStatement(qry)) {
             pstm.setString(1, assurance.getNom());
             pstm.setString(2, assurance.getType());
             pstm.setDate(3, Date.valueOf(assurance.getDateDebut()));
             pstm.setDate(4, Date.valueOf(assurance.getDateFin()));
-            pstm.setFloat(5, assurance.getMontantCouvert());
-            pstm.setInt(6, assurance.getIdAssurance());
+            pstm.setInt(5, assurance.getIdAssurance());
 
             int rowsUpdated = pstm.executeUpdate();
 
@@ -107,7 +99,6 @@ public class ServiceAssurance implements IService<Assurance> {
         }
     }
 
-    // Delete an assurance record by ID
     @Override
     public void delete(Assurance assurance) {
         String qry = "DELETE FROM assurance WHERE id_assurance=?";

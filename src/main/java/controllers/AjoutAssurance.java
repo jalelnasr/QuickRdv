@@ -20,7 +20,7 @@ import java.time.LocalDate;
 public class AjoutAssurance {
 
     @FXML
-    private TextField nomField, montantField;
+    private TextField nomField;
     @FXML
     private ComboBox<String> typeComboBox;
     @FXML
@@ -39,7 +39,6 @@ public class AjoutAssurance {
         try {
             String nom = nomField.getText().trim();
             String type = typeComboBox.getValue();
-            float montantCouvert = Float.parseFloat(montantField.getText().trim());
 
             if (dateDebutPicker.getValue() == null || dateFinPicker.getValue() == null) {
                 throw new IllegalArgumentException("Les dates de début et de fin sont obligatoires.");
@@ -51,13 +50,11 @@ public class AjoutAssurance {
                 throw new IllegalArgumentException("Veuillez remplir tous les champs obligatoires.");
             }
 
-            Assurance newAssurance = new Assurance(nom, type, dateDebut, dateFin, montantCouvert);
+            Assurance newAssurance = new Assurance(nom, type, dateDebut, dateFin);
             serviceAssurance.add(newAssurance);
 
             showAlert(Alert.AlertType.CONFIRMATION, "Succès", "Assurance ajoutée avec succès !");
             clearForm();
-        } catch (NumberFormatException e) {
-            showAlert(Alert.AlertType.WARNING, "Format invalide", "Veuillez entrer un montant valide.");
         } catch (IllegalArgumentException e) {
             showAlert(Alert.AlertType.WARNING, "Champs obligatoires", e.getMessage());
         } catch (Exception e) {
@@ -85,7 +82,6 @@ public class AjoutAssurance {
     private void clearForm() {
         nomField.clear();
         typeComboBox.getSelectionModel().clearSelection();
-        montantField.clear();
         dateDebutPicker.setValue(null);
         dateFinPicker.setValue(null);
     }

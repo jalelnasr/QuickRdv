@@ -7,7 +7,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.shape.Rectangle?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="controllers.AffichageAssurances">
+<AnchorPane stylesheets="@CSS/design.css" xmlns:fx="http://javafx.com/fxml" fx:controller="controllers.AffichageAssurances">
     <children>
         <!-- Title for the CardView -->
         <Label text="Liste des Assurances" layoutX="50" layoutY="20" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>

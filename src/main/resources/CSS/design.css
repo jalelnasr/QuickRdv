@@ -1,0 +1,127 @@
+/* General styling */
+.root {
+    -fx-background-color: #E3F2FD; /* Light blue background */
+    -fx-font-family: "Arial";
+}
+
+/* Menu Bar */
+.menu-bar {
+    -fx-background-color: #1565C0; /* Deep blue */
+}
+
+.menu {
+    -fx-text-fill: white;
+}
+
+.menu-item {
+    -fx-background-color: #1E88E5;
+    -fx-text-fill: white;
+}
+
+.menu-item:hover {
+    -fx-background-color: #42A5F5;
+}
+
+/* Text Fields */
+.text-field {
+    -fx-background-color: #BBDEFB;
+    -fx-border-color: #0D47A1;
+    -fx-border-radius: 5;
+    -fx-padding: 5;
+    -fx-text-fill: #0D47A1;
+}
+
+.text-field:focused {
+    -fx-background-color: #90CAF9;
+    -fx-border-color: #1565C0;
+}
+
+/* Text Area */
+.text-area {
+    -fx-background-color: #BBDEFB;
+    -fx-border-color: #0D47A1;
+    -fx-border-radius: 5;
+    -fx-text-fill: #0D47A1;
+}
+
+.text-area:focused {
+    -fx-background-color: #90CAF9;
+    -fx-border-color: #1565C0;
+}
+
+/* Buttons */
+.button {
+    -fx-background-color: #1E88E5;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-border-radius: 5;
+    -fx-padding: 8 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 3);
+}
+
+.button:hover {
+    -fx-background-color: #42A5F5;
+}
+
+.button:pressed {
+    -fx-background-color: #0D47A1;
+}
+
+/* ListView */
+.list-view {
+    -fx-background-color: #E3F2FD;
+    -fx-border-color: #1565C0;
+}
+
+.list-cell {
+    -fx-background-color: #E3F2FD;
+    -fx-text-fill: #0D47A1;
+}
+
+.list-cell:selected {
+    -fx-background-color: #64B5F6;
+    -fx-text-fill: white;
+}
+
+/* Labels */
+.label {
+    -fx-text-fill: #0D47A1;
+    -fx-font-weight: bold;
+}
+
+/* TableView (GestionStatistiques Specific) */
+.table-view {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #1565C0;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #1565C0;
+}
+
+.table-view .column-header {
+    -fx-background-color: #1565C0;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.table-row-cell {
+    -fx-background-color: #E3F2FD;
+    -fx-border-color: transparent;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #BBDEFB;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #42A5F5;
+    -fx-text-fill: white;
+}
+
+/* TableColumn */
+.table-column {
+    -fx-alignment: CENTER;
+}

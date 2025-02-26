@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.FontWeight?>
 
-<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjoutAssurance" spacing="10" alignment="CENTER" style="-fx-background-color: #f4f4f4;">
+<VBox stylesheets="@CSS/design.css" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjoutAssurance" spacing="10" alignment="CENTER" style="-fx-background-color: #f4f4f4;">
     <children>
         <!-- Title -->
         <Label text="Ajouter une Assurance" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #333333;">
@@ -45,9 +45,7 @@
             <Label text="Date de Fin:" GridPane.rowIndex="3" GridPane.columnIndex="0" />
             <DatePicker fx:id="dateFinPicker" promptText="Sélectionnez la date de fin" GridPane.rowIndex="3" GridPane.columnIndex="1" />
 
-            <!-- Montant Couvert -->
-            <Label text="Montant Couvert:" GridPane.rowIndex="4" GridPane.columnIndex="0" />
-            <TextField fx:id="montantField" promptText="Entrez le montant" GridPane.rowIndex="4" GridPane.columnIndex="1" />
+
         </GridPane>
 
         <!-- Buttons Container -->

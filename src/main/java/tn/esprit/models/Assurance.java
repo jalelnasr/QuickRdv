@@ -8,27 +8,23 @@ public class Assurance {
     private String type;
     private LocalDate dateDebut;
     private LocalDate dateFin;
-    private float montantCouvert;
 
     public Assurance() {
     }
 
-    // Added constructor without idAssurance
-    public Assurance(String nom, String type, LocalDate dateDebut, LocalDate dateFin, float montantCouvert) {
+    public Assurance(String nom, String type, LocalDate dateDebut, LocalDate dateFin) {
         this.nom = nom;
         this.type = type;
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
-        this.montantCouvert = montantCouvert;
     }
 
-    public Assurance(int idAssurance, String nom, String type, LocalDate dateDebut, LocalDate dateFin, float montantCouvert) {
+    public Assurance(int idAssurance, String nom, String type, LocalDate dateDebut, LocalDate dateFin) {
         this.idAssurance = idAssurance;
         this.nom = nom;
         this.type = type;
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
-        this.montantCouvert = montantCouvert;
     }
 
     @Override
@@ -39,7 +35,6 @@ public class Assurance {
                 ", type='" + type + '\'' +
                 ", dateDebut=" + dateDebut +
                 ", dateFin=" + dateFin +
-                ", montantCouvert=" + montantCouvert +
                 '}';
     }
 
@@ -82,13 +77,5 @@ public class Assurance {
 
     public void setDateFin(LocalDate dateFin) {
         this.dateFin = dateFin;
-    }
-
-    public float getMontantCouvert() {
-        return montantCouvert;
-    }
-
-    public void setMontantCouvert(float montantCouvert) {
-        this.montantCouvert = montantCouvert;
     }
 }

@@ -97,7 +97,7 @@ public class Main {
         newAssurance.setType("Privée");
         newAssurance.setDateDebut(LocalDate.of(2025, 1, 1));
         newAssurance.setDateFin(LocalDate.of(2030, 12, 31));
-        newAssurance.setMontantCouvert(50000.0f);
+        //newAssurance.setMontantCouvert(50000.0f);
 
         serviceA.add(newAssurance);
 
@@ -116,7 +116,7 @@ public class Main {
         assuranceToUpdate.setType("Privée");
         assuranceToUpdate.setDateDebut(LocalDate.of(2024, 6, 1));
         assuranceToUpdate.setDateFin(LocalDate.of(2029, 6, 1));
-        assuranceToUpdate.setMontantCouvert(75000.0f);
+        //assuranceToUpdate.setMontantCouvert(75000.0f);
 
         serviceA.update(assuranceToUpdate); // Fix: Using correct service instance
 

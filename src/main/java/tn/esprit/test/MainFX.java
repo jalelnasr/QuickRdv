@@ -27,8 +27,8 @@ public class MainFX extends Application {
             primaryStage.setScene(scene);
             //primaryStage.setTitle("Ajouter Informations Generales");
             //primaryStage.setTitle("Ajouter Assurance");
-            primaryStage.setTitle("Historique Consultations");
-            //primaryStage.setTitle("Historique Ordonnance");
+            //primaryStage.setTitle("Historique Consultations");
+            primaryStage.setTitle("Historique Ordonnance");
 
 
             primaryStage.show();
