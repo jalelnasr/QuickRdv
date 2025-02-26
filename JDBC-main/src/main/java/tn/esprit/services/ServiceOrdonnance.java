@@ -220,5 +220,102 @@ public class ServiceOrdonnance implements IMService<Ordonnance> {
     }
 
 
+    public List<Ordonnance> getOrdonnancesByDate(String date) {
+        List<Ordonnance> ordonnances = new ArrayList<>();
+        String sql = "SELECT * FROM ordonnance WHERE DATE(date_prescription) = ?";
+
+        try (PreparedStatement stmt = cnx.prepareStatement(sql)) {
+            stmt.setString(1, date); // Filtrer par date
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Ordonnance o = new Ordonnance();
+                o.setId(rs.getInt("id"));
+                o.setMedecinId(rs.getInt("medecin_id"));
+                o.setPatientId(rs.getInt("patient_id"));
+                o.setMedicaments(stringToMap(rs.getString("medicaments")));
+                o.setDatePrescription(rs.getDate("date_prescription"));
+                o.setInstructions(rs.getString("instructions"));
+                o.setStatut(rs.getString("statut"));
+                ordonnances.add(o);
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la récupération des ordonnances par date : " + e.getMessage());
+        }
+
+        return ordonnances;
+    }
+
+    public void updateStatut(int ordonnanceId, String statut) {
+        String sql = "UPDATE ordonnance SET statut = ? WHERE id = ?";
+        try (PreparedStatement ps = cnx.prepareStatement(sql)) {
+            ps.setString(1, statut);
+            ps.setInt(2, ordonnanceId);
+            ps.executeUpdate();
+            System.out.println("Statut de l'ordonnance mis à jour : " + statut);
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la mise à jour du statut de l'ordonnance : " + e.getMessage());
+        }
+    }
+
+    /*private Ordonnance mapResultSetToOrdonnance(ResultSet resultSet) throws SQLException {
+        Ordonnance ordonnance = new Ordonnance();
+        ordonnance.setId(resultSet.getInt("id"));
+        ordonnance.setMedecinId(resultSet.getInt("medecin_id"));
+        ordonnance.setPatientId(resultSet.getInt("patient_id"));
+        ordonnance.setMedicaments(stringToMap(resultSet.getString("medicaments"))); // Utiliser votre méthode de conversion
+        ordonnance.setDatePrescription(resultSet.getDate("date_prescription"));
+        ordonnance.setInstructions(resultSet.getString("instructions"));
+        ordonnance.setStatut(resultSet.getString("statut"));
+
+        // Vous pouvez ajouter des champs supplémentaires si nécessaire
+        String specialite = resultSet.getString("specialite");
+        String nomMedecin = resultSet.getString("nom");
+        String prenomMedecin = resultSet.getString("prenom");
+
+        // Vous pouvez aussi stocker ces informations dans l'objet Ordonnance si nécessaire
+        ordonnance.setMedecinId(nomMedecin);
+        ordonnance.setMedecinPrenom(prenomMedecin);
+        ordonnance.setMedecinSpecialite(specialite);
+
+        return ordonnance;
+    }
+
+
+
+    public List<Ordonnance> getOrdonnancesByDoctorName(String doctorName) {
+        List<Ordonnance> ordonnances = new ArrayList<>();
+        String query = "SELECT o.*, m.specialite, u.nom, u.prenom " +
+                "FROM ordonnance o " +
+                "JOIN medecin m ON o.medecin_id = m.id " +
+                "JOIN utilisateur u ON m.id = u.id " +
+                "WHERE u.nom LIKE ? OR u.prenom LIKE ?";
+
+        try (PreparedStatement preparedStatement = cnx.prepareStatement(query)) {
+            // Préparer la requête avec les paramètres de recherche
+            preparedStatement.setString(1, "%" + doctorName + "%");
+            preparedStatement.setString(2, "%" + doctorName + "%");
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                // Parcourir le résultat et ajouter chaque ordonnance à la liste
+                while (resultSet.next()) {
+                    Ordonnance ordonnance = mapResultSetToOrdonnance(resultSet);
+                    ordonnances.add(ordonnance);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la récupération des ordonnances par nom de médecin : " + e.getMessage());
+        }
+
+        return ordonnances;
+    }*/
+
 
 }
+
+
+
+
+
+
+

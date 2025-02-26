@@ -21,6 +21,10 @@
                                 <Button text="Modifier" onAction="#modifierMedicament"/>
                                 <Button text="Supprimer" onAction="#supprimerMedicament"/>
                                 <Button text="Réinitialiser" onAction="#resetFields"/>
+                                <Button text="Importer depuis FHIR" onAction="#importerDepuisFHIR"/>
+                                <Button text="Exporter vers FHIR" onAction="#exporterVersFHIR"/>
+
+
                         </HBox>
 
                         <ListView fx:id="medicamentListView" prefHeight="200"/>

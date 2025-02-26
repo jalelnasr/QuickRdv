@@ -175,4 +175,20 @@ public class AjouterMedicament {
         stockMedicamentField.clear();
         pharmacienIdField.clear();
     }
+
+    @FXML
+    private void importerDepuisFHIR() {
+        ServiceMedicament service = new ServiceMedicament();
+        service.importFromFHIR();
+        System.out.println("🔄 Importation depuis FHIR terminée !");
+    }
+
+    @FXML
+    private void exporterVersFHIR() {
+        ServiceMedicament service = new ServiceMedicament();
+        service.exportToFHIR();
+        System.out.println("🔄 Exportation vers FHIR terminée !");
+    }
+
+
 }
