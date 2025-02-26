@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="670.0" prefWidth="1064.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AfficherAnalyse">
+   <children>
+      <ListView fx:id="analyseListView" layoutX="133.0" layoutY="58.0" prefHeight="478.0" prefWidth="578.0" />
+      <Button fx:id="modifier" layoutX="180.0" layoutY="562.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="108.0" text="modifier" onAction="#modifierAnalyse" />
+      <Button fx:id="supprimer" layoutX="558.0" layoutY="562.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="121.0" text="supprimer" onAction="#supprimer" />
+   </children>
+</AnchorPane>
