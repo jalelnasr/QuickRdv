@@ -1,17 +1,16 @@
-C:\Users\MSI\3D Objects\quick_rdv\src\main\java\controllers\AfficherAnalyse.java
-C:\Users\MSI\3D Objects\quick_rdv\src\main\java\controllers\AfficherRendezVous.java
-C:\Users\MSI\3D Objects\quick_rdv\src\main\java\controllers\AjouterAnalyse.java
-C:\Users\MSI\3D Objects\quick_rdv\src\main\java\controllers\AjouterRendezVous.java
-C:\Users\MSI\3D Objects\quick_rdv\src\main\java\controllers\MainMenu.java
-C:\Users\MSI\3D Objects\quick_rdv\src\main\java\controllers\ModifierAnalyse.java
-C:\Users\MSI\3D Objects\quick_rdv\src\main\java\controllers\ModifierRendezVous.java
-C:\Users\MSI\3D Objects\quick_rdv\src\main\java\org\example\Main.java
-C:\Users\MSI\3D Objects\quick_rdv\src\main\java\tn\esprit\interfaces\IService.java
-C:\Users\MSI\3D Objects\quick_rdv\src\main\java\tn\esprit\interfaces\IServiceAnalyse.java
-C:\Users\MSI\3D Objects\quick_rdv\src\main\java\tn\esprit\models\Analyse.java
-C:\Users\MSI\3D Objects\quick_rdv\src\main\java\tn\esprit\models\RendezVous.java
-C:\Users\MSI\3D Objects\quick_rdv\src\main\java\tn\esprit\services\ServiceAnalyse.java
-C:\Users\MSI\3D Objects\quick_rdv\src\main\java\tn\esprit\services\ServiceRendezVous.java
-C:\Users\MSI\3D Objects\quick_rdv\src\main\java\tn\esprit\test\MainFX.java
-C:\Users\MSI\3D Objects\quick_rdv\src\main\java\tn\esprit\utils\Config.java
-C:\Users\MSI\3D Objects\quick_rdv\src\main\java\tn\esprit\utils\MyDatabase.java
+C:\quick_rdv\src\main\java\controllers\AfficherAnalyse.java
+C:\quick_rdv\src\main\java\controllers\AfficherRendezVous.java
+C:\quick_rdv\src\main\java\controllers\AjouterAnalyse.java
+C:\quick_rdv\src\main\java\controllers\AjouterRendezVous.java
+C:\quick_rdv\src\main\java\controllers\MainMenu.java
+C:\quick_rdv\src\main\java\controllers\ModifierAnalyse.java
+C:\quick_rdv\src\main\java\controllers\ModifierRendezVous.java
+C:\quick_rdv\src\main\java\org\example\Main.java
+C:\quick_rdv\src\main\java\tn\esprit\interfaces\IService.java
+C:\quick_rdv\src\main\java\tn\esprit\interfaces\IServiceAnalyse.java
+C:\quick_rdv\src\main\java\tn\esprit\models\Analyse.java
+C:\quick_rdv\src\main\java\tn\esprit\models\RendezVous.java
+C:\quick_rdv\src\main\java\tn\esprit\services\ServiceAnalyse.java
+C:\quick_rdv\src\main\java\tn\esprit\services\ServiceRendezVous.java
+C:\quick_rdv\src\main\java\tn\esprit\test\MainFX.java
+C:\quick_rdv\src\main\java\tn\esprit\utils\MyDatabase.java

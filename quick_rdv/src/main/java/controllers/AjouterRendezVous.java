@@ -12,10 +12,7 @@ import tn.esprit.services.ServiceRendezVous;
 import tn.esprit.test.MainFX;
 
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -49,17 +46,27 @@ public class AjouterRendezVous implements Initializable {
     }
 
     private void loadMedecins() {
-        String query = "SELECT id, specialite FROM medecin";
+        String query = "SELECT u.nom,u.prenom, m.specialite " +
+                "FROM utilisateur u " +
+                "JOIN medecin m ON u.id = m.id " +
+                "WHERE u.role = 'medecin'"; // Filter only doctors
+
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/quick_rdv", "root", "");
              Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
 
+            medecinComboBox.getItems().clear(); // Clear previous items to avoid duplication
+
             while (rs.next()) {
-                int id = rs.getInt("id");
-                String specialite = rs.getString("specialite");
-                medecinMap.put(id, specialite);
+                String nom = rs.getString("nom");
+                String prenom = rs.getString("prenom"); // Get name from utilisateur
+                String specialite = rs.getString("specialite"); // Get specialty from medecin
+
+                // Format: "Doctor Name - Specialty"
+                String displayText = "Dr. " + nom + " " + prenom + " - " + specialite;
+
+                medecinComboBox.getItems().add(displayText);
             }
-            medecinComboBox.getItems().addAll(medecinMap.values());
         } catch (Exception e) {
             e.printStackTrace();
             showAlert("Erreur", "Une erreur s'est produite lors du chargement des médecins.");
@@ -68,6 +75,27 @@ public class AjouterRendezVous implements Initializable {
 
     private void loadTypeConsultationOptions() {
         typeConsultationComboBox.setItems(FXCollections.observableArrayList("Consultation", "Téléconsultation"));
+    }
+
+    private int getMedecinIdByNomPrenom(String nom, String prenom) {
+        String query = "SELECT m.id FROM medecin m " +
+                "JOIN utilisateur u ON m.id = u.id " +
+                "WHERE u.nom = ? AND u.prenom = ? AND u.role = 'medecin'";
+
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/quick_rdv", "root", "");
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setString(1, nom);
+            stmt.setString(2, prenom);
+
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("id");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1; // Retourne -1 si non trouvé
     }
 
     @FXML
@@ -90,16 +118,28 @@ public class AjouterRendezVous implements Initializable {
                 return;
             }
 
-            String selectedSpecialite = medecinComboBox.getValue();
-            int medecinId = -1;
-            for (Map.Entry<Integer, String> entry : medecinMap.entrySet()) {
-                if (entry.getValue().equals(selectedSpecialite)) {
-                    medecinId = entry.getKey();
-                    break;
-                }
+            String selectedMedecin = medecinComboBox.getValue(); // Ex: "Dr. Ahmed Ben Salah - Cardiologue"
+            String[] parts = selectedMedecin.split(" - "); // Séparer spécialité
+            if (parts.length < 2) {
+                showAlert("Erreur", "Médecin sélectionné invalide.");
+                return;
             }
+
+            String fullName = parts[0]; // Extrait "Dr. Ahmed Ben Salah"
+            String[] nameParts = fullName.split(" ", 3); // Sépare "Dr.", "Ahmed", "Ben Salah"
+
+            if (nameParts.length < 3) {
+                showAlert("Erreur", "Le format du nom du médecin est invalide.");
+                return;
+            }
+
+            String medecinNom = nameParts[1]; // "Ahmed"
+            String medecinPrenom = nameParts[2]; // "Ben Salah"
+
+            // Récupérer l'ID du médecin
+            int medecinId = getMedecinIdByNomPrenom(medecinNom, medecinPrenom);
             if (medecinId == -1) {
-                showAlert("Erreur", "Médecin non trouvé.");
+                showAlert("Erreur", "Médecin non trouvé.");
                 return;
             }
 

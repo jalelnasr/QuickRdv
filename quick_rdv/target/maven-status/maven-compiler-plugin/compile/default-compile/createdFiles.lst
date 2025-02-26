@@ -9,7 +9,6 @@ tn\esprit\utils\MyDatabase.class
 tn\esprit\interfaces\IService.class
 tn\esprit\services\ServiceAnalyse.class
 tn\esprit\services\ServiceRendezVous.class
-tn\esprit\utils\Config.class
 controllers\AjouterRendezVous.class
 controllers\MainMenu.class
 controllers\ModifierAnalyse.class
