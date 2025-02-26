@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="585.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.Pateint">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="585.0" stylesheets="@CSS/designe.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.Pateint">
    <left>
       <AnchorPane prefHeight="400.0" prefWidth="211.0" style="-fx-background-color: #0598ff;" BorderPane.alignment="CENTER">
          <children>
@@ -19,42 +19,42 @@
             </Label>
 
             <!-- TextField for patient name with fx:id="nom_Pateint" -->
-            <TextField fx:id="nom_Pateint" editable="false" layoutX="19.0" layoutY="93.0" promptText="Nom Patient" style="-fx-background-color: transparent; -fx-border-width: 0px 0px 2px 0px;">
+            <TextField fx:id="nom_Pateint" editable="false" layoutX="19.0" layoutY="93.0" promptText="Nom Patient">
                <font>
                   <Font size="15.0" />
                </font>
             </TextField>
 
             <!-- Button to view medical record -->
-            <Button layoutX="-3.0" layoutY="143.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="226.0" style="-fx-background-color: transparent; -fx-border-color: #000000;" text="Voir Dossier Médical">
+            <Button layoutX="-3.0" layoutY="143.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="226.0" text="Voir Dossier Médical">
                <font>
                   <Font size="18.0" />
                </font>
             </Button>
 
             <!-- Button to add a complaint -->
-            <Button layoutX="-3.0" layoutY="187.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="226.0" style="-fx-background-color: transparent; -fx-border-color: #000000;" text="Ajouter Réclamation">
+            <Button layoutX="-3.0" layoutY="187.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="226.0" text="Ajouter Réclamation">
                <font>
                   <Font size="18.0" />
                </font>
             </Button>
 
             <!-- Button to give feedback -->
-            <Button layoutX="-1.0" layoutY="231.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="224.0" style="-fx-background-color: transparent; -fx-border-color: #000000;" text="Donner Avis">
+            <Button layoutX="-1.0" layoutY="231.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="224.0" text="Donner Avis">
                <font>
                   <Font size="18.0" />
                </font>
             </Button>
 
             <!-- Button to request an analysis appointment -->
-            <Button layoutX="-2.0" layoutY="275.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="226.0" style="-fx-background-color: transparent; -fx-border-color: #000000;" text="Rendez-vous Analyse">
+            <Button layoutX="-2.0" layoutY="275.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="226.0" text="Rendez-vous Analyse">
                <font>
                   <Font size="18.0" />
                </font>
             </Button>
 
             <!-- Button to log out -->
-            <Button layoutY="374.0" mnemonicParsing="false" onAction="#retourner" style="-fx-background-color: transparent;" text="Se Déconnecter">
+            <Button layoutY="374.0" mnemonicParsing="false" onAction="#retourner" text="Se Déconnecter">
                <font>
                   <Font size="15.0" />
                </font>

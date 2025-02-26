@@ -8,9 +8,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="499.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.Registre">
+<AnchorPane prefHeight="499.0" prefWidth="400.0" stylesheets="@CSS/designe.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.Registre">
    <children>
-      <Label layoutX="97.0" layoutY="62.0" prefHeight="30.0" prefWidth="206.0" style="-fx-background-color: transparent;" text="      Registration Form" textAlignment="CENTER" textFill="#0598ff">
+      <Label layoutX="97.0" layoutY="62.0" prefHeight="30.0" prefWidth="224.0" style="-fx-background-color: transparent;" text="      Registration Form" textAlignment="CENTER" textFill="#0598ff">
          <font>
             <Font size="21.0" />
          </font>
@@ -36,11 +36,11 @@
             <Font size="21.0" />
          </font>
       </Button>
-      <TextField fx:id="prenom" layoutX="40.0" layoutY="158.0" promptText="Prenom" style="-fx-background-color: transparent; -fx-border-color: #0598ff; -fx-border-width: 0px 0px 2px 0px;" />
-      <TextField fx:id="nom" layoutX="42.0" layoutY="109.0" promptText="Nom" style="-fx-background-color: transparent; -fx-border-color: #0598ff; -fx-border-width: 0px 0px 2px 0px;" />
-      <PasswordField fx:id="mot_de_passe" layoutX="40.0" layoutY="264.0" promptText="mot_de_passe" style="-fx-background-color: transparent; -fx-border-color: #0598ff; -fx-border-width: 0px 0px 2px 0px;" />
-      <TextField fx:id="email" layoutX="40.0" layoutY="212.0" promptText="email" style="-fx-background-color: transparent; -fx-border-color: #0598ff; -fx-border-width: 0px 0px 2px 0px;" />
-      <PasswordField fx:id="adresse" layoutX="220.0" layoutY="251.0" promptText="adresse" style="-fx-background-color: transparent; -fx-border-color: #0598ff; -fx-border-width: 0px 0px 2px 0px;" />
-      <TextField fx:id="DateNaissance" layoutX="220.0" layoutY="205.0" promptText="DateNaissance" style="-fx-background-color: transparent; -fx-border-color: #0598ff; -fx-border-width: 0px 0px 2px 0px;" />
+      <TextField fx:id="prenom" layoutX="40.0" layoutY="158.0" promptText="Prenom" />
+      <TextField fx:id="nom" layoutX="42.0" layoutY="109.0" promptText="Nom" />
+      <PasswordField fx:id="mot_de_passe" layoutX="40.0" layoutY="264.0" promptText="mot_de_passe" />
+      <TextField fx:id="email" layoutX="40.0" layoutY="212.0" promptText="email" />
+      <PasswordField fx:id="adresse" layoutX="220.0" layoutY="251.0" promptText="adresse" />
+      <TextField fx:id="DateNaissance" layoutX="220.0" layoutY="205.0" promptText="DateNaissance" />
    </children>
 </AnchorPane>

@@ -1,22 +1,28 @@
 package tn.esprit.controllers;
 
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
+
 import javafx.stage.Stage;
 import tn.esprit.utils.MyDatabase;
 
 import java.io.IOException;
+import java.net.URL;
 import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
 
+
+
 import static com.sun.glass.ui.Cursor.setVisible;
 
 public class AfficherUtilisateur {
+
 
     @FXML
     private PieChart statistiqueChart;
@@ -31,6 +37,7 @@ public class AfficherUtilisateur {
 
     private int selectedUserId = -1;
     private Connection conn = MyDatabase.getInstance().getCnx();
+
 
     @FXML
     void initialize() {

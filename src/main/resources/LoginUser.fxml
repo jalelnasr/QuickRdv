@@ -8,18 +8,18 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.LoginUser">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@CSS/designe.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.LoginUser">
    <right>
       <AnchorPane prefHeight="400.0" prefWidth="300.0" BorderPane.alignment="CENTER">
          <children>
-            <TextField fx:id="email" layoutX="76.0" layoutY="151.0" promptText="email" style="-fx-background-color: transaprent; -fx-border-width: 0px 0px 2px 0px; -fx-border-color: #0598ff;" />
-            <PasswordField fx:id="mot_de_passe" layoutX="76.0" layoutY="216.0" promptText="mot_de_passe" style="-fx-background-color: transparent; -fx-border-color: #0598ff; -fx-border-width: 0px 0px 2px 0px;" />
+            <TextField fx:id="email" layoutX="76.0" layoutY="151.0" promptText="email" />
+            <PasswordField fx:id="mot_de_passe" layoutX="76.0" layoutY="216.0" promptText="mot_de_passe" />
             <Label layoutX="75.0" layoutY="50.0" prefHeight="30.0" prefWidth="129.0" text="   WELCOME" textFill="#0598ff">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
-            <Button layoutX="86.0" layoutY="257.0" mnemonicParsing="false" onAction="#SeConnecter" prefHeight="35.0" prefWidth="129.0" style="-fx-background-color: #0598ff;" text="Se Connecter" textFill="WHITE">
+            <Button layoutX="86.0" layoutY="257.0" mnemonicParsing="false" onAction="#SeConnecter" prefHeight="36.0" prefWidth="135.0" style="-fx-background-color: #0598ff;" text="Se Connecter" textFill="WHITE">
                <font>
                   <Font size="16.0" />
                </font>

@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.Medecin">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@CSS/designe.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.Medecin">
    <left>
       <AnchorPane prefHeight="400.0" prefWidth="191.0" style="-fx-background-color: #0598ff;" BorderPane.alignment="CENTER">
          <children>
@@ -16,7 +16,7 @@
                   <Font size="28.0" />
                </font>
             </Label>
-            <TextField fx:id="nom_medecin" layoutX="21.0" layoutY="94.0" promptText="nom_medecin" style="-fx-background-color: transparent; -fx-border-width: 0px 0px 2px 0px; ">
+            <TextField fx:id="nom_medecin" layoutX="21.0" layoutY="94.0" promptText="nom_medecin">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>

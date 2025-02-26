@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="585.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.Pharmacien">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="585.0" stylesheets="@CSS/designe.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.Pharmacien">
    <left>
       <AnchorPane prefHeight="400.0" prefWidth="211.0" style="-fx-background-color: #0598ff;" BorderPane.alignment="CENTER">
          <children>
@@ -17,26 +17,26 @@
                   <Font size="19.0" />
                </font>
             </Label>
-            <TextField fx:id="nom_pharmacien" layoutX="13.0" layoutY="85.0" promptText="nom_Pharmacien" style="-fx-background-color: transparent; -fx-border-width: 0px 0px 2px 0px;">
+            <TextField fx:id="nom_pharmacien" layoutX="13.0" layoutY="85.0" promptText="nom_Pharmacien">
                <font>
                   <Font size="16.0" />
                </font></TextField>
-            <Button layoutX="-3.0" layoutY="143.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="226.0" style="-fx-background-color: transparent; -fx-border-color: #000000;" text="Voir_list_ordonnace">
+            <Button layoutX="-3.0" layoutY="143.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="226.0" text="Voir_list_ordonnace">
                <font>
                   <Font size="18.0" />
                </font>
             </Button>
-            <Button layoutX="-3.0" layoutY="187.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="226.0" style="-fx-background-color: transparent; -fx-border-color: #000000;" text="Consulter_Medicament">
+            <Button layoutX="-3.0" layoutY="187.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="226.0" text="Consulter_Medicament">
                <font>
                   <Font size="18.0" />
                </font>
             </Button>
-            <Button layoutX="-1.0" layoutY="231.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="224.0" style="-fx-background-color: transparent; -fx-border-color: #000000;" text="Gerer_Medicament">
+            <Button layoutX="-1.0" layoutY="231.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="224.0" text="Gerer_Medicament">
                <font>
                   <Font size="18.0" />
                </font>
             </Button>
-            <Button layoutY="374.0" mnemonicParsing="false" onAction="#retourner" style="-fx-background-color: transparent;" text="Se_Deconnecter">
+            <Button layoutY="374.0" mnemonicParsing="false" onAction="#retourner" text="Se_Deconnecter">
                <font>
                   <Font size="15.0" />
                </font>
