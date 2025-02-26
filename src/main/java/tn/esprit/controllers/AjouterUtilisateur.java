@@ -5,36 +5,29 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+
 import tn.esprit.utils.MyDatabase;
 
 public class AjouterUtilisateur {
 
     @FXML
-    private TextField email;
+    private TextField email, nom, prenom, specialite, num_rdv_max;
 
     @FXML
     private PasswordField mot_de_passe;
 
     @FXML
-    private TextField nom;
+    private ComboBox<String> role;
 
     @FXML
-    private TextField prenom;
-
-    @FXML
-    private TextField role;
-
-    @FXML
-    void afficherlist(ActionEvent event) {
-        loadPage("/AfficherUtilisateur.fxml", "Afficher la liste");
+    void initialize() {
+        role.getItems().addAll("medecin", "pharmacien", "administrateur");
+        specialite.setDisable(true);
+        num_rdv_max.setDisable(true);
     }
 
     @FXML
@@ -43,9 +36,9 @@ public class AjouterUtilisateur {
         String userPassword = mot_de_passe.getText().trim();
         String userNom = nom.getText().trim();
         String userPrenom = prenom.getText().trim();
-        String userRole = role.getText().trim();
+        String userRole = role.getValue();
 
-        if (userEmail.isEmpty() || userPassword.isEmpty() || userNom.isEmpty() || userPrenom.isEmpty() || userRole.isEmpty()) {
+        if (userEmail.isEmpty() || userPassword.isEmpty() || userNom.isEmpty() || userPrenom.isEmpty() || userRole == null) {
             afficherAlerte("Erreur", "Tous les champs doivent être remplis !");
             return;
         }
@@ -61,36 +54,109 @@ public class AjouterUtilisateur {
             return;
         }
 
-        String query = "INSERT INTO utilisateur (nom, prenom, email, mot_de_passe, role) VALUES (?, ?, ?, ?, ?)";
-        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+        String insertUserQuery = "INSERT INTO utilisateur (nom, prenom, email, mot_de_passe, role) VALUES (?, ?, ?, ?, ?)";
+
+        try (PreparedStatement stmt = conn.prepareStatement(insertUserQuery, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, userNom);
             stmt.setString(2, userPrenom);
             stmt.setString(3, userEmail);
             stmt.setString(4, userPassword);
             stmt.setString(5, userRole);
+            stmt.executeUpdate();
 
-            int rowsInserted = stmt.executeUpdate();
-            if (rowsInserted > 0) {
-                afficherAlerte("Succès", "Utilisateur ajouté avec succès !");
-                viderChamps();
+            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    int userId = generatedKeys.getInt(1);
+
+                    if ("medecin".equals(userRole)) {
+                        String userSpecialite = specialite.getText().trim();
+                        String userNumRdvMax = num_rdv_max.getText().trim();
+
+                        if (userSpecialite.isEmpty() || userNumRdvMax.isEmpty()) {
+                            afficherAlerte("Erreur", "La spécialité et le nombre maximal de rendez-vous sont requis pour un médecin !");
+                            return;
+                        }
+
+                        try {
+                            int numMax = Integer.parseInt(userNumRdvMax);
+                            if (!ajouterMedecin(conn, userId, userSpecialite, numMax)) {
+                                afficherAlerte("Erreur", "Impossible d'ajouter les informations du médecin.");
+                                return;
+                            }
+                        } catch (NumberFormatException e) {
+                            afficherAlerte("Erreur", "Le nombre maximal de rendez-vous doit être un entier !");
+                            return;
+                        }
+                    } else {
+                        if (!ajouterDansTableRole(conn, userId, userRole)) {
+                            afficherAlerte("Erreur", "L'utilisateur a été ajouté, mais son rôle n'a pas été attribué.");
+                            return;
+                        }
+                    }
+
+                    afficherAlerte("Succès", "Utilisateur ajouté avec succès !");
+                    viderChamps();
+                }
             }
         } catch (SQLException e) {
-            afficherAlerte("Erreur SQL", "Problème lors de l'ajout : " + e.getMessage());
+            afficherAlerte("Erreur SQL", "Problème lors de l'ajout de l'utilisateur.");
             e.printStackTrace();
         }
     }
 
-    @FXML
-    void display_page(ActionEvent event) {
-        closeWindow();
+    private boolean ajouterDansTableRole(Connection conn, int userId, String userRole) {
+        String insertRoleQuery = switch (userRole) {
+            case "pharmacien" -> "INSERT INTO pharmacien (id) VALUES (?)";
+            case "administrateur" -> "INSERT INTO administrateur (id) VALUES (?)";
+            default -> null;
+        };
+
+        if (insertRoleQuery == null) {
+            afficherAlerte("Erreur", "Rôle non reconnu !");
+            return false;
+        }
+
+        try (PreparedStatement roleStmt = conn.prepareStatement(insertRoleQuery)) {
+            roleStmt.setInt(1, userId);
+            roleStmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            afficherAlerte("Erreur SQL", "Impossible d'ajouter l'utilisateur dans la table " + userRole + ".");
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    private boolean ajouterMedecin(Connection conn, int userId, String specialite, int numRdvMax) {
+        String insertMedecinQuery = "INSERT INTO medecin (id, specialite, num_rdv_max) VALUES (?, ?, ?)";
+
+        try (PreparedStatement stmt = conn.prepareStatement(insertMedecinQuery)) {
+            stmt.setInt(1, userId);
+            stmt.setString(2, specialite);
+            stmt.setInt(3, numRdvMax);
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            afficherAlerte("Erreur SQL", "Impossible d'ajouter les informations du médecin.");
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @FXML
-    void retourner(ActionEvent event) {
-        loadPage("/LoginUser.fxml", "Login");
-        closeWindow();
+    void onRoleChanged(ActionEvent event) {
+        boolean isMedecin = "medecin".equals(role.getValue());
+        specialite.setDisable(!isMedecin);
+        num_rdv_max.setDisable(!isMedecin);
     }
 
+    // Méthode pour afficher la liste des utilisateurs
+    @FXML
+    void afficherlist(ActionEvent event) {
+        loadPage("/AfficherUtilisateur.fxml", "Afficher la Liste des Utilisateurs");
+    }
+
+    // Méthode pour afficher une autre page et fermer la fenêtre actuelle
     private void loadPage(String fxmlPath, String title) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
@@ -103,6 +169,18 @@ public class AjouterUtilisateur {
             e.printStackTrace();
             afficherAlerte("Erreur", "Impossible de charger la page : " + fxmlPath);
         }
+    }
+
+    // Méthode pour fermer la fenêtre actuelle
+    @FXML
+    void display_page(ActionEvent event) {
+        closeWindow();
+    }
+
+    @FXML
+    void retourner(ActionEvent event) {
+        loadPage("/LoginUser.fxml", "Login");
+        closeWindow();
     }
 
     private void closeWindow() {
@@ -123,6 +201,10 @@ public class AjouterUtilisateur {
         mot_de_passe.clear();
         nom.clear();
         prenom.clear();
-        role.clear();
+        role.getSelectionModel().clearSelection();
+        specialite.clear();
+        num_rdv_max.clear();
+        specialite.setDisable(true);
+        num_rdv_max.setDisable(true);
     }
 }

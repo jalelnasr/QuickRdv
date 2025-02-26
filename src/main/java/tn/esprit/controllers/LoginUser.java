@@ -3,6 +3,7 @@ package tn.esprit.controllers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -43,7 +44,7 @@ public class LoginUser {
                     loadPage("/Medecin.fxml", "Page Médecin");
                     break;
                 case "administrateur":
-                    loadPage("/AJouterUtilisateur.fxml", "Page Administrateur");
+                    loadPage("/AjouterUtilisateur.fxml", "Page Administrateur");
                     break;
                 case "pharmacien":
                     loadPage("/Pharmacien.fxml", "Page Pharmacien");
@@ -119,8 +120,20 @@ public class LoginUser {
         alert.showAndWait();
     }
 
-    /*@FXML
-    void mot_de_passe_oublié(ActionEvent event) {
-        // Laissez vide ou implémentez la logique souhaitée
-    }*/
+    @FXML
+    void mot_de_pass_oublié(MouseEvent event) {
+        try {
+            // Charger le fichier FXML de l'interface ResetPassword
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ResetPassword.fxml"));
+            Parent root = loader.load();
+
+            // Récupérer la scène actuelle et changer son contenu
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

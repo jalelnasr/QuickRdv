@@ -36,9 +36,12 @@
             <Font size="21.0" />
          </font>
       </Button>
-      <TextField fx:id="prenom" layoutX="126.0" layoutY="185.0" promptText="Prenom" style="-fx-background-color: transparent; -fx-border-color: #0598ff; -fx-border-width: 0px 0px 2px 0px;" />
-      <TextField fx:id="nom" layoutX="126.0" layoutY="137.0" promptText="Nom" style="-fx-background-color: transparent; -fx-border-color: #0598ff; -fx-border-width: 0px 0px 2px 0px;" />
-      <PasswordField fx:id="mot_de_passe" layoutX="126.0" layoutY="296.0" promptText="mot_de_passe" style="-fx-background-color: transparent; -fx-border-color: #0598ff; -fx-border-width: 0px 0px 2px 0px;" />
-      <TextField fx:id="email" layoutX="126.0" layoutY="236.0" promptText="email" style="-fx-background-color: transparent; -fx-border-color: #0598ff; -fx-border-width: 0px 0px 2px 0px;" />
+      <TextField fx:id="prenom" layoutX="40.0" layoutY="158.0" promptText="Prenom" style="-fx-background-color: transparent; -fx-border-color: #0598ff; -fx-border-width: 0px 0px 2px 0px;" />
+      <TextField fx:id="nom" layoutX="42.0" layoutY="109.0" promptText="Nom" style="-fx-background-color: transparent; -fx-border-color: #0598ff; -fx-border-width: 0px 0px 2px 0px;" />
+      <PasswordField fx:id="mot_de_passe" layoutX="40.0" layoutY="264.0" promptText="mot_de_passe" style="-fx-background-color: transparent; -fx-border-color: #0598ff; -fx-border-width: 0px 0px 2px 0px;" />
+      <TextField fx:id="email" layoutX="40.0" layoutY="212.0" promptText="email" style="-fx-background-color: transparent; -fx-border-color: #0598ff; -fx-border-width: 0px 0px 2px 0px;" />
+      <TextField fx:id="numDossier" layoutX="220.0" layoutY="158.0" promptText="numDossier" style="-fx-background-color: transparent; -fx-border-color: #0598ff; -fx-border-width: 0px 0px 2px 0px;" />
+      <PasswordField fx:id="adresse" layoutX="220.0" layoutY="251.0" promptText="adresse" style="-fx-background-color: transparent; -fx-border-color: #0598ff; -fx-border-width: 0px 0px 2px 0px;" />
+      <TextField fx:id="DateNaissance" layoutX="220.0" layoutY="205.0" promptText="DateNaissance" style="-fx-background-color: transparent; -fx-border-color: #0598ff; -fx-border-width: 0px 0px 2px 0px;" />
    </children>
 </AnchorPane>

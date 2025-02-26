@@ -5,14 +5,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+
 import tn.esprit.utils.MyDatabase;
 
 public class Registre {
@@ -29,6 +26,14 @@ public class Registre {
     @FXML
     private TextField prenom;
 
+    @FXML
+    private TextField numDossier;
+
+    @FXML
+    private TextField DateNaissance;
+
+    @FXML
+    private TextField adresse;
 
     @FXML
     void SignIn(ActionEvent event) {
@@ -36,53 +41,109 @@ public class Registre {
         String userPassword = mot_de_passe.getText().trim();
         String userNom = nom.getText().trim();
         String userPrenom = prenom.getText().trim();
+        String dossier = numDossier.getText().trim();
+        String naissance = DateNaissance.getText().trim();
+        String userAdresse = adresse.getText().trim();
 
-
-        if (userEmail.isEmpty() || userPassword.isEmpty() || userNom.isEmpty() || userPrenom.isEmpty()) {
-            showAlert("Erreur", "Veuillez remplir tous les champs", Alert.AlertType.ERROR);
+        // Vérification des champs obligatoires
+        if (userEmail.isEmpty() || userPassword.isEmpty() || userNom.isEmpty() ||
+                userPrenom.isEmpty() || dossier.isEmpty() || naissance.isEmpty() || userAdresse.isEmpty()) {
+            showAlert("Erreur", "Tous les champs doivent être remplis !", Alert.AlertType.ERROR);
             return;
         }
 
+        // Vérification de l’email
+        if (!userEmail.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            showAlert("Erreur", "Veuillez entrer une adresse email valide.", Alert.AlertType.ERROR);
+            return;
+        }
 
-        if (insertUser(userNom, userPrenom, userEmail, userPassword, "Patient")) {
-            showAlert("Succès", "Inscription réussie ! Vous pouvez vous connecter.", Alert.AlertType.INFORMATION);
+        // Vérification du format de la date (ex: YYYY-MM-DD)
+        if (!naissance.matches("\\d{4}-\\d{2}-\\d{2}")) {
+            showAlert("Erreur", "Format de la date incorrect (AAAA-MM-JJ) !", Alert.AlertType.ERROR);
+            return;
+        }
+
+        // Vérification que numDossier est un nombre
+        try {
+            Integer.parseInt(dossier);
+        } catch (NumberFormatException e) {
+            showAlert("Erreur", "Le numéro de dossier doit être un nombre !", Alert.AlertType.ERROR);
+            return;
+        }
+
+        // Insertion de l'utilisateur et récupération de l'ID généré
+        int userId = insertUser(userNom, userPrenom, userEmail, userPassword, "Patient");
+
+        if (userId != -1) {
+            // Insertion des données dans la table patient
+            if (insertPatient(userId, dossier, naissance, userAdresse)) {
+                showAlert("Succès", "Inscription réussie ! Vous pouvez vous connecter.", Alert.AlertType.INFORMATION);
+                clearFields();
+            } else {
+                showAlert("Erreur", "Échec de l'ajout du patient.", Alert.AlertType.ERROR);
+            }
         } else {
-            showAlert("Erreur", "Échec de l'inscription. Veuillez réessayer.", Alert.AlertType.ERROR);
+            showAlert("Erreur", "Échec de l'inscription.", Alert.AlertType.ERROR);
         }
     }
 
-
-    @FXML
-    void display_page(ActionEvent event) {
-        closeWindow();
-    }
-
-
-    @FXML
-    void retourner(ActionEvent event) {
-        loadPage("/LoginUser.fxml", "Login");
-        closeWindow();
-    }
-
-
-    private boolean insertUser(String nom, String prenom, String email, String password, String role) {
+    private int insertUser(String nom, String prenom, String email, String password, String role) {
         String query = "INSERT INTO utilisateur (nom, prenom, email, mot_de_passe, role) VALUES (?, ?, ?, ?, ?)";
+        int userId = -1;
 
         try (Connection conn = MyDatabase.getInstance().getCnx();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+             PreparedStatement stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setString(1, nom);
             stmt.setString(2, prenom);
             stmt.setString(3, email);
             stmt.setString(4, password);
             stmt.setString(5, role);
+            int rowsInserted = stmt.executeUpdate();
+
+            if (rowsInserted > 0) {
+                try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        userId = generatedKeys.getInt(1);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            showAlert("Erreur SQL", "Problème lors de l'insertion de l'utilisateur : " + e.getMessage(), Alert.AlertType.ERROR);
+            e.printStackTrace();
+        }
+        return userId;
+    }
+
+    private boolean insertPatient(int userId, String numDossier, String dateNaissance, String adresse) {
+        String query = "INSERT INTO patient (id, numDossier, DateNaissance, adresse) VALUES (?, ?, ?, ?)";
+
+        try (Connection conn = MyDatabase.getInstance().getCnx();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setInt(1, userId);
+            stmt.setString(2, numDossier);
+            stmt.setString(3, dateNaissance);
+            stmt.setString(4, adresse);
 
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
+            showAlert("Erreur SQL", "Problème lors de l'insertion du patient : " + e.getMessage(), Alert.AlertType.ERROR);
             e.printStackTrace();
-            showAlert("Erreur", "Problème lors de l'insertion en base : " + e.getMessage(), Alert.AlertType.ERROR);
             return false;
         }
+    }
+
+    @FXML
+    void display_page(ActionEvent event) {
+        closeWindow();
+    }
+
+    @FXML
+    void retourner(ActionEvent event) {
+        loadPage("/LoginUser.fxml", "Login");
+        closeWindow();
     }
 
     private void loadPage(String fxmlPath, String title) {
@@ -94,17 +155,15 @@ public class Registre {
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {
-            e.printStackTrace();
             showAlert("Erreur", "Impossible de charger la page : " + fxmlPath, Alert.AlertType.ERROR);
+            e.printStackTrace();
         }
     }
-
 
     private void closeWindow() {
         Stage stage = (Stage) nom.getScene().getWindow();
         stage.close();
     }
-
 
     private void showAlert(String title, String message, Alert.AlertType type) {
         Alert alert = new Alert(type);
@@ -112,5 +171,15 @@ public class Registre {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    private void clearFields() {
+        email.clear();
+        mot_de_passe.clear();
+        nom.clear();
+        prenom.clear();
+        numDossier.clear();
+        DateNaissance.clear();
+        adresse.clear();
     }
 }
