@@ -4,15 +4,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
 import tn.esprit.services.ServiceMedicament;
 import tn.esprit.models.Medicament;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class AjouterMedicament {
 
@@ -28,18 +26,25 @@ public class AjouterMedicament {
     @FXML
     private ListView<Medicament> medicamentListView;
 
+    @FXML
+    private TextField searchField; // Champ de recherche ajouté
+
     private final ServiceMedicament serviceMedicament = new ServiceMedicament();
+    private ObservableList<Medicament> medicamentsList = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
         loadMedicaments();
+
+        // Ajouter un listener pour la barre de recherche
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> filterMedicaments(newValue));
     }
 
     // Charger les médicaments dans la ListView
     private void loadMedicaments() {
         List<Medicament> medicaments = serviceMedicament.getAll();
-        ObservableList<Medicament> observableList = FXCollections.observableArrayList(medicaments);
-        medicamentListView.setItems(observableList);
+        medicamentsList.setAll(medicaments);
+        medicamentListView.setItems(medicamentsList);
 
         medicamentListView.setCellFactory(param -> new ListCell<Medicament>() {
             @Override
@@ -55,6 +60,18 @@ public class AjouterMedicament {
 
         // Ajouter un listener pour afficher les détails lorsqu'on sélectionne un élément
         medicamentListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> showDetails(newValue));
+    }
+
+    // Filtrer les médicaments en fonction de la recherche
+    private void filterMedicaments(String searchText) {
+        if (searchText == null || searchText.isEmpty()) {
+            medicamentListView.setItems(medicamentsList);
+        } else {
+            List<Medicament> filteredList = medicamentsList.stream()
+                    .filter(m -> m.getNom().toLowerCase().contains(searchText.toLowerCase()))
+                    .collect(Collectors.toList());
+            medicamentListView.setItems(FXCollections.observableArrayList(filteredList));
+        }
     }
 
     // Ajouter un médicament
@@ -175,7 +192,4 @@ public class AjouterMedicament {
         stockMedicamentField.clear();
         pharmacienIdField.clear();
     }
-
-
-
 }

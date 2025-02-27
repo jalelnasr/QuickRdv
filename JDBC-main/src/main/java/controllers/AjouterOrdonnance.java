@@ -15,11 +15,8 @@ import tn.esprit.services.ServiceOrdonnance;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
+import java.sql.*;
 import java.sql.Date;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
@@ -41,6 +38,8 @@ public class AjouterOrdonnance implements Initializable {
     private TextField quantiteField;
     @FXML
     private ListView<String> listMedicaments;
+    @FXML
+    private ComboBox<String> patientComboBox;
 
 
 
@@ -122,20 +121,83 @@ public class AjouterOrdonnance implements Initializable {
     }
 
 
+    @FXML
+    void OnDateSelection(ActionEvent event) {
+        // Get the selected date from the DatePicker
+        LocalDate selectedDate = datePrescription.getValue();
+        System.out.println("test");
+
+        if (selectedDate != null) {
+            // Call the method to populate the ComboBox with patients for this date
+            populatePatientComboBox(selectedDate);
+        } else {
+           showAlert("Erreur", "Veuillez sélectionner une date.");
+        }
+    }
+
+
+    private void populatePatientComboBox(LocalDate selectedDate) {
+        // SQL query to select patients based on the rendezvous date (ignoring time)
+        String query = "SELECT u.nom, u.prenom, rv.id_patient " +
+                "FROM utilisateur u " +
+                "JOIN rendez_vous rv ON rv.id_patient = u.id " +
+                "WHERE DATE(rv.dateHeure) = ?";
+        System.out.println("Query: " + query); // print query for debugging// Extract only the date part from DATETIME
+
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/quick_rdv", "root", "");
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+            System.out.println("Selected Date: " + Date.valueOf(selectedDate));
+
+            // Set the selected date for the query (parameterized to avoid SQL injection)
+            stmt.setDate(1, Date.valueOf(selectedDate));
+            // Convert LocalDate to java.sql.Date
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                // Clear existing items in the ComboBox
+
+                patientComboBox.getItems().clear();
+
+                // Loop through the result set and populate the ComboBox
+                while (rs.next()) {
+                    String patientName = rs.getString("nom") + " " + rs.getString("prenom");
+                    int patientId = rs.getInt("id_patient");
+
+                    // Add patient name to the ComboBox (we'll display the name with patient ID)
+                    patientComboBox.getItems().add(patientName + " (ID: " + patientId + ")");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showAlert("Erreur", "Une erreur s'est produite lors de la récupération des patients.");
+        }
+    }
+
+    // Extract the patientId from the ComboBox item (which includes both name and ID)
+    private int extractPatientIdFromComboBox(String selectedPatient) {
+        // Split the ComboBox string to get the ID part (after " (ID: ")
+        String[] parts = selectedPatient.split(" \\(ID: ");
+        String patientIdString = parts[1].replace(")", ""); // Remove the closing parenthesis
+        return Integer.parseInt(patientIdString); // Convert the ID string to an integer
+    }
+
+
      // Enregistre une ordonnance dans la base de données directement avec ServiceOrdonnance.
 
     @FXML
     private void ajouterOrdonnance(ActionEvent event) {
         try {
-            if (idPatientField.getText().isEmpty() || datePrescription.getValue() == null ||
-                    medecinComboBox.getValue() == null || medicamentsMap.isEmpty()) {
+            if (datePrescription.getValue() == null || patientComboBox.getValue() == null || medecinComboBox.getValue() == null || medicamentsMap.isEmpty()) {
                 showAlert("Erreur", "Veuillez remplir tous les champs.");
                 return;
             }
 
-            int patientId = Integer.parseInt(idPatientField.getText());
+            // Get the selected patient's name and extract the patientId
+            String selectedPatient = patientComboBox.getValue();
+            int patientId = extractPatientIdFromComboBox(selectedPatient);
+
             LocalDate datePresc = datePrescription.getValue();
 
+            // Get the medecinId from the ComboBox (same logic as before)
             int medecinId = medecinMap.entrySet()
                     .stream()
                     .filter(entry -> entry.getValue().equals(medecinComboBox.getValue()))
@@ -148,6 +210,7 @@ public class AjouterOrdonnance implements Initializable {
                 return;
             }
 
+            // Get the instructions from the field and set default if empty
             String instructions = instructionsField.getText().trim();
             if (instructions.isEmpty()) {
                 instructions = "Suivre les indications médicales.";
@@ -155,13 +218,13 @@ public class AjouterOrdonnance implements Initializable {
 
             String statut = "Actif";
 
-            // Ajout direct avec ServiceOrdonnance sans instancier Ordonnance
+            // Create the Ordonnance using the selected patient ID and other details
             ServiceOrdonnance so = new ServiceOrdonnance();
-
-             so.add(new Ordonnance(medecinId, patientId, Date.valueOf(datePresc), instructions, statut, medicamentsMap));
+            so.add(new Ordonnance(medecinId, patientId, Date.valueOf(datePresc), instructions, statut, medicamentsMap));
 
             showAlert("Succès", "Ordonnance ajoutée avec succès !");
             clearFields();
+
         } catch (NumberFormatException e) {
             showAlert("Erreur", "L'ID patient doit être un nombre.");
         } catch (Exception e) {
@@ -169,7 +232,6 @@ public class AjouterOrdonnance implements Initializable {
             e.printStackTrace();
         }
     }
-
 
      // Affiche une alerte.
 

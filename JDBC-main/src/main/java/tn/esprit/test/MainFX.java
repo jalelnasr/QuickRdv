@@ -17,7 +17,7 @@ public class MainFX extends Application {
         launch(args);
     }
 
-    /*@Override
+    @Override
     public void start(Stage primaryStage) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterOrdonnance.fxml"));
@@ -29,9 +29,9 @@ public class MainFX extends Application {
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-    }*/
+    }
 
-    @Override
+    /*@Override
     public void start(Stage primaryStage) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterMedicament.fxml"));
@@ -43,7 +43,7 @@ public class MainFX extends Application {
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-    }
+    }*/
 
     /*@Override
     public void start(Stage primaryStage) {
