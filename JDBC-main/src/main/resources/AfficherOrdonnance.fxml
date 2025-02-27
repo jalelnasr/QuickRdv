@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<AnchorPane stylesheets="@CSS/design.css" xmlns:fx="http://javafx.com/javafx"
+            xmlns="http://javafx.com/fxml/1"
+            fx:controller="controllers.AfficherOrdonnance">
+    <children>
+        <!-- Titre principal -->
+        <Label text="Liste des Ordonnances"
+               layoutX="50"
+               layoutY="20"
+               style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+
+        <!-- ScrollPane pour contenir les cartes -->
+        <ScrollPane layoutX="50" layoutY="60" prefWidth="600" prefHeight="500">
+            <content>
+                <!-- VBox contenant les cartes des ordonnances -->
+                <VBox fx:id="cardContainer" spacing="15" style="-fx-padding: 20;"/>
+            </content>
+        </ScrollPane>
+    </children>
+</AnchorPane>

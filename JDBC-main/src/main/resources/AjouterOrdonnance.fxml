@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.control.ScrollPane?>
+<AnchorPane stylesheets="@CSS/design.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjouterOrdonnance">
+   <children>
+      <ScrollPane fitToWidth="true" fitToHeight="true" maxHeight="600.0" maxWidth="600.0">
+
+      <VBox alignment="CENTER" prefWidth="600" spacing="10">
+            <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Ajouter une ordonnance" />
+
+            <GridPane hgap="10" vgap="10">
+               <columnConstraints>
+                  <ColumnConstraints halignment="RIGHT" />
+                  <ColumnConstraints hgrow="ALWAYS" />
+               </columnConstraints>
+
+               <Label text="Médecin :" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+               <ComboBox fx:id="medecinComboBox" promptText="Sélectionner un médecin" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+               <Label text="ID Patient :" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+               <TextField fx:id="idPatientField" promptText="Entrer l'ID du patient" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+               <Label text="Date de prescription :" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+               <DatePicker fx:id="datePrescription" onAction="#OnDateSelection" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+               <Label text="Instructions :" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+               <TextField fx:id="instructionsField" promptText="Ajouter des instructions" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+               <rowConstraints>
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+               </rowConstraints>
+            </GridPane>
+
+            <ComboBox fx:id="patientComboBox" prefWidth="150.0" />
+
+            <TextField fx:id="searchTextField" onKeyReleased="#searchMedicaments" prefHeight="30.0" prefWidth="599.0" promptText="Rechercher un médicament..." />
+
+            <!-- Agrandir la liste des médicaments trouvés -->
+            <ListView fx:id="medicamentListView" prefHeight="250.0" prefWidth="580.0" />
+
+            <TitledPane collapsible="false" prefWidth="600.0" text="Ajouter un Médicament">
+               <VBox spacing="5">
+                  <padding>
+                     <Insets bottom="10" left="10" right="10" top="10" />
+                  </padding>
+                  <HBox spacing="10">
+                     <TextField fx:id="medicamentField" promptText="Nom du médicament" />
+                     <TextField fx:id="quantiteField" prefWidth="80" promptText="Quantité" />
+                     <Button onAction="#ajouterMedicament" text="Ajouter" />
+                  </HBox>
+               </VBox>
+            </TitledPane>
+
+            <!-- Agrandir la liste des médicaments ajoutés -->
+            <ListView fx:id="listMedicaments" prefHeight="300.0" prefWidth="580.0" />
+
+            <HBox spacing="10">
+               <Button onAction="#ajouterOrdonnance" text="Ajouter Ordonnance" />
+               <Button onAction="#clearFields" text="Annuler" />
+               <Button onAction="#ouvrirAfficherOrdonnance" text="Liste des Ordonnances" />
+            </HBox>
+         </VBox>
+      </ScrollPane>
+   </children>
+</AnchorPane>

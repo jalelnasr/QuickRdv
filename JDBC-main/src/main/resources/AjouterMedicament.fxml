@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.AjouterMedicament"
+            prefHeight="400.0" prefWidth="600.0">
+
+        <children>
+                <VBox alignment="CENTER" spacing="10" layoutX="50" layoutY="50" stylesheets="@CSS/design.css">
+                        <Label text="Gestion des Médicaments" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+                        <TextField fx:id="nomMedicamentField" promptText="Nom du Médicament"/>
+                        <TextField fx:id="stockMedicamentField" promptText="Stock"/>
+                        <TextField fx:id="pharmacienIdField" promptText="ID Pharmacien"/>
+
+                        <!-- Barre de recherche avec écouteur -->
+                        <TextField fx:id="searchField" promptText="Rechercher un médicament..."
+                                   onKeyReleased="#searchMedicament"/>
+
+                        <HBox spacing="10">
+                                <Button text="Ajouter" onAction="#ajouterMedicament"/>
+                                <Button text="Modifier" onAction="#modifierMedicament"/>
+                                <Button text="Supprimer" onAction="#supprimerMedicament"/>
+                                <Button text="Réinitialiser" onAction="#resetFields"/>
+                        </HBox>
+
+                        <ListView fx:id="medicamentListView" prefHeight="200"/>
+                </VBox>
+        </children>
+</AnchorPane>
