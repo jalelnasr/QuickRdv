@@ -62,17 +62,35 @@ public class AjouterMedicament {
         medicamentListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> showDetails(newValue));
     }
 
-    // Filtrer les médicaments en fonction de la recherche
+    // Filtrer les médicaments en fonction de la recherche (avec startsWith)
     private void filterMedicaments(String searchText) {
         if (searchText == null || searchText.isEmpty()) {
             medicamentListView.setItems(medicamentsList);
         } else {
             List<Medicament> filteredList = medicamentsList.stream()
-                    .filter(m -> m.getNom().toLowerCase().contains(searchText.toLowerCase()))
+                    .filter(m -> m.getNom().toLowerCase().startsWith(searchText.toLowerCase())) // startsWith au lieu de contains
                     .collect(Collectors.toList());
             medicamentListView.setItems(FXCollections.observableArrayList(filteredList));
         }
     }
+
+
+
+
+    @FXML
+    public void searchMedicament() {
+        String searchText = searchField.getText().trim().toLowerCase();
+        if (searchText.isEmpty()) {
+            medicamentListView.setItems(medicamentsList); // Afficher tous les médicaments
+        } else {
+            List<Medicament> filteredList = medicamentsList.stream()
+                    .filter(m -> m.getNom().toLowerCase().startsWith(searchText))
+                    .collect(Collectors.toList());
+            medicamentListView.setItems(FXCollections.observableArrayList(filteredList));
+        }
+    }
+
+
 
     // Ajouter un médicament
     @FXML

@@ -61,6 +61,22 @@ public class AjouterOrdonnance implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         loadMedecins();
+        // Gestion du clic sur la liste des médicaments pour suppression
+        listMedicaments.setOnMouseClicked(event -> {
+            String selectedItem = listMedicaments.getSelectionModel().getSelectedItem();
+            if (selectedItem != null) {
+                supprimerMedicament(selectedItem);
+            }
+        });
+
+        // Ajouter un gestionnaire d'événement pour la sélection dans la liste des médicaments suggérés
+        medicamentListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                medicamentField.setText(newValue);
+                medicamentListView.setVisible(false); // Masquer la liste après sélection
+            }
+        });
+
         // Ajouter un gestionnaire d'événement pour la sélection dans la liste des médicaments
         medicamentListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
@@ -70,6 +86,8 @@ public class AjouterOrdonnance implements Initializable {
                 medicamentListView.setVisible(false); // Masquer la liste après sélection
             }
         });
+
+
     }
 
 
@@ -197,6 +215,22 @@ public class AjouterOrdonnance implements Initializable {
 
             LocalDate datePresc = datePrescription.getValue();
 
+            // Vérification de la quantité des médicaments prescrits
+            int limiteRaisonnable = 5;
+            for (Map.Entry<String, Integer> entry : medicamentsMap.entrySet()) {
+                int quantite = entry.getValue();
+                if (quantite <= 0) {
+                    showAlert("Erreur", "La quantité du médicament " + entry.getKey() + " doit être positive.");
+                    return;
+                }
+                if (quantite > limiteRaisonnable) {
+                    showAlert("Erreur", "La quantité du médicament " + entry.getKey() +
+                            " dépasse la limite autorisée de " + limiteRaisonnable + " unités.");
+                    return;
+                }
+            }
+
+
             // Get the medecinId from the ComboBox (same logic as before)
             int medecinId = medecinMap.entrySet()
                     .stream()
@@ -254,6 +288,7 @@ public class AjouterOrdonnance implements Initializable {
         medicamentsMap.clear();
         medicamentsList.clear();
         listMedicaments.setItems(medicamentsList);
+        patientComboBox.setValue(null);
     }
 
     @FXML
@@ -332,6 +367,19 @@ public class AjouterOrdonnance implements Initializable {
         }
     }
 
+    @FXML
+    private void supprimerMedicament(String selectedItem) {
+        // Extraire le nom du médicament avant le ":" pour le supprimer de medicamentsMap
+        String[] parts = selectedItem.split(" : ");
+        if (parts.length == 2) {
+            String medName = parts[0]; // Récupérer le nom du médicament
+            medicamentsMap.remove(medName); // Supprimer de la map
+        }
+
+        // Supprimer de la liste affichée
+        medicamentsList.remove(selectedItem);
+        listMedicaments.setItems(medicamentsList);
+    }
 
 
 
