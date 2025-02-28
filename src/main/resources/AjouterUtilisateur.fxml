@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@CSS/designe.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.AjouterUtilisateur">
+<AnchorPane prefHeight="400.0" prefWidth="600.0"  xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.AjouterUtilisateur">
    <children>
       <Button layoutX="85.0" layoutY="287.0" mnemonicParsing="false" onAction="#ajouter" prefHeight="34.0" prefWidth="169.0" style="-fx-background-color: #0598ff;" text="ajouter" textFill="WHITE">
          <font>

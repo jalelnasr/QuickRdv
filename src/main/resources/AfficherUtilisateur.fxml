@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="485.0" prefWidth="673.0" stylesheets="@CSS/designe.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.AfficherUtilisateur">
+<AnchorPane prefHeight="485.0" prefWidth="673.0"  xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.AfficherUtilisateur">
    <children>
       <ListView fx:id="listUtilisateur" layoutX="163.0" layoutY="1.0" prefHeight="269.0" prefWidth="433.0" />
       <TextField fx:id="nom" layoutX="488.0" layoutY="313.0" promptText="nom" />
