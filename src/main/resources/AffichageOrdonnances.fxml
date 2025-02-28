@@ -8,7 +8,7 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.ListView?>
 
-<VBox xmlns="http://javafx.com/javafx"
+<VBox stylesheets="@CSS/design.css" xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="controllers.AffichageOrdonnances"
       prefHeight="400.0" prefWidth="600.0"

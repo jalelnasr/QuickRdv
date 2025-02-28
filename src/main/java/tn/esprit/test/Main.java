@@ -101,7 +101,7 @@ public class Main {
 
         serviceA.add(newAssurance);
 
-       // Retrieving and displaying all assurance records
+        // Retrieving and displaying all assurance records
         List<Assurance> allAssurances = serviceA.getAll();
         System.out.println("\nListe des assurances :");
         for (Assurance assurance : allAssurances) {

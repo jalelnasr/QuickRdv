@@ -45,6 +45,7 @@ public class AffichageConsultations {
             }
         });
 
+////////////////////////badal l id hne baad log in etc ///////////////////////
         // Load all consultations initially
         loadConsultations(serviceConsultation.getConsultationsByPatientId(1)); // Replace with actual patient ID
     }

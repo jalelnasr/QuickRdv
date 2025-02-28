@@ -27,29 +27,45 @@ public class Consultation {
     }
 
     // Getters and Setters
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    public int getId() {
+        return id; }
+    public void setId(int id) {
+        this.id = id; }
 
-    public Timestamp getDateHeure() { return dateHeure; }
-    public void setDateHeure(Timestamp dateHeure) { this.dateHeure = dateHeure; }
+    public Timestamp getDateHeure() {
+        return dateHeure; }
+    public void setDateHeure(Timestamp dateHeure) {
+        this.dateHeure = dateHeure; }
 
-    public String getTypeConsultation() { return typeConsultation; }
-    public void setTypeConsultation(String typeConsultation) { this.typeConsultation = typeConsultation; }
+    public String getTypeConsultation() {
+        return typeConsultation; }
+    public void setTypeConsultation(String typeConsultation) {
+        this.typeConsultation = typeConsultation; }
 
-    public int getIdPatient() { return idPatient; }
-    public void setIdPatient(int idPatient) { this.idPatient = idPatient; }
+    public int getIdPatient() {
+        return idPatient; }
+    public void setIdPatient(int idPatient) {
+        this.idPatient = idPatient; }
 
-    public int getIdMedecin() { return idMedecin; }
-    public void setIdMedecin(int idMedecin) { this.idMedecin = idMedecin; }
+    public int getIdMedecin() {
+        return idMedecin; }
+    public void setIdMedecin(int idMedecin) {
+        this.idMedecin = idMedecin; }
 
-    public String getMedecinNom() { return medecinNom; }
-    public void setMedecinNom(String medecinNom) { this.medecinNom = medecinNom; }
+    public String getMedecinNom() {
+        return medecinNom; }
+    public void setMedecinNom(String medecinNom) {
+        this.medecinNom = medecinNom; }
 
-    public String getMedecinPrenom() { return medecinPrenom; }
-    public void setMedecinPrenom(String medecinPrenom) { this.medecinPrenom = medecinPrenom; }
+    public String getMedecinPrenom() {
+        return medecinPrenom; }
+    public void setMedecinPrenom(String medecinPrenom) {
+        this.medecinPrenom = medecinPrenom; }
 
-    public String getMedecinSpecialite() { return medecinSpecialite; }
-    public void setMedecinSpecialite(String medecinSpecialite) { this.medecinSpecialite = medecinSpecialite; }
+    public String getMedecinSpecialite() {
+        return medecinSpecialite; }
+    public void setMedecinSpecialite(String medecinSpecialite) {
+        this.medecinSpecialite = medecinSpecialite; }
 
     @Override
     public String toString() {

@@ -3,10 +3,7 @@ package tn.esprit.services;
 import tn.esprit.models.Ordonnance;
 import tn.esprit.utils.MyDatabase;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,28 +39,28 @@ public class ServiceOrdonnance {
     // Fetch ordonnances by patient ID
     public List<Ordonnance> getOrdonnancesByPatientId(int patientId) {
         List<Ordonnance> ordonnances = new ArrayList<>();
-        String query = "SELECT o.*, m.specialite, u.nom, u.prenom " +
-                "FROM ordonnance o " +
-                "JOIN medecin m ON o.medecin_id = m.id " +
-                "JOIN utilisateur u ON m.id = u.id " +
-                "WHERE o.patient_id = ?";
-
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, patientId);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                Ordonnance ordonnance = mapResultSetToOrdonnance(resultSet);
-                ordonnances.add(ordonnance);
+        String qry = "SELECT * FROM ordonnance WHERE patient_id = ?";
+        try (PreparedStatement pstm = connection.prepareStatement(qry)) {
+            pstm.setInt(1, patientId);
+            try (ResultSet rs = pstm.executeQuery()) {
+                while (rs.next()) {
+                    Ordonnance ordonnance = new Ordonnance(
+                            rs.getInt("id"),
+                            rs.getInt("medecin_id"),
+                            rs.getInt("patient_id"),
+                            rs.getString("medicaments"),
+                            rs.getTimestamp("date_prescription"),
+                            rs.getString("instructions"),
+                            rs.getString("statut")
+                    );
+                    ordonnances.add(ordonnance);
+                }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+            System.out.println("Erreur SQL (getOrdonnancesByPatientId) : " + e.getMessage());
         }
-
         return ordonnances;
     }
-
-    // Fetch ordonnances by date
     public List<Ordonnance> getOrdonnancesByDate(String date) {
         List<Ordonnance> ordonnances = new ArrayList<>();
         String query = "SELECT o.*, m.specialite, u.nom, u.prenom " +

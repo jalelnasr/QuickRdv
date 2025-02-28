@@ -15,7 +15,7 @@ public class Ordonnance {
     private String medecinSpecialite;
 
     // Constructors
-    public Ordonnance() {}
+    public Ordonnance(int id, int medecinId, int patientId, String medicaments, Timestamp datePrescription, String instructions, String statut) {}
 
     public Ordonnance(int id, int medecinId, int patientId, String medicaments, Timestamp datePrescription, String instructions, String statut, String medecinNom, String medecinPrenom, String medecinSpecialite) {
         this.id = id;

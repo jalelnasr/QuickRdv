@@ -15,7 +15,7 @@
 <?import javafx.scene.text.FontWeight?>
 <?import javafx.scene.text.Text?>
 
-<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjoutInformationsGenerales" spacing="10" alignment="CENTER" style="-fx-background-color: #f4f4f4;">
+<VBox stylesheets="@CSS/design.css"  xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjoutInformationsGenerales" spacing="10" alignment="CENTER" style="-fx-background-color: #f4f4f4;">
    <children>
       <!-- Title -->
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Informations Générales" wrappingWidth="270.0">

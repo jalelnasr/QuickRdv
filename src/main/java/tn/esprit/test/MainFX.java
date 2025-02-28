@@ -25,7 +25,7 @@ public class MainFX extends Application {
             Parent root = loader.load();
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
-            //primaryStage.setTitle("Ajouter Informations Generales");
+           //primaryStage.setTitle("Ajouter Informations Generales");
             //primaryStage.setTitle("Ajouter Assurance");
             //primaryStage.setTitle("Historique Consultations");
             primaryStage.setTitle("Historique Ordonnance");
