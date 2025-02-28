@@ -58,14 +58,14 @@ public class ResetPassword {
 
             // Vérifier si l'email existe dans la base de données
             Connection conn = MyDatabase.getInstance().getCnx();
-            String sql = "SELECT * FROM utilisateur WHERE email = ?";
+            String sql = "SELECT email FROM utilisateur WHERE email = ?";
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, emailText);
             ResultSet rs = stmt.executeQuery();
 
-            if (rs.next()) {
-                codeEnvoye = generateCode();
-                sendCodeToEmail(emailText, codeEnvoye);
+            if (rs.next()) { // Email trouvé
+                codeEnvoye = generateCode(); // Générer un code unique
+                sendCodeToEmail(emailText, codeEnvoye); // Envoyer le code à cet email
                 code.setDisable(false);
                 showAlert(Alert.AlertType.INFORMATION, "Succès", "Un code a été envoyé à votre adresse email.");
             } else {
@@ -153,8 +153,8 @@ public class ResetPassword {
     }
 
     private void sendCodeToEmail(String recipientEmail, String code) {
-        final String senderEmail = "jalelnasr67@gmail.com";  // Ton email
-        final String senderPassword = "naso rleb luxe baph"; // Ton mot de passe d'application
+        final String senderEmail = "jalelnasr67@gmail.com";
+        final String senderPassword = "naso rleb luxe baph";
 
         Properties properties = new Properties();
         properties.put("mail.smtp.auth", "true");
@@ -175,11 +175,12 @@ public class ResetPassword {
             message.setSubject("Code de Réinitialisation");
             message.setText("Votre code de réinitialisation est : " + code);
             Transport.send(message);
-            System.out.println("Email envoyé avec succès.");
+            System.out.println("Email envoyé avec succès à " + recipientEmail);
         } catch (MessagingException e) {
             showAlert(Alert.AlertType.ERROR, "Erreur d'envoi", "L'email n'a pas pu être envoyé. Détail : " + e.getMessage());
         }
     }
+
 
     private void showAlert(Alert.AlertType type, String title, String message) {
         Alert alert = new Alert(type);

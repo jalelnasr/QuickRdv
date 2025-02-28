@@ -29,7 +29,7 @@
                   <Font size="16.0" />
                </font>
             </Button>
-            <Label layoutX="95.0" layoutY="358.0" onMouseClicked="#mot_de_pass_oublié" style="-fx-background-color: transparent; -fx-border-width: 0px 0px 2px 0px; -fx-border-color: #0598ff;" text="mot_de_pass_oublié?" textFill="#0598ff" />
+            <Label layoutX="95.0" layoutY="358.0" onMouseClicked="#mot_de_pass_oublié" text="mot_de_pass_oublié?" textFill="#0598ff" />
          </children>
       </AnchorPane>
    </right>
