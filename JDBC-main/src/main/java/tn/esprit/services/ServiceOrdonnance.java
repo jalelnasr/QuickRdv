@@ -310,6 +310,32 @@ public class ServiceOrdonnance implements IMService<Ordonnance> {
         return ordonnances;
     }*/
 
+    public List<Ordonnance> getOrdonnancesByPatient(int patientId) {
+        List<Ordonnance> ordonnances = new ArrayList<>();
+        String query = "SELECT * FROM ordonnance WHERE id_patient = ?";
+
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/quick_rdv", "root", "");
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setInt(1, patientId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Ordonnance ordonnance = new Ordonnance();
+                    ordonnance.setId(rs.getInt("id"));
+                    ordonnance.setPatientId(rs.getInt("id_patient"));
+                    ordonnance.setMedecinId(rs.getInt("id_medecin"));
+                    ordonnance.setDatePrescription(new java.util.Date(rs.getDate("date_prescription").getTime()));
+                    ordonnance.setStatut(rs.getString("statut"));
+                    ordonnances.add(ordonnance);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ordonnances;
+    }
+
+
 
 }
 

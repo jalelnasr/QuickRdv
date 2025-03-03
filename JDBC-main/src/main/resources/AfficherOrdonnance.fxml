@@ -1,23 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane stylesheets="@CSS/design.css" xmlns:fx="http://javafx.com/javafx"
-            xmlns="http://javafx.com/fxml/1"
-            fx:controller="controllers.AfficherOrdonnance">
+<AnchorPane stylesheets="@CSS/design.css" xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AfficherOrdonnance">
     <children>
         <!-- Titre principal -->
-        <Label text="Liste des Ordonnances"
-               layoutX="50"
-               layoutY="20"
-               style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+        <Label layoutX="50" layoutY="20" style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Liste des Ordonnances" />
+
+        <!-- DatePicker pour la recherche -->
+        <DatePicker fx:id="datePicker" layoutX="50" layoutY="60" prefWidth="200" />
+
+        <!-- Bouton de recherche -->
+        <Button fx:id="searchButton" layoutX="270" layoutY="60" text="Rechercher" onAction="#rechercherOrdonnances" />
 
         <!-- ScrollPane pour contenir les cartes -->
-        <ScrollPane layoutX="50" layoutY="60" prefWidth="600" prefHeight="500">
+        <ScrollPane fx:id="scrollPane" layoutX="50" layoutY="110" prefHeight="500" prefWidth="600">
             <content>
                 <!-- VBox contenant les cartes des ordonnances -->
-                <VBox fx:id="cardContainer" spacing="15" style="-fx-padding: 20;"/>
+                <VBox fx:id="cardContainer" spacing="15" style="-fx-padding: 20;" />
             </content>
         </ScrollPane>
     </children>

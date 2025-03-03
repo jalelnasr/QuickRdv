@@ -117,8 +117,7 @@ public class ValidationOrdonnance {
         alert.setContentText(message);
         alert.showAndWait();
     }
-} 
+}
 
 
 
- 

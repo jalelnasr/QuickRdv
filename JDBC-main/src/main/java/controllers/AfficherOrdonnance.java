@@ -1,5 +1,23 @@
 package controllers;
 
+import javafx.application.Platform;
+import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import tn.esprit.models.Ordonnance;
+import tn.esprit.services.ServiceOrdonnance;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+
+
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -11,6 +29,7 @@ import tn.esprit.models.Ordonnance;
 import tn.esprit.services.ServiceOrdonnance;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
@@ -20,6 +39,16 @@ public class AfficherOrdonnance {
 
     @FXML
     private VBox cardContainer; // Conteneur pour les cartes des ordonnances
+
+    @FXML
+    private ScrollPane scrollPane;
+
+    @FXML
+    private DatePicker datePicker;
+
+    @FXML
+    private Button searchButton;
+
 
     private ServiceOrdonnance serviceOrdonnance = new ServiceOrdonnance();
 
@@ -33,13 +62,31 @@ public class AfficherOrdonnance {
         }
     }
 
+    private void refreshMedicamentDisplay(VBox box, Map<String, Integer> medicaments) {
+        box.getChildren().clear();
+        for (Map.Entry<String, Integer> entry : medicaments.entrySet()) {
+            box.getChildren().add(new Text(entry.getKey() + " : " + entry.getValue()));
+        }
+    }
+
+    private void refreshMedicamentEdit(VBox box, Map<String, Integer> medicaments) {
+        box.getChildren().clear();
+        for (Map.Entry<String, Integer> entry : medicaments.entrySet()) {
+            HBox row = new HBox(10);
+            TextField medField = new TextField(entry.getKey());
+            TextField qteField = new TextField(String.valueOf(entry.getValue()));
+            row.getChildren().addAll(medField, qteField);
+            box.getChildren().add(row);
+        }
+    }
+
     /**
      * Crée une carte (AnchorPane) pour afficher les détails d'une ordonnance.
      */
     private AnchorPane createCard(Ordonnance ordonnance) {
         // Créer un conteneur de carte (AnchorPane)
         AnchorPane card = new AnchorPane();
-        card.setPrefSize(600, 300); // Taille fixe pour la carte
+        card.setPrefSize(600, 300);
         card.setStyle("-fx-background-color: #ffffff; -fx-border-color: #cccccc; -fx-border-radius: 5; -fx-padding: 10;");
 
         // Ajouter des champs non modifiables (affichés sous forme de texte)
@@ -55,186 +102,114 @@ public class AfficherOrdonnance {
         instructionsText.setLayoutX(10);
         instructionsText.setLayoutY(60);
 
+        VBox medicamentDisplayBox = new VBox(5);
+        medicamentDisplayBox.setLayoutX(10);
+        medicamentDisplayBox.setLayoutY(80);
+        refreshMedicamentDisplay(medicamentDisplayBox, ordonnance.getMedicaments());
+
         // Ajouter des champs modifiables (initialement cachés)
         TextField patientField = new TextField(String.valueOf(ordonnance.getPatientId()));
         patientField.setLayoutX(10);
         patientField.setLayoutY(20);
-        patientField.setPrefWidth(200);
         patientField.setVisible(false);
 
         DatePicker datePicker = new DatePicker();
         datePicker.setLayoutX(10);
-        datePicker.setLayoutY(40);
-        datePicker.setPrefWidth(200);
+        datePicker.setLayoutY(60);
         datePicker.setVisible(false);
 
         TextField instructionsField = new TextField(ordonnance.getInstructions());
         instructionsField.setLayoutX(10);
-        instructionsField.setLayoutY(60);
-        instructionsField.setPrefWidth(200);
+        instructionsField.setLayoutY(100);
         instructionsField.setVisible(false);
 
         // Gestion des médicaments
-        VBox medicamentBox = new VBox(5);
-        medicamentBox.setLayoutX(10);
-        medicamentBox.setLayoutY(100);
-        medicamentBox.setPrefWidth(400);
+        VBox medicamentEditBox = new VBox(5);
+        medicamentEditBox.setLayoutX(10);
+        medicamentEditBox.setLayoutY(140);
+        medicamentEditBox.setVisible(false);
 
-        Map<String, Integer> tempMedicaments = new HashMap<>(ordonnance.getMedicaments());
-        for (Map.Entry<String, Integer> entry : tempMedicaments.entrySet()) {
-            HBox medicamentRow = new HBox(10);
-            TextField medField = new TextField(entry.getKey());
-            TextField qteField = new TextField(String.valueOf(entry.getValue()));
+        refreshMedicamentEdit(medicamentEditBox, ordonnance.getMedicaments());
 
-            Button deleteButton = new Button("X");
-            deleteButton.setOnAction(e -> medicamentBox.getChildren().remove(medicamentRow));
-
-            medicamentRow.getChildren().addAll(medField, qteField, deleteButton);
-            medicamentBox.getChildren().add(medicamentRow);
-        }
 
         TextField newMedicamentField = new TextField();
         newMedicamentField.setPromptText("Nom du médicament");
         newMedicamentField.setLayoutX(10);
         newMedicamentField.setLayoutY(250);
         newMedicamentField.setPrefWidth(150);
+        newMedicamentField.setVisible(false);
 
         TextField newQuantiteField = new TextField();
         newQuantiteField.setPromptText("Quantité");
         newQuantiteField.setLayoutX(170);
         newQuantiteField.setLayoutY(250);
         newQuantiteField.setPrefWidth(100);
+        newQuantiteField.setVisible(false);
 
         Button ajouterMedicamentButton = new Button("Ajouter");
         ajouterMedicamentButton.setLayoutX(280);
         ajouterMedicamentButton.setLayoutY(250);
+        ajouterMedicamentButton.setVisible(false);
         ajouterMedicamentButton.setOnAction(e -> {
             String med = newMedicamentField.getText();
-            int qte;
             try {
-                qte = Integer.parseInt(newQuantiteField.getText());
-            } catch (NumberFormatException ex) {
-                showAlert("Erreur", "Veuillez entrer une quantité valide.");
-                return;
-            }
-
-            if (!med.isEmpty()) {
-                HBox medicamentRow = new HBox(10);
-                TextField medField = new TextField(med);
-                TextField qteField = new TextField(String.valueOf(qte));
-
-                Button deleteButton = new Button("X");
-                deleteButton.setOnAction(event -> medicamentBox.getChildren().remove(medicamentRow));
-
-                medicamentRow.getChildren().addAll(medField, qteField, deleteButton);
-                medicamentBox.getChildren().add(medicamentRow);
+                int qte = Integer.parseInt(newQuantiteField.getText());
+                ordonnance.getMedicaments().put(med, qte);
+                refreshMedicamentEdit(medicamentEditBox, ordonnance.getMedicaments());
 
                 newMedicamentField.clear();
                 newQuantiteField.clear();
+            } catch (NumberFormatException ex) {
+                showAlert("Erreur", "Veuillez entrer une quantité valide.");
             }
         });
 
-        // Ajouter un bouton "Modifier"
+        // Buttons
         Button modifierButton = new Button("Modifier");
         modifierButton.setLayoutX(400);
         modifierButton.setLayoutY(20);
-        modifierButton.setPrefWidth(100);
 
-        // Ajouter un bouton "Annuler"
-        Button annulerButton = new Button("Annuler");
-        annulerButton.setLayoutX(400);
-        annulerButton.setLayoutY(60);
-        annulerButton.setPrefWidth(100);
+        Button enregistrerButton = new Button("Enregistrer");
+        enregistrerButton.setLayoutX(400);
+        enregistrerButton.setLayoutY(60);
+        enregistrerButton.setVisible(false);
 
-        // Ajouter un bouton "Supprimer"
         Button supprimerButton = new Button("Supprimer");
         supprimerButton.setLayoutX(400);
         supprimerButton.setLayoutY(100);
-        supprimerButton.setPrefWidth(100);
+        supprimerButton.setVisible(false);
 
-        // Gérer le clic sur le bouton "Modifier"
         modifierButton.setOnAction(event -> {
-            if (modifierButton.getText().equals("Modifier")) {
-                // Passer en mode "Enregistrer"
-                modifierButton.setText("Enregistrer");
+            modifierButton.setVisible(false);
+            enregistrerButton.setVisible(true);
+            supprimerButton.setVisible(true);
 
-                // Masquer les champs non modifiables
-                patientText.setVisible(false);
-                dateText.setVisible(false);
-                instructionsText.setVisible(false);
+            patientText.setVisible(false);
+            dateText.setVisible(false);
+            instructionsText.setVisible(false);
+            medicamentDisplayBox.setVisible(false);
 
-                // Afficher les champs modifiables
-                patientField.setVisible(true);
-                datePicker.setVisible(true);
-                instructionsField.setVisible(true);
-                medicamentBox.setVisible(true);
-                newMedicamentField.setVisible(true);
-                newQuantiteField.setVisible(true);
-                ajouterMedicamentButton.setVisible(true);
-            } else {
-                // Revenir en mode "Modifier"
-                modifierButton.setText("Modifier");
-
-                // Masquer les champs modifiables
-                patientField.setVisible(false);
-                datePicker.setVisible(false);
-                instructionsField.setVisible(false);
-                medicamentBox.setVisible(false);
-                newMedicamentField.setVisible(false);
-                newQuantiteField.setVisible(false);
-                ajouterMedicamentButton.setVisible(false);
-
-                // Afficher les champs non modifiables avec les nouvelles valeurs
-                patientText.setText("ID Patient: " + patientField.getText());
-                dateText.setText("Date: " + datePicker.getValue());
-                instructionsText.setText("Instructions: " + instructionsField.getText());
-
-                patientText.setVisible(true);
-                dateText.setVisible(true);
-                instructionsText.setVisible(true);
-
-                // Mettre à jour l'ordonnance dans la base de données
-                ordonnance.setPatientId(Integer.parseInt(patientField.getText()));
-                ordonnance.setDatePrescription(Date.valueOf(datePicker.getValue()));
-                ordonnance.setInstructions(instructionsField.getText());
-
-                // Mettre à jour les médicaments
-                Map<String, Integer> newMedicaments = new HashMap<>();
-                for (Node node : medicamentBox.getChildren()) {
-                    if (node instanceof HBox) {
-                        HBox row = (HBox) node;
-                        TextField medField = (TextField) row.getChildren().get(0);
-                        TextField qteField = (TextField) row.getChildren().get(1);
-                        newMedicaments.put(medField.getText(), Integer.parseInt(qteField.getText()));
-                    }
+            patientField.setVisible(true);
+            datePicker.setVisible(true);
+            instructionsField.setVisible(true);
+            medicamentEditBox.setVisible(true);
+            newMedicamentField.setVisible(true);
+            newQuantiteField.setVisible(true);
+            ajouterMedicamentButton.setVisible(true);
+            if (ordonnance.getDatePrescription() != null) {
+                // If it's a java.sql.Date, convert it to LocalDate
+                if (ordonnance.getDatePrescription() instanceof java.sql.Date) {
+                    LocalDate localDate = ((Date) ordonnance.getDatePrescription()).toLocalDate();
+                    datePicker.setValue(localDate); // Set the value of the DatePicker
+                } else if (ordonnance.getDatePrescription() instanceof java.util.Date) {
+                    // If it's a java.util.Date, convert it to LocalDate
+                    java.util.Date utilDate = ordonnance.getDatePrescription();
+                    LocalDate localDate = utilDate.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+                    datePicker.setValue(localDate); // Set the value of the DatePicker
                 }
-                ordonnance.setMedicaments(newMedicaments);
-
-                serviceOrdonnance.update(ordonnance);
             }
         });
 
-        // Gérer le clic sur le bouton "Annuler"
-        annulerButton.setOnAction(event -> {
-            // Revenir en mode "Modifier"
-            modifierButton.setText("Modifier");
-
-            // Masquer les champs modifiables
-            patientField.setVisible(false);
-            datePicker.setVisible(false);
-            instructionsField.setVisible(false);
-            medicamentBox.setVisible(false);
-            newMedicamentField.setVisible(false);
-            newQuantiteField.setVisible(false);
-            ajouterMedicamentButton.setVisible(false);
-
-            // Afficher les champs non modifiables avec les valeurs d'origine
-            patientText.setVisible(true);
-            dateText.setVisible(true);
-            instructionsText.setVisible(true);
-        });
-
-        // Gérer le clic sur le bouton "Supprimer"
         supprimerButton.setOnAction(event -> {
             // Afficher une boîte de dialogue de confirmation
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -252,13 +227,79 @@ public class AfficherOrdonnance {
             }
         });
 
-        // Ajouter tous les éléments à la carte
-        card.getChildren().addAll(
-                patientText, dateText, instructionsText,
-                patientField, datePicker, instructionsField,
-                medicamentBox, newMedicamentField, newQuantiteField, ajouterMedicamentButton,
-                modifierButton, annulerButton, supprimerButton
-        );
+        enregistrerButton.setOnAction(event -> {
+            double currentScroll = scrollPane.getVvalue();
+
+            modifierButton.setVisible(true);
+            enregistrerButton.setVisible(false);
+            supprimerButton.setVisible(false);
+
+
+            patientText.setVisible(true);
+            dateText.setVisible(true);
+            instructionsText.setVisible(true);
+            medicamentDisplayBox.setVisible(true);
+
+            patientField.setVisible(false);
+            datePicker.setVisible(false);
+            instructionsField.setVisible(false);
+            medicamentEditBox.setVisible(false);
+            newMedicamentField.setVisible(false);
+            newQuantiteField.setVisible(false);
+            ajouterMedicamentButton.setVisible(false);
+
+
+            ordonnance.setPatientId(Integer.parseInt(patientField.getText()));
+            ordonnance.setDatePrescription(Date.valueOf(datePicker.getValue()));
+            ordonnance.setInstructions(instructionsField.getText());
+
+            // Fix: Correctly update medicament quantities
+            Map<String, Integer> updatedMedicaments = new HashMap<>();
+
+            for (Node node : medicamentEditBox.getChildren()) {
+                if (node instanceof HBox) {
+                    HBox hbox = (HBox) node;
+                    if (hbox.getChildren().size() >= 2) {
+                        TextField medNameField = (TextField) hbox.getChildren().get(0); // Fix: This is a TextField, not a Label
+                        TextField qtyField = (TextField) hbox.getChildren().get(1); // Fix: Correctly reference the TextField for quantity
+
+                        String medName = medNameField.getText().trim();
+                        String qtyText = qtyField.getText().trim();
+
+                        if (qtyText.isEmpty()) {
+                            showAlert("Erreur", "Veuillez entrer une quantité pour " + medName);
+                            return;
+                        }
+
+                        try {
+                            int newQty = Integer.parseInt(qtyText);
+                            updatedMedicaments.put(medName, newQty); // Update local map instead of modifying while iterating
+                        } catch (NumberFormatException e) {
+                            showAlert("Erreur", "Veuillez entrer une quantité valide pour " + medName);
+                            return;
+                        }
+                    }
+                }
+            }
+
+            ordonnance.setMedicaments(updatedMedicaments); // Update all at once
+            patientText.setText("Patient ID: " + ordonnance.getPatientId());
+            dateText.setText("Date: " + ordonnance.getDatePrescription()); // Ensure correct format
+            instructionsText.setText("Instructions: " + ordonnance.getInstructions());
+            refreshMedicamentDisplay(medicamentDisplayBox, ordonnance.getMedicaments());
+
+            // Save the updated ordonnance
+            serviceOrdonnance.update(ordonnance);
+            Platform.runLater(() -> {
+                scrollPane.setVvalue(currentScroll);
+            });
+
+        });
+
+        card.getChildren().addAll(patientText, dateText, instructionsText, medicamentDisplayBox,
+                patientField, datePicker, instructionsField, medicamentEditBox,
+                newMedicamentField, newQuantiteField, ajouterMedicamentButton,
+                modifierButton, enregistrerButton , supprimerButton);
 
         return card;
     }
@@ -269,5 +310,39 @@ public class AfficherOrdonnance {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+    @FXML
+    private void rechercherOrdonnances() {
+        LocalDate selectedDate = datePicker.getValue();
+
+        // Si la date est vide, on recharge toutes les ordonnances
+        if (selectedDate == null) {
+            cardContainer.getChildren().clear(); // Nettoyer le conteneur
+            List<Ordonnance> allOrdonnances = serviceOrdonnance.getAll(); // Charger toutes les ordonnances
+            for (Ordonnance ordonnance : allOrdonnances) {
+                cardContainer.getChildren().add(createCard(ordonnance)); // Afficher chaque ordonnance sous forme de carte
+            }
+            return;
+        }
+
+        System.out.println("Recherche des ordonnances pour la date : " + selectedDate);
+
+        // Récupération des ordonnances correspondant à la date sélectionnée
+        List<Ordonnance> ordonnances = serviceOrdonnance.getOrdonnancesByDate(String.valueOf(selectedDate));
+
+        // Nettoyage de l'affichage
+        cardContainer.getChildren().clear();
+
+        if (ordonnances.isEmpty()) {
+            Label noResults = new Label("Aucune ordonnance trouvée pour cette date.");
+            noResults.setStyle("-fx-font-size: 14px; -fx-text-fill: blue;");
+            cardContainer.getChildren().add(noResults);
+            return;
+        }
+
+        // Affichage des résultats sous forme de cartes
+        for (Ordonnance ordonnance : ordonnances) {
+            cardContainer.getChildren().add(createCard(ordonnance));
+        }
     }
 }

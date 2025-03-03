@@ -1,86 +1,84 @@
-/* General styling */
+/* Général */
 .root {
-    -fx-background-color: #E3F2FD; /* Light blue background */
+    -fx-background-color: #F0F4F8; /* Fond général */
     -fx-font-family: "Arial";
 }
 
-/* Menu Bar */
-.menu-bar {
-    -fx-background-color: #1565C0; /* Deep blue */
+/* Barre latérale */
+.sidebar {
+    -fx-background-color: #2C5D63; /* Vert foncé */
+    -fx-padding: 20px;
 }
 
-.menu {
+.sidebar .label {
     -fx-text-fill: white;
-}
-
-.menu-item {
-    -fx-background-color: #1E88E5;
-    -fx-text-fill: white;
-}
-
-.menu-item:hover {
-    -fx-background-color: #42A5F5;
-}
-
-/* Text Fields */
-.text-field {
-    -fx-background-color: #BBDEFB;
-    -fx-border-color: #0D47A1;
-    -fx-border-radius: 5;
-    -fx-padding: 5;
-    -fx-text-fill: #0D47A1;
-}
-
-.text-field:focused {
-    -fx-background-color: #90CAF9;
-    -fx-border-color: #1565C0;
-}
-
-/* Text Area */
-.text-area {
-    -fx-background-color: #BBDEFB;
-    -fx-border-color: #0D47A1;
-    -fx-border-radius: 5;
-    -fx-text-fill: #0D47A1;
-}
-
-.text-area:focused {
-    -fx-background-color: #90CAF9;
-    -fx-border-color: #1565C0;
-}
-
-/* Buttons */
-.button {
-    -fx-background-color: #1E88E5;
-    -fx-text-fill: white;
+    -fx-font-size: 16px;
     -fx-font-weight: bold;
-    -fx-border-radius: 5;
-    -fx-padding: 8 15;
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 3);
 }
 
-.button:hover {
-    -fx-background-color: #42A5F5;
-}
-
-.button:pressed {
-    -fx-background-color: #0D47A1;
-}
-
-/* ListView */
-.list-view {
-    -fx-background-color: #E3F2FD;
-    -fx-border-color: #1565C0;
-}
-
-.list-cell {
-    -fx-background-color: #E3F2FD;
-    -fx-text-fill: #0D47A1;
-}
-
-.list-cell:selected {
-    -fx-background-color: #64B5F6;
+.sidebar .button {
+    -fx-background-color: transparent;
     -fx-text-fill: white;
+    -fx-alignment: center-left;
+    -fx-padding: 10px;
+    -fx-font-size: 14px;
+}
+
+.sidebar .button:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Contenu principal */
+.main-container {
+    -fx-background-color: #F0F0F0;
+}
+
+.header {
+    -fx-background-color: #D6E4E5;
+    -fx-padding: 10px 20px;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+/* Barre de recherche */
+.search-bar {
+    -fx-background-color: white;
+    -fx-border-color: #CCCCCC;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px 10px;
+}
+
+.search-button {
+    -fx-background-color: #E74C3C;
+    -fx-text-fill: white;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px 15px;
+    -fx-font-size: 14px;
+}
+
+.search-button:hover {
+    -fx-background-color: #C0392B;
+}
+
+/* Zone d'affichage des ordonnances */
+.prescription-box {
+    -fx-background-color: white;
+    -fx-border-color: #CCCCCC;
+    -fx-border-radius: 10px;
+    -fx-padding: 20px;
+}
+
+/* Bouton "Valider" */
+.validate-button {
+    -fx-background-color: #1E555C;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-padding: 10px 20px;
+    -fx-border-radius: 5px;
+}
+
+.validate-button:hover {
+    -fx-background-color: #174A4F;
 }
 
 /* Labels */
@@ -89,7 +87,7 @@
     -fx-font-weight: bold;
 }
 
-/* TableView (GestionStatistiques Specific) */
+/* TableView */
 .table-view {
     -fx-background-color: #ffffff;
     -fx-border-color: #1565C0;
