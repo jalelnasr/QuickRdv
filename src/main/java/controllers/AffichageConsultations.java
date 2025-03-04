@@ -5,105 +5,115 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.control.Label;
 import tn.esprit.models.Consultation;
 import tn.esprit.services.ServiceConsultation;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class AffichageConsultations {
+
     @FXML
-    private VBox consultationsCardView; // VBox to hold the card views
+    private ComboBox<String> searchTypeComboBox;
+
     @FXML
-    private ComboBox<String> searchTypeComboBox; // ComboBox for search type
+    private TextField searchField;
+
     @FXML
-    private TextField searchField; // TextField for doctor's name
+    private DatePicker datePicker;
+
     @FXML
-    private DatePicker datePicker; // DatePicker for date search
+    private StackPane searchContainer; // Use StackPane to overlay the search fields
+
+    @FXML
+    private VBox consultationsCardView;
 
     private ServiceConsultation serviceConsultation = new ServiceConsultation();
 
     @FXML
     public void initialize() {
-        // Initialize the search type ComboBox
-        searchTypeComboBox.getItems().addAll("Date", "Nom du médecin");
-        searchTypeComboBox.setValue("Date"); // Default selection
+        // Populate the ComboBox with search options
+        searchTypeComboBox.getItems().addAll("Nom du médecin", "Date");
 
-        // Add listener to handle search type changes
-        searchTypeComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.equals("Date")) {
-                // Show DatePicker and hide TextField
-                datePicker.setVisible(true);
-                searchField.setVisible(false);
-            } else if (newValue.equals("Nom du médecin")) {
-                // Show TextField and hide DatePicker
+        // Set a default value for the ComboBox
+        searchTypeComboBox.getSelectionModel().selectFirst();
+
+        // Load all consultations for a specific patient initially
+        int idPatient = 1; // Replace with the actual patient ID or fetch it dynamically
+        loadConsultationsByPatientId(idPatient);
+
+        // Add a listener to the ComboBox to toggle visibility of search fields
+        searchTypeComboBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal.equals("Nom du médecin")) {
                 searchField.setVisible(true);
                 datePicker.setVisible(false);
+            } else if (newVal.equals("Date")) {
+                searchField.setVisible(false);
+                datePicker.setVisible(true);
             }
         });
 
-////////////////////////badal l id hne baad log in etc ///////////////////////
-        // Load all consultations initially
-        loadConsultations(serviceConsultation.getConsultationsByPatientId(1)); // Replace with actual patient ID
+        // Initially, set the visibility based on the default selected value
+        searchField.setVisible(true);
+        datePicker.setVisible(false);
+    }
+
+    // Load consultations by patient ID initially
+    private void loadConsultationsByPatientId(int idPatient) {
+        List<Consultation> consultations = serviceConsultation.getConsultationsByPatientId(idPatient);
+        updateConsultationsCardView(consultations);
+    }
+
+    @FXML
+    public void handleDynamicSearch() {
+        String selectedSearchType = searchTypeComboBox.getValue();
+        if (selectedSearchType != null) {
+            List<Consultation> consultations = null;
+
+            if (selectedSearchType.equals("Nom du médecin")) {
+                String doctorName = searchField.getText();
+                consultations = serviceConsultation.getConsultationsByDoctorName(doctorName);
+            } else if (selectedSearchType.equals("Date")) {
+                String selectedDate = datePicker.getValue() != null ? datePicker.getValue().toString() : "";
+                consultations = serviceConsultation.getConsultationsByDate(selectedDate);
+            }
+
+            // Update the UI with the search results
+            updateConsultationsCardView(consultations);
+        }
     }
 
     @FXML
     public void handleSearch() {
-        String searchType = searchTypeComboBox.getValue();
-        List<Consultation> filteredConsultations;
-
-        if (searchType.equals("Date")) {
-            // Get the selected date from the DatePicker
-            LocalDate selectedDate = datePicker.getValue();
-            if (selectedDate != null) {
-                // Format the date as a string (e.g., "2023-10-15")
-                String dateString = selectedDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-                // Search by date
-                filteredConsultations = serviceConsultation.getConsultationsByDate(dateString);
-            } else {
-                // If no date is selected, show all consultations
-                filteredConsultations = serviceConsultation.getConsultationsByPatientId(1); // Replace with actual patient ID
-            }
-        } else if (searchType.equals("Nom du médecin")) {
-            // Search by doctor's name
-            String doctorName = searchField.getText().trim();
-            filteredConsultations = serviceConsultation.getConsultationsByDoctorName(doctorName);
-        } else {
-            // If no valid search type, show all consultations
-            filteredConsultations = serviceConsultation.getConsultationsByPatientId(1); // Replace with actual patient ID
-        }
-
-        // Display the filtered consultations
-        loadConsultations(filteredConsultations);
+        // This method can remain unchanged if you still want to allow manual search
+        handleDynamicSearch();
     }
 
-    private void loadConsultations(List<Consultation> consultations) {
-        // Clear the existing cards
+    private void updateConsultationsCardView(List<Consultation> consultations) {
+        // Clear the current view
         consultationsCardView.getChildren().clear();
 
-        // Add a card for each consultation
+        // Add new consultation cards to the view
         for (Consultation consultation : consultations) {
-            HBox card = createConsultationCard(consultation);
+            GridPane card = createConsultationCard(consultation);
             consultationsCardView.getChildren().add(card);
         }
     }
 
-    private HBox createConsultationCard(Consultation consultation) {
-        // Create a card layout using HBox
-        HBox card = new HBox(10);
-        card.setStyle("-fx-border-color: #cccccc; -fx-border-radius: 5; -fx-padding: 10;");
+    private GridPane createConsultationCard(Consultation consultation) {
+        GridPane card = new GridPane();
+        card.setHgap(10);
+        card.setVgap(5);
+        card.setStyle("-fx-padding: 10; -fx-border-color: #ccc; -fx-border-radius: 5; -fx-background-color: #f9f9f9;");
 
         // Add consultation details to the card
-        VBox details = new VBox(5);
-        details.getChildren().add(new Label("Date: " + consultation.getDateHeure()));
-        details.getChildren().add(new Label("Type: " + consultation.getTypeConsultation()));
-        details.getChildren().add(new Label("Médecin: " + consultation.getMedecinNom() + " " + consultation.getMedecinPrenom()));
-        details.getChildren().add(new Label("Spécialité: " + consultation.getMedecinSpecialite()));
+        card.addRow(0, new Label("Médecin:"), new Label(consultation.getMedecinNom() + " " + consultation.getMedecinPrenom()));
+        card.addRow(1, new Label("Spécialité:"), new Label(consultation.getMedecinSpecialite()));
+        card.addRow(2, new Label("Date et Heure:"), new Label(consultation.getDateHeure().toString()));
+        card.addRow(3, new Label("Type de Consultation:"), new Label(consultation.getTypeConsultation()));
 
-        card.getChildren().add(details);
         return card;
     }
 }

@@ -5,6 +5,7 @@ import tn.esprit.models.Assurance;
 import tn.esprit.utils.MyDatabase;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,12 +18,13 @@ public class ServiceAssurance implements IService<Assurance> {
 
     @Override
     public void add(Assurance assurance) {
-        String qry = "INSERT INTO assurance (nom, type, date_debut, date_fin) VALUES (?, ?, ?, ?)";
+        String qry = "INSERT INTO assurance (nom, type, date_debut, date_fin, id_PatientAs) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement pstm = cnx.prepareStatement(qry, Statement.RETURN_GENERATED_KEYS)) {
             pstm.setString(1, assurance.getNom());
             pstm.setString(2, assurance.getType());
             pstm.setDate(3, Date.valueOf(assurance.getDateDebut()));
             pstm.setDate(4, Date.valueOf(assurance.getDateFin()));
+            pstm.setInt(5, 1); // Hardcode id_PatientAs to 1
 
             int rowsInserted = pstm.executeUpdate();
             if (rowsInserted > 0) {
@@ -37,15 +39,21 @@ public class ServiceAssurance implements IService<Assurance> {
 
     public List<Assurance> getAll() {
         List<Assurance> assurances = new ArrayList<>();
-        String qry = "SELECT * FROM assurance";
+        String qry = "SELECT * FROM assurance WHERE id_PatientAs = 5"; // Ajout de la clause WHERE
         try (Statement stmt = cnx.createStatement(); ResultSet rs = stmt.executeQuery(qry)) {
             while (rs.next()) {
+                // Handle NULL values for date_debut and date_fin
+                LocalDate dateDebut = rs.getDate("date_debut") != null ? rs.getDate("date_debut").toLocalDate() : null;
+                LocalDate dateFin = rs.getDate("date_fin") != null ? rs.getDate("date_fin").toLocalDate() : null;
+
+                // Use the correct constructor with id_PatientAs
                 Assurance assurance = new Assurance(
-                        rs.getInt("id_assurance"),
-                        rs.getString("nom"),
-                        rs.getString("type"),
-                        rs.getDate("date_debut").toLocalDate(),
-                        rs.getDate("date_fin").toLocalDate()
+                        rs.getInt("id_assurance"), // idAssurance
+                        rs.getString("nom"),       // nom
+                        rs.getString("type"),      // type
+                        dateDebut,                 // dateDebut
+                        dateFin,                   // dateFin
+                        rs.getInt("id_PatientAs")  // idPatientAs
                 );
                 assurances.add(assurance);
             }
@@ -61,12 +69,18 @@ public class ServiceAssurance implements IService<Assurance> {
             pstm.setInt(1, id);
             try (ResultSet rs = pstm.executeQuery()) {
                 if (rs.next()) {
+                    // Handle NULL values for date_debut and date_fin
+                    LocalDate dateDebut = rs.getDate("date_debut") != null ? rs.getDate("date_debut").toLocalDate() : null;
+                    LocalDate dateFin = rs.getDate("date_fin") != null ? rs.getDate("date_fin").toLocalDate() : null;
+
+                    // Use the correct constructor with id_PatientAs
                     return new Assurance(
-                            rs.getInt("id_assurance"),
-                            rs.getString("nom"),
-                            rs.getString("type"),
-                            rs.getDate("date_debut").toLocalDate(),
-                            rs.getDate("date_fin").toLocalDate()
+                            rs.getInt("id_assurance"), // idAssurance
+                            rs.getString("nom"),       // nom
+                            rs.getString("type"),      // type
+                            dateDebut,                 // dateDebut
+                            dateFin,                   // dateFin
+                            rs.getInt("id_PatientAs")  // idPatientAs
                     );
                 }
             }

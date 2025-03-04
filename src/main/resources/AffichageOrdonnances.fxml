@@ -8,6 +8,7 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.ListView?>
 
+<?import javafx.scene.layout.StackPane?>
 <VBox stylesheets="@CSS/design.css" xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="controllers.AffichageOrdonnances"
@@ -16,9 +17,10 @@
     <!-- Search Bar -->
     <HBox spacing="10">
         <ComboBox fx:id="searchTypeComboBox" promptText="Rechercher par..." />
-        <TextField fx:id="searchField" promptText="Entrez le nom du médecin..." visible="false" />
-        <DatePicker fx:id="datePicker" promptText="Sélectionnez une date..." visible="false" />
-        <Button text="Rechercher" onAction="#handleSearch" />
+        <StackPane fx:id="searchContainer">
+            <TextField fx:id="searchField" promptText="Entrez le nom du médecin..." visible="false" />
+            <DatePicker fx:id="datePicker" promptText="Sélectionnez une date..." visible="true" />
+        </StackPane>
     </HBox>
 
     <!-- Ordonnances List -->

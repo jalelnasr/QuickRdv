@@ -41,23 +41,31 @@ public class AjoutAssurance {
             String nom = nomField.getText().trim();
             String type = typeComboBox.getValue();
 
+            // Validate dates
             if (dateDebutPicker.getValue() == null || dateFinPicker.getValue() == null) {
                 throw new IllegalArgumentException("Les dates de début et de fin sont obligatoires.");
             }
+
             LocalDate dateDebut = dateDebutPicker.getValue();
             LocalDate dateFin = dateFinPicker.getValue();
+
+            // Check if dateDebut is before dateFin
+            if (!dateDebut.isBefore(dateFin)) {
+                throw new IllegalArgumentException("La date de début doit être avant la date de fin.");
+            }
 
             if (nom.isEmpty() || type == null) {
                 throw new IllegalArgumentException("Veuillez remplir tous les champs obligatoires.");
             }
 
-            Assurance newAssurance = new Assurance(nom, type, dateDebut, dateFin);
+            // Create Assurance object with id_PatientAs set to 1
+            Assurance newAssurance = new Assurance(nom, type, dateDebut, dateFin, 1); // Use the correct constructor
             serviceAssurance.add(newAssurance);
 
             showAlert(Alert.AlertType.CONFIRMATION, "Succès", "Assurance ajoutée avec succès !");
             clearForm();
         } catch (IllegalArgumentException e) {
-            showAlert(Alert.AlertType.WARNING, "Champs obligatoires", e.getMessage());
+            showAlert(Alert.AlertType.WARNING, "Erreur de validation", e.getMessage());
         } catch (Exception e) {
             showAlert(Alert.AlertType.ERROR, "Erreur", "Une erreur s'est produite lors de l'ajout de l'assurance.");
         }

@@ -8,34 +8,29 @@ public class Assurance {
     private String type;
     private LocalDate dateDebut;
     private LocalDate dateFin;
+    private int idPatientAs; // Add this field
 
+    // Default constructor
     public Assurance() {
     }
 
-    public Assurance(String nom, String type, LocalDate dateDebut, LocalDate dateFin) {
+    // Constructor without idAssurance (for creating new assurances)
+    public Assurance(String nom, String type, LocalDate dateDebut, LocalDate dateFin, int idPatientAs) {
         this.nom = nom;
         this.type = type;
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
+        this.idPatientAs = idPatientAs; // Initialize the field
     }
 
-    public Assurance(int idAssurance, String nom, String type, LocalDate dateDebut, LocalDate dateFin) {
+    // Constructor with idAssurance (for retrieving existing assurances)
+    public Assurance(int idAssurance, String nom, String type, LocalDate dateDebut, LocalDate dateFin, int idPatientAs) {
         this.idAssurance = idAssurance;
         this.nom = nom;
         this.type = type;
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
-    }
-
-    @Override
-    public String toString() {
-        return "Assurance{" +
-                "idAssurance=" + idAssurance +
-                ", nom='" + nom + '\'' +
-                ", type='" + type + '\'' +
-                ", dateDebut=" + dateDebut +
-                ", dateFin=" + dateFin +
-                '}';
+        this.idPatientAs = idPatientAs; // Initialize the field
     }
 
     // Getters and setters for all fields
@@ -77,5 +72,25 @@ public class Assurance {
 
     public void setDateFin(LocalDate dateFin) {
         this.dateFin = dateFin;
+    }
+
+    public int getIdPatientAs() {
+        return idPatientAs;
+    }
+
+    public void setIdPatientAs(int idPatientAs) {
+        this.idPatientAs = idPatientAs;
+    }
+
+    @Override
+    public String toString() {
+        return "Assurance{" +
+                "idAssurance=" + idAssurance +
+                ", nom='" + nom + '\'' +
+                ", type='" + type + '\'' +
+                ", dateDebut=" + dateDebut +
+                ", dateFin=" + dateFin +
+                ", idPatientAs=" + idPatientAs +
+                '}';
     }
 }

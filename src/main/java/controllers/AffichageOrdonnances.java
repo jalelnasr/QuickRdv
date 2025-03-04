@@ -5,6 +5,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.StackPane;
 import tn.esprit.models.Ordonnance;
 import tn.esprit.services.ServiceOrdonnance;
 
@@ -21,14 +22,22 @@ public class AffichageOrdonnances {
     private TextField searchField; // TextField for doctor's name
     @FXML
     private DatePicker datePicker; // DatePicker for date search
+    @FXML
+    private StackPane searchContainer; // StackPane to hold search components
 
     private ServiceOrdonnance serviceOrdonnance = new ServiceOrdonnance();
+
+
 
     @FXML
     public void initialize() {
         // Initialize the search type ComboBox
         searchTypeComboBox.getItems().addAll("Date", "Nom du médecin");
         searchTypeComboBox.setValue("Date"); // Default selection
+
+        // Set initial visibility
+        datePicker.setVisible(true); // DatePicker is visible by default
+        searchField.setVisible(false); // TextField is hidden by default
 
         // Add listener to handle search type changes
         searchTypeComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -45,10 +54,13 @@ public class AffichageOrdonnances {
 
         // Load all ordonnances initially
         loadOrdonnances(serviceOrdonnance.getAllOrdonnances());
+
+        // Add listeners for dynamic searching
+        datePicker.valueProperty().addListener((obs, oldDate, newDate) -> handleSearch());
+        searchField.textProperty().addListener((obs, oldText, newText) -> handleSearch());
     }
 
-    @FXML
-    public void handleSearch() {
+    private void handleSearch() {
         String searchType = searchTypeComboBox.getValue();
         List<Ordonnance> filteredOrdonnances;
 

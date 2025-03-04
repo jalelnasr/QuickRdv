@@ -21,6 +21,7 @@ public class MainFX extends Application {
             //FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjoutAssurance.fxml"));
             //FXMLLoader loader = new FXMLLoader(getClass().getResource("/AffichageConsultations.fxml"));
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/AffichageOrdonnances.fxml"));
+           // FXMLLoader loader = new FXMLLoader(getClass().getResource("/Test.fxml"));
 
             Parent root = loader.load();
             Scene scene = new Scene(root);
@@ -28,7 +29,7 @@ public class MainFX extends Application {
            //primaryStage.setTitle("Ajouter Informations Generales");
             //primaryStage.setTitle("Ajouter Assurance");
             //primaryStage.setTitle("Historique Consultations");
-            primaryStage.setTitle("Historique Ordonnance");
+            //primaryStage.setTitle("Historique Ordonnance");
 
 
             primaryStage.show();
