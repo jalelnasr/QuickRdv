@@ -26,5 +26,8 @@
                 <VBox fx:id="cardContainer" spacing="15" style="-fx-padding: 20;" />
             </content>
         </ScrollPane>
+
+        <Button fx:id="pdfButton" text="Exporter PDF" />
+
     </children>
 </AnchorPane>

@@ -16,24 +16,10 @@ import java.util.Map;
 import java.util.Optional;
 
 
-
-import javafx.application.Platform;
-import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
-import javafx.scene.text.Text;
-import tn.esprit.models.Ordonnance;
-import tn.esprit.services.ServiceOrdonnance;
 
 import java.sql.Date;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
 import java.util.HashMap;
-import java.util.Optional;
 
 public class AfficherOrdonnance {
 
@@ -49,6 +35,9 @@ public class AfficherOrdonnance {
     @FXML
     private Button searchButton;
 
+    @FXML
+    private Button pdfButton;
+
 
     private ServiceOrdonnance serviceOrdonnance = new ServiceOrdonnance();
 
@@ -60,6 +49,18 @@ public class AfficherOrdonnance {
             AnchorPane card = createCard(ordonnance);
             cardContainer.getChildren().add(card); // Ajouter la carte au conteneur
         }
+
+        pdfButton.setDisable(true); // Désactiver le bouton PDF au démarrage
+
+
+        // Ajouter un événement au bouton PDF
+        pdfButton.setOnAction(event -> {
+            if (ordonnanceSelectionnee != null) {
+                generatePdf(ordonnanceSelectionnee);
+            } else {
+                showAlert("Erreur", "Veuillez sélectionner une ordonnance.");
+            }
+        });
     }
 
     private void refreshMedicamentDisplay(VBox box, Map<String, Integer> medicaments) {
@@ -80,9 +81,8 @@ public class AfficherOrdonnance {
         }
     }
 
-    /**
-     * Crée une carte (AnchorPane) pour afficher les détails d'une ordonnance.
-     */
+    
+
     private AnchorPane createCard(Ordonnance ordonnance) {
         // Créer un conteneur de carte (AnchorPane)
         AnchorPane card = new AnchorPane();
@@ -296,6 +296,12 @@ public class AfficherOrdonnance {
 
         });
 
+        // Sélectionner l'ordonnance lorsqu'on clique sur la carte
+        card.setOnMouseClicked(event -> {
+            ordonnanceSelectionnee = ordonnance; // Stocke l'ordonnance sélectionnée
+            pdfButton.setDisable(false); // Active le bouton PDF
+        });
+
         card.getChildren().addAll(patientText, dateText, instructionsText, medicamentDisplayBox,
                 patientField, datePicker, instructionsField, medicamentEditBox,
                 newMedicamentField, newQuantiteField, ajouterMedicamentButton,
@@ -344,5 +350,24 @@ public class AfficherOrdonnance {
         for (Ordonnance ordonnance : ordonnances) {
             cardContainer.getChildren().add(createCard(ordonnance));
         }
+    }
+    private Ordonnance ordonnanceSelectionnee = null;
+
+
+
+
+    private void generatePdf(Ordonnance ordonnance) {
+        try {
+            String filePath = "/C:/Users/LENOVO/OneDrive/Documents/ordonnance.pdf"; // Remplacez par un chemin valide
+
+            serviceOrdonnance.generatePdf(ordonnance, filePath); // Assurez-vous que le service est correctement injecté
+            showAlert("Succès,PDF généré avec succès à l'emplacement : " + filePath);
+        } catch (Exception e) {
+            showAlert("Erreur,Erreur lors de la génération du PDF : " + e.getMessage());
+            e.printStackTrace(); // Affiche la stack trace pour plus de détails
+        }
+    }
+
+    private void showAlert(String s) {
     }
 }

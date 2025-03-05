@@ -1,13 +1,27 @@
 package tn.esprit.services;
 
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Paragraph;
+import tn.esprit.models.Medicament;
 import tn.esprit.models.Ordonnance;
 import tn.esprit.interfaces.IMService;
 import tn.esprit.utils.MyDatabase;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.Map;
 import java.util.ArrayList;
 import java.util.List;
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.*;
+
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.*;
+
+import java.io.FileOutputStream;
+import java.time.LocalDate;
+import java.util.Map;
+
 
 public class ServiceOrdonnance implements IMService<Ordonnance> {
     private Connection cnx;
@@ -334,6 +348,211 @@ public class ServiceOrdonnance implements IMService<Ordonnance> {
         }
         return ordonnances;
     }
+
+    public List<Ordonnance> getOrdonnancesByPatientFullName(String fullName) {
+        List<Ordonnance> filteredOrdonnances = new ArrayList<>();
+
+        // Split the full name into first and last names
+        String[] nameParts = fullName.split(" ");
+        if (nameParts.length != 2) {
+            return filteredOrdonnances; // If the name format is invalid, return an empty list
+        }
+
+        String firstName = nameParts[0];
+        String lastName = nameParts[1];
+
+        // SQL query to find the patient_id based on the full name (first and last name)
+        String query = "SELECT id FROM utilisateur WHERE nom = ? AND prenom = ?";
+
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/integration", "root", "");
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setString(1, lastName);
+            stmt.setString(2, firstName);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    // Get the patient's ID from the result set
+                    int patientId = rs.getInt("id");
+
+                    // Once we have the patient's ID, fetch all ordonnances related to this patient
+                    String ordonnanceQuery = "SELECT * FROM ordonnance WHERE patient_id = ?";
+
+                    try (PreparedStatement ordonnanceStmt = connection.prepareStatement(ordonnanceQuery)) {
+                        ordonnanceStmt.setInt(1, patientId);
+
+                        try (ResultSet ordonnanceRs = ordonnanceStmt.executeQuery()) {
+                            while (ordonnanceRs.next()) {
+                                // Create Ordonnance object and add to the list
+                                Ordonnance o = new Ordonnance();
+                                o.setId(ordonnanceRs.getInt("id"));
+                                o.setMedecinId(ordonnanceRs.getInt("medecin_id"));
+                                o.setPatientId(ordonnanceRs.getInt("patient_id"));
+                                o.setMedicaments(stringToMap(ordonnanceRs.getString("medicaments")));
+                                o.setDatePrescription(ordonnanceRs.getDate("date_prescription"));
+                                o.setInstructions(ordonnanceRs.getString("instructions"));
+                                o.setStatut(ordonnanceRs.getString("statut"));
+
+                                // Add the ordonnance to the list
+                                filteredOrdonnances.add(o);
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Erreur lors de la récupération des ordonnances par nom de patient : " + e.getMessage());
+        }
+
+        return filteredOrdonnances;
+    }
+
+    public List<Ordonnance> getOrdonnancesByDoctorFullName(String fullName) {
+        List<Ordonnance> filteredOrdonnances = new ArrayList<>();
+
+        // Split the full name into first and last names
+        String[] nameParts = fullName.split(" ");
+        if (nameParts.length != 2) {
+            return filteredOrdonnances; // If the name format is invalid, return an empty list
+        }
+
+        String firstName = nameParts[0];
+        String lastName = nameParts[1];
+
+        // SQL query to find the medecin_id based on the full name (first and last name)
+        String query = "SELECT id FROM utilisateur WHERE nom = ? AND prenom = ?";
+
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/integration", "root", "");
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setString(1, lastName);
+            stmt.setString(2, firstName);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    // Get the doctor's ID from the result set
+                    int medecinId = rs.getInt("id");
+
+                    // Once we have the doctor's ID, fetch all ordonnances related to this doctor
+                    String ordonnanceQuery = "SELECT * FROM ordonnance WHERE medecin_id = ?";
+
+                    try (PreparedStatement ordonnanceStmt = connection.prepareStatement(ordonnanceQuery)) {
+                        ordonnanceStmt.setInt(1, medecinId);
+
+                        try (ResultSet ordonnanceRs = ordonnanceStmt.executeQuery()) {
+                            while (ordonnanceRs.next()) {
+                                // Create Ordonnance object and add to the list
+                                Ordonnance o = new Ordonnance();
+                                o.setId(ordonnanceRs.getInt("id"));  // Fix here: use ordonnanceRs
+                                o.setMedecinId(ordonnanceRs.getInt("medecin_id"));
+                                o.setPatientId(ordonnanceRs.getInt("patient_id"));
+                                o.setMedicaments(stringToMap(ordonnanceRs.getString("medicaments")));
+                                o.setDatePrescription(ordonnanceRs.getDate("date_prescription"));
+                                o.setInstructions(ordonnanceRs.getString("instructions"));
+                                o.setStatut(ordonnanceRs.getString("statut"));
+
+                                // Add the ordonnance to the list
+                                filteredOrdonnances.add(o);
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Erreur lors de la récupération des ordonnances par nom de medecin : " + e.getMessage());
+        }
+
+        return filteredOrdonnances;
+    }
+
+    private String getUserNameById(int userId) {
+        String userName = "";
+        String query = "SELECT nom, prenom FROM utilisateur WHERE id = ?";
+
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/integration?useUnicode=true&characterEncoding=UTF-8", "root", "");
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setInt(1, userId);
+            System.out.println("Exécution de la requête pour l'ID utilisateur : " + userId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    String firstName = rs.getString("prenom");
+                    String lastName = rs.getString("nom");
+                    userName = firstName + " " + lastName;
+                    System.out.println("Nom et prénom récupérés : " + userName);
+                } else {
+                    // Si aucun résultat n'est trouvé
+                    System.err.println("Aucun utilisateur trouvé pour l'ID: " + userId);
+                    userName = "Unknown";  // Retourne "Unknown" si aucun utilisateur n'est trouvé
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Erreur SQL lors de la récupération du nom utilisateur pour l'ID " + userId);
+            userName = "Unknown";  // Fallback en cas d'erreur
+        }
+        return userName;
+    }
+
+
+    public void generatePdf(Ordonnance ordonnance, String filePath) {
+        try {
+            // Création du document PDF avec une taille de page A4
+            Document document = new Document(PageSize.A4);
+            PdfWriter.getInstance(document, new FileOutputStream(filePath));  // Utilisation du chemin spécifié
+
+            // Ouverture du document pour ajout de contenu
+            document.open();
+
+            // Récupérer les noms du médecin et du patient
+            int doctorId = ordonnance.getMedecinId();
+            int patientId = ordonnance.getPatientId();
+
+            System.out.println("Récupération du nom du médecin avec ID: " + doctorId);
+            String doctorName = getUserNameById(doctorId);
+
+            System.out.println("Récupération du nom du patient avec ID: " + patientId);
+            String patientName = getUserNameById(patientId);
+
+            // Récupérer les médicaments
+            Map<String, Integer> medicaments = ordonnance.getMedicaments();
+            String medications = "No medications listed";  // Message par défaut
+
+            if (medicaments != null && !medicaments.isEmpty()) {
+                StringBuilder medicationBuilder = new StringBuilder();
+                for (Map.Entry<String, Integer> entry : medicaments.entrySet()) {
+                    medicationBuilder.append(entry.getKey())  // Nom du médicament
+                            .append(" (x")
+                            .append(entry.getValue())  // Quantité
+                            .append("), ");
+                }
+                medications = medicationBuilder.toString();
+                // Supprimer la dernière virgule et espace
+                medications = medications.substring(0, medications.length() - 2);
+            }
+
+            // Ajouter les informations de l'ordonnance au document PDF
+            document.add(new Paragraph("Doctor: " + doctorName));
+            document.add(new Paragraph("Patient: " + patientName));
+            document.add(new Paragraph("Prescription Date: " + ordonnance.getDatePrescription()));
+            document.add(new Paragraph("Status: " + ordonnance.getStatut()));
+            document.add(new Paragraph("Medications: " + medications));
+            document.add(new Paragraph("--------------------------------------------------"));
+
+            // Fermer le document
+            document.close();
+
+            System.out.println("PDF généré avec succès à l'emplacement : " + filePath);
+
+        } catch (Exception e) {
+            System.err.println("Erreur lors de la génération du PDF : " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
 
 
 

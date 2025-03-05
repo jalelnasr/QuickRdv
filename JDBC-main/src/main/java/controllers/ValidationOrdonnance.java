@@ -7,19 +7,23 @@ import tn.esprit.models.Ordonnance;
 import tn.esprit.services.ServiceOrdonnance;
 import tn.esprit.services.ServiceMedicament;
 
+import java.sql.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 
 public class ValidationOrdonnance {
     @FXML
     private ListView<Ordonnance> ordonnancesListView;
-
-
     @FXML
     private ComboBox<String> searchTypeComboBox;
     @FXML
     private TextField searchField;
     @FXML
     private Button validerButton; // Bouton pour valider l'ordonnance
+    @FXML
+    private DatePicker datePicker; // DatePicker for date search
 
     private ServiceOrdonnance serviceOrdonnance = new ServiceOrdonnance();
     private ServiceMedicament serviceMedicament = new ServiceMedicament();
@@ -27,23 +31,48 @@ public class ValidationOrdonnance {
 
     @FXML
     public void initialize() {
-        searchTypeComboBox.getItems().addAll("Date", "Doctor Name");
+        // Initialisation du ComboBox avec les options de recherche
+        searchTypeComboBox.getItems().addAll("Date", "Nom patient");
         searchTypeComboBox.setValue("Date");
 
+        // Charger toutes les ordonnances au début
         loadOrdonnances(serviceOrdonnance.getAll());
 
-        validerButton.setDisable(true); // Désactiver le bouton par défaut
+        // Désactiver le bouton Valider par défaut
+        validerButton.setDisable(true);
+
+        // Gestion de la visibilité dynamique des champs
+        searchTypeComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if ("Date".equals(newValue)) {
+                datePicker.setVisible(true);
+                searchField.setVisible(false);
+            } else if ("Nom patient".equals(newValue)) {
+                searchField.setVisible(true);
+                datePicker.setVisible(false);
+            }
+        });
     }
 
     @FXML
     public void handleSearch() {
         String searchType = searchTypeComboBox.getValue();
-        String searchTerm = searchField.getText().trim();
-
         List<Ordonnance> filteredOrdonnances;
 
-        if (searchType.equals("Date")) {
-            filteredOrdonnances = serviceOrdonnance.getOrdonnancesByDate(searchTerm);
+        if ("Date".equals(searchType)) {
+            LocalDate selectedDate = datePicker.getValue();
+            if (selectedDate != null) {
+                String dateString = selectedDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                filteredOrdonnances = serviceOrdonnance.getOrdonnancesByDate(dateString);
+            } else {
+                filteredOrdonnances = serviceOrdonnance.getAll();
+            }
+        } else if ("Nom patient".equals(searchType)) {
+            String patientName = searchField.getText().trim();
+            if (!patientName.isEmpty()) {
+                filteredOrdonnances = serviceOrdonnance.getOrdonnancesByPatientFullName(patientName);
+            } else {
+                filteredOrdonnances = serviceOrdonnance.getAll();
+            }
         } else {
             filteredOrdonnances = serviceOrdonnance.getAll();
         }
@@ -86,6 +115,30 @@ public class ValidationOrdonnance {
         }
     }
 
+    private String getUserNameById(int userId) {
+        String userName = "";
+        String query = "SELECT nom, prenom FROM utilisateur WHERE id = ?";
+
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/integration", "root", "");
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setInt(1, userId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    String firstName = rs.getString("prenom");
+                    String lastName = rs.getString("nom");
+                    userName = firstName + " " + lastName;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            userName = "Unknown";  // Fallback in case of error
+        }
+        return userName;
+    }
+
+
 
     private void loadOrdonnances(List<Ordonnance> ordonnances) {
         ordonnancesListView.getItems().clear();
@@ -99,15 +152,32 @@ public class ValidationOrdonnance {
                 if (empty || ordonnance == null) {
                     setText(null);
                 } else {
-                    setText("Doctor: " + ordonnance.getMedecinId() +
-                            " | Patient: " + ordonnance.getPatientId() +
-                            " | Date: " + ordonnance.getDatePrescription() +
-                            " | Statut: " + ordonnance.getStatut());
+                    String doctorName = getUserNameById(ordonnance.getMedecinId());
+                    String patientName = getUserNameById(ordonnance.getPatientId());
+                    Map<String, Integer> medicaments = ordonnance.getMedicaments();
+                    String medications = "No medications listed";  // Default message
+
+                    if (medicaments != null && !medicaments.isEmpty()) {
+                        StringBuilder medicationBuilder = new StringBuilder();
+                        for (Map.Entry<String, Integer> entry : medicaments.entrySet()) {
+                            medicationBuilder.append(entry.getKey())  // Medication name
+                                    .append(" (x")
+                                    .append(entry.getValue())  // Medication quantity
+                                    .append("), ");
+                        }
+                        medications = medicationBuilder.toString();
+                        // Remove the last comma and space
+                        medications = medications.substring(0, medications.length() - 2);
+                    }
+                    setText("Doctor: " +doctorName +
+                            " | Patient: " + patientName +
+                            " | " + ordonnance.getDatePrescription() +
+                            " | Statut: " + ordonnance.getStatut() +
+                            " | Medications: " + medications);
                 }
             }
         });
     }
-
 
 
     private void showAlert(String message) {
