@@ -139,4 +139,22 @@ public class AjoutInformationsGenerales {
             showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur lors de la navigation vers la liste des informations.");
         }
     }
+
+    @FXML
+    private void openChatbot() {
+        try {
+            // Load the chatbot FXML file
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/chatbot.fxml"));
+            Parent root = loader.load();
+
+            // Create a new stage for the chatbot window
+            Stage stage = new Stage();
+            stage.setTitle("Chatbot");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
+

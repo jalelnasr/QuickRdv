@@ -167,6 +167,8 @@
       <HBox spacing="10" alignment="CENTER">
          <Button text="Enregistrer" onAction="#Save" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 20;" />
          <Button text="Voir Informations Générales" onAction="#goToInformationsList" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 20;" />
+         <!-- Add Chatbot Button -->
+         <Button text="Ouvrir Chatbot" onAction="#openChatbot" style="-fx-background-color: #FF9800; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 20;" />
       </HBox>
    </children>
    <padding>

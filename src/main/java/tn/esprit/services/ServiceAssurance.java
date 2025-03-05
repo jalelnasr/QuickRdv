@@ -39,7 +39,7 @@ public class ServiceAssurance implements IService<Assurance> {
 
     public List<Assurance> getAll() {
         List<Assurance> assurances = new ArrayList<>();
-        String qry = "SELECT * FROM assurance WHERE id_PatientAs = 5"; // Ajout de la clause WHERE
+        String qry = "SELECT * FROM assurance WHERE id_PatientAs = 1"; // Ajout de la clause WHERE
         try (Statement stmt = cnx.createStatement(); ResultSet rs = stmt.executeQuery(qry)) {
             while (rs.next()) {
                 // Handle NULL values for date_debut and date_fin

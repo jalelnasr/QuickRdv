@@ -17,10 +17,10 @@ public class MainFX extends Application {
 
     public void start(Stage primaryStage) {
         try {
-           // FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjoutInformationsGenerales.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjoutInformationsGenerales.fxml"));
             //FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjoutAssurance.fxml"));
             //FXMLLoader loader = new FXMLLoader(getClass().getResource("/AffichageConsultations.fxml"));
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AffichageOrdonnances.fxml"));
+           // FXMLLoader loader = new FXMLLoader(getClass().getResource("/AffichageOrdonnances.fxml"));
            // FXMLLoader loader = new FXMLLoader(getClass().getResource("/Test.fxml"));
 
             Parent root = loader.load();
