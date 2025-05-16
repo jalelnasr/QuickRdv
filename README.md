@@ -43,5 +43,5 @@ Ce projet a pour objectifs de :
 
 1. *Clonez le projet :*
    ```bash
-   git clone https://github.com/jalelnasr/QuickRdv-JavaFX.git
-   cd QuickRdv-JavaFX
+   git clone https://github.com/jalelnasr/QuickRdv.git
+   cd QuickRdv
